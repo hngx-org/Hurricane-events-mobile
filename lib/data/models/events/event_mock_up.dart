@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EventsMockUp {
   EventsMockUp({
     this.name,
-    this.group,
+    this.groupName,
     this.startDate,
     this.endDate,
     this.location,
@@ -14,7 +14,7 @@ class EventsMockUp {
   });
 
   String? name;
-  String? group;
+  String? groupName;
   DateTime? startDate;
   TimeOfDay? startDateStartTime;
   TimeOfDay? startDateEndTime;
@@ -26,7 +26,7 @@ class EventsMockUp {
   factory EventsMockUp.fromJson(Map<String, dynamic> json) {
     return EventsMockUp(
       name: json['name'],
-      group: json["group"],
+      groupName: json["group"],
       startDate: DateTime.parse(json["startDate"]),
       endDate: DateTime.parse(json["endDate"]),
       location: json["location"],
@@ -39,7 +39,7 @@ class EventsMockUp {
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "group": group,
+        "group": groupName,
         "startDate": startDate?.toIso8601String(),
         "endDate": endDate?.toIso8601String(),
         "location": location,

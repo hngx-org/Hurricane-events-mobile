@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/my_group/screens/group_detail_screen.dart';
+import 'package:hurricane_events/app/presentation/my_group/screens/group_screen.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 
@@ -45,6 +47,10 @@ class AppRouter {
         return _getPageRoute(const Splash());
       case CalendarSection.routeName:
         return _getPageRoute(const CalendarSection());
+      case GroupScreen.routeName:
+        return _getPageRoute(const GroupScreen());
+      case GroupDetailsScreen.routeName:
+        return _getPageRoute(const GroupDetailsScreen());
       default:
         return _getPageRoute(const Splash());
     }
