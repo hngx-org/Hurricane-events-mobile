@@ -1,3 +1,4 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "dart.flutterSdkPath": "/Users/apexefemena/Downloads/fvm/3.13.4"
 }
