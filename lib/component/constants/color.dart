@@ -11,6 +11,7 @@ class AppColors {
   static const Color designBlack3 = Color(0xFF727272);
   static const Color designBlack4 = Color(0xFF33313E);
   static const Color designBlack5 = Color(0xFF84838B);
+  static const Color designBlack9 = Color(0xffF2F2F2);
 
   static const Color designOrange = Color(0xFFFFA800);
   static const Color opacityOrange = Color(0xFFFFF9EF);
