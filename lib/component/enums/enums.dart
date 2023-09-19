@@ -1,0 +1,1 @@
+/// This houses every enum declaration in the app
