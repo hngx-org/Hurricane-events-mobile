@@ -17,6 +17,7 @@ class AppColors {
   static const Color opacityOrange = Color(0xFFFFF9EF);
 
   static const Color designGrey = Color(0xFFD9D9D9);
+  static const Color darkGrey = Color(0xFF8C8C8C);
   static const Color designRed = Color(0xFFE93131);
 
   static const Color backgroundColor = Color(0xFFFAFAFA);
