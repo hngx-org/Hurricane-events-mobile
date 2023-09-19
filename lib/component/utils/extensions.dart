@@ -15,5 +15,6 @@ extension TextTheming on BuildContext {
   TextStyle get headline1 => Theme.of(this).extension<EventsTextTheme>()!.headline1!;
   TextStyle get headline2 => Theme.of(this).extension<EventsTextTheme>()!.headline2!;
   TextStyle get headline3 => Theme.of(this).extension<EventsTextTheme>()!.headline3!;
-  TextStyle get button => Theme.of(this).extension<EventsTextTheme>()!.button!;
+  TextStyle get button1 => Theme.of(this).extension<EventsTextTheme>()!.button1!;
+  TextStyle get button2 => Theme.of(this).extension<EventsTextTheme>()!.button2!;
 }

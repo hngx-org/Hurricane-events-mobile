@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
+import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another
@@ -42,6 +43,8 @@ class AppRouter {
     switch (settings.name) {
       case Splash.routeName:
         return _getPageRoute(const Splash());
+      case CalendarSection.routeName:
+        return _getPageRoute(const CalendarSection());
       default:
         return _getPageRoute(const Splash());
     }
