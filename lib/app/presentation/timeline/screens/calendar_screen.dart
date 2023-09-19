@@ -24,7 +24,7 @@ class _CalendarState extends State<CalendarSection> {
   List<EventsMockUp> dummyEvents = [
     EventsMockUp(
       name: "Hurricane Slack group meeting",
-      group: "Hangouts",
+      groupName: "Hangouts",
       startDate: DateTime(2023, 9, 17),
       endDate: DateTime(2023, 10, 1, 12),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
@@ -35,7 +35,7 @@ class _CalendarState extends State<CalendarSection> {
     ),
     EventsMockUp(
       name: "Hurricane Slack meeting",
-      group: "Hangouts",
+      groupName: "Hangouts",
       startDate: DateTime.now(),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
       startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -43,7 +43,7 @@ class _CalendarState extends State<CalendarSection> {
     ),
     EventsMockUp(
       name: "Football meeting",
-      group: "Hangouts",
+      groupName: "Hangouts",
       startDate: DateTime(2023, 9, 16, 00, 00, 00),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
       startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -51,7 +51,7 @@ class _CalendarState extends State<CalendarSection> {
     ),
     EventsMockUp(
       name: "Yes meeting",
-      group: "Hangouts",
+      groupName: "Hangouts",
       startDate: DateTime(2023, 9, 1, 00, 00, 00),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
       startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -59,7 +59,7 @@ class _CalendarState extends State<CalendarSection> {
     ),
     EventsMockUp(
       name: "No meeting",
-      group: "Hangouts",
+      groupName: "Hangouts",
       startDate: DateTime(2023, 9, 30, 00, 00, 00),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
       startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -67,7 +67,7 @@ class _CalendarState extends State<CalendarSection> {
     ),
     EventsMockUp(
       name: "Submission Date",
-      group: "Submission",
+      groupName: "Submission",
       startDate: DateTime(2023, 9, 22, 00, 00, 00),
       startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
       startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -79,7 +79,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-17 00:00:00Z"): [
       EventsMockUp(
         name: "Hurricane Slack group meeting",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-17 00:00:00Z"),
         endDate: DateTime(2023, 10, 1),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
@@ -92,7 +92,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-19 00:00:00Z"): [
       EventsMockUp(
         name: "Hurricane Slack meeting",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-19 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -100,7 +100,7 @@ class _CalendarState extends State<CalendarSection> {
       ),
       EventsMockUp(
         name: "Hurricane group",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-19 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -108,7 +108,7 @@ class _CalendarState extends State<CalendarSection> {
       ),
       EventsMockUp(
         name: "Bayern vs Manchester United",
-        group: "Champions League",
+        groupName: "Champions League",
         startDate: DateTime.parse("2023-09-20 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 20, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 22, minute: 00),
@@ -118,7 +118,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-16 00:00:00Z"): [
       EventsMockUp(
         name: "Football meeting",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-16 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -128,7 +128,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-01 00:00:00Z"): [
       EventsMockUp(
         name: "Yes meeting",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-01 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -138,7 +138,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-30 00:00:00Z"): [
       EventsMockUp(
         name: "No meeting",
-        group: "Hangouts",
+        groupName: "Hangouts",
         startDate: DateTime.parse("2023-09-30 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -148,7 +148,7 @@ class _CalendarState extends State<CalendarSection> {
     DateTime.parse("2023-09-22 00:00:00Z"): [
       EventsMockUp(
         name: "Submission Date",
-        group: "Submission",
+        groupName: "Submission",
         startDate: DateTime.parse("2023-09-22 00:00:00Z"),
         startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
         startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
@@ -355,13 +355,15 @@ class _CalendarState extends State<CalendarSection> {
                       ],
                     );
                   }
-                  return GroupedListView<dynamic, String>(
+                  return GroupedListView<EventsMockUp, String>(
                     physics: const ClampingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     elements: _getEventsForDay(_selectedDate),
-                    groupBy: (element) => element.startDate.toIso8601String(),
-                    itemComparator: (item1, item2) => item2.startDate.compareTo(item1.startDate),
-                    groupComparator: (value1, value2) => value2.compareTo(value1),
+                    groupBy: (element) => element.startDate!.toIso8601String(),
+                    itemComparator: (item1, item2) =>
+                        item2.startDate!.compareTo(item1.startDate!),
+                    groupComparator: (value1, value2) =>
+                        value2.compareTo(value1),
                     order: GroupedListOrder.DESC,
                     useStickyGroupSeparators: false,
                     groupSeparatorBuilder: (value) {
@@ -369,7 +371,10 @@ class _CalendarState extends State<CalendarSection> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Builder(builder: (context) {
-                            if (DateTime.parse(value).month == DateTime.now().month && DateTime.parse(value).day == DateTime.now().day) {
+                            if (DateTime.parse(value).month ==
+                                    DateTime.now().month &&
+                                DateTime.parse(value).day ==
+                                    DateTime.now().day) {
                               return Text(
                                 "Today",
                                 style: context.body2.copyWith(
@@ -379,7 +384,8 @@ class _CalendarState extends State<CalendarSection> {
                               );
                             }
                             return Text(
-                              DateFormat("EEEE dd, MMM").format(DateTime.parse(value)),
+                              DateFormat("EEEE dd, MMM")
+                                  .format(DateTime.parse(value)),
                               style: context.body2.copyWith(
                                 fontSize: 12,
                                 color: AppColors.designBlack3,
@@ -390,13 +396,13 @@ class _CalendarState extends State<CalendarSection> {
                         ],
                       );
                     },
-                    itemBuilder: (context, element) {
+                    itemBuilder: (context, EventsMockUp element) {
                       return EventCard(
-                        group: element.group,
-                        startDate: element.startDate,
+                        group: element.groupName!,
+                        startDate: element.startDate!,
                         endDate: element.endDate,
-                        name: element.name,
-                        location: element.location,
+                        name: element.name!,
+                        location: element.location!,
                         startTime: element.startDateStartTime,
                         endTime: element.startDateEndTime,
                       );

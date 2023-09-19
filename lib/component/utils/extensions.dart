@@ -12,9 +12,27 @@ extension TextTheming on BuildContext {
   TextStyle get body1 => Theme.of(this).extension<EventsTextTheme>()!.body1!;
   TextStyle get body2 => Theme.of(this).extension<EventsTextTheme>()!.body2!;
   TextStyle get body3 => Theme.of(this).extension<EventsTextTheme>()!.body3!;
-  TextStyle get headline1 => Theme.of(this).extension<EventsTextTheme>()!.headline1!;
-  TextStyle get headline2 => Theme.of(this).extension<EventsTextTheme>()!.headline2!;
-  TextStyle get headline3 => Theme.of(this).extension<EventsTextTheme>()!.headline3!;
-  TextStyle get button1 => Theme.of(this).extension<EventsTextTheme>()!.button1!;
-  TextStyle get button2 => Theme.of(this).extension<EventsTextTheme>()!.button2!;
+  TextStyle get headline1 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline1!;
+  TextStyle get headline2 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline2!;
+  TextStyle get headline3 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline3!;
+  TextStyle get button1 =>
+      Theme.of(this).extension<EventsTextTheme>()!.button1!;
+  TextStyle get button2 =>
+      Theme.of(this).extension<EventsTextTheme>()!.button2!;
+}
+
+
+//An extension to shorten spacing 
+/* Instead of SizedBox(height: 30), use 30.height, */
+extension SizedBoxing on num {
+  Widget get height => SizedBox(
+        height: toDouble(),
+      );
+
+  Widget get width => SizedBox(
+        width: toDouble(),
+      );
 }
