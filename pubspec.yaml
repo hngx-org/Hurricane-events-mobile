@@ -1,7 +1,7 @@
 name: hurricane_events
 description: A new Flutter project.
 
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -12,8 +12,12 @@ dependencies:
   dio: ^5.3.2
   flutter:
     sdk: flutter
+  flutter_calendar_carousel: ^2.4.2
+  grouped_list: ^5.1.2
+  intl: ^0.18.1
   provider: ^6.0.5
   retrofit: ^4.0.1
+  table_calendar: ^3.0.9
   talker_dio_logger: ^2.3.0
   tuple: ^2.0.2
 
@@ -26,3 +30,28 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/fonts/
+    - assets/images/
+
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/WorkSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/WorkSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/WorkSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/WorkSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/WorkSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/WorkSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/WorkSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/WorkSans-Black.ttf
+          weight: 900

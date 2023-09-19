@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
+import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -51,6 +53,10 @@ Future<void> main() async {
 final _providers = <SingleChildWidget>[
   ///Example
   ///ChangeNotifierProvider<TestProvider>(create: (_) => TestProvider())
+
+  ChangeNotifierProvider(
+    create: (_) => GlobalProvider.instance,
+  )
 ];
 
 class EventsApp extends StatelessWidget {
