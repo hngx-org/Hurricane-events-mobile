@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/my_group/widgets/group_card.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/groups/group_mock_up.dart';

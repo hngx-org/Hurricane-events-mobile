@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hurricane_events/app/presentation/my_group/screens/group_detail_screen.dart';
-import 'package:hurricane_events/app/presentation/my_group/widgets/group_chip.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_chip.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
