@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
+import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
+import 'package:hurricane_events/component/utils/extensions.dart';
 
 class AddEvent extends StatefulWidget {
   static const String routeName = "add_event-screen";
@@ -62,6 +63,7 @@ class _AddEventState extends State<AddEvent> {
       });
     }
   }
+
   ///function to select time using TimeofDay
   Future<void> _selectTime(
       {required BuildContext context,
@@ -75,7 +77,7 @@ class _AddEventState extends State<AddEvent> {
     if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
         selectedTime = pickedTime;
-        controller.text = "${selectedTime.format(context)}";
+        controller.text = selectedTime.format(context);
       });
     }
   }
@@ -87,7 +89,9 @@ class _AddEventState extends State<AddEvent> {
         elevation: 0.0,
         backgroundColor: const Color(0xAAFAFAFA),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            BaseNavigator.pop();
+          },
           icon: const Icon(Icons.chevron_left),
         ),
         title: const Text('Add Event'),
@@ -133,6 +137,7 @@ class _AddEventState extends State<AddEvent> {
                 style: context.body1,
               ),
             ),
+
             ///user group horizontal scroll
             ///I think it should have radio function to enable selecting just one at a time.
             ///no function implemented yet
@@ -160,6 +165,7 @@ class _AddEventState extends State<AddEvent> {
                 style: context.body1,
               ),
             ),
+
             ///start date
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
@@ -168,6 +174,7 @@ class _AddEventState extends State<AddEvent> {
                 style: context.body1.copyWith(color: const Color(0xAA737373)),
               ),
             ),
+
             ///start date row
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -262,6 +269,7 @@ class _AddEventState extends State<AddEvent> {
                 ),
               ),
             ),
+
             ///End date
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
@@ -270,6 +278,7 @@ class _AddEventState extends State<AddEvent> {
                 style: context.body1.copyWith(color: const Color(0xAA737373)),
               ),
             ),
+
             ///End date row
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -363,6 +372,7 @@ class _AddEventState extends State<AddEvent> {
                 ),
               ),
             ),
+
             ///Location editor
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 8.0),
@@ -401,6 +411,7 @@ class _AddEventState extends State<AddEvent> {
                 ),
               ),
             ),
+
             ///Event Icon
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 8.0),
@@ -409,6 +420,7 @@ class _AddEventState extends State<AddEvent> {
                 style: context.body1,
               ),
             ),
+
             ///Event Icon Row
             ///having issues inserting the required images
             Padding(
@@ -421,7 +433,6 @@ class _AddEventState extends State<AddEvent> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24.0)),
                     // child: Image.asset(AppImages.legEventsIcon),
-                    
                   ),
                   const SizedBox(
                     width: 12.0,

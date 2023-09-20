@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_chip.dart';
-import 'package:hurricane_events/app/presentation/home/calendar/widgets/event_card.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
