@@ -44,6 +44,7 @@ class AppImages {
 
   //Bottom nav icons
   static const String timelineIcon = "assets/icons/icon_roadmap.svg";
+  static const String timelineIconColored = "assets/icons/icon_roadmap_coloured.svg";
   static const String groupIcon = "assets/icons/icon_multiple_person.svg";
   static const String groupIconColored =
       "assets/icons/icon_multiple_person_colored.svg";

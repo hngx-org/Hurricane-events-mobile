@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/my_group/screens/group_detail_screen.dart';
-import 'package:hurricane_events/app/presentation/my_group/widgets/group_chip.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_chip.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
+import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 
 class MyGroupCard extends StatelessWidget {
@@ -31,9 +34,17 @@ class MyGroupCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            const Icon(
-              Icons.people,
-              size: 56,
+            Container(
+              decoration: ShapeDecoration(
+                color: AppColors.lightBlue1,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              padding: const EdgeInsets.all(4),
+              child: SvgPicture.asset(
+                AppImages.techiesIcon,
+                height: 56,
+              ),
             ),
             16.width,
             Column(

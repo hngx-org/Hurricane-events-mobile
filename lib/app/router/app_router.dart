@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/settings/screens/settings.dart';
-import 'package:hurricane_events/app/presentation/my_group/screens/group_detail_screen.dart';
-import 'package:hurricane_events/app/presentation/my_group/screens/group_screen.dart';
+import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
+import 'package:hurricane_events/app/presentation/home/home.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/screens/group_screen.dart';
+import 'package:hurricane_events/app/presentation/home/settings/screens/settings.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
-import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another
@@ -46,6 +47,9 @@ class AppRouter {
     switch (settings.name) {
       case Splash.routeName:
         return _getPageRoute(const Splash());
+
+      case HomeScreen.routeName:
+        return _getPageRoute(const HomeScreen());
       case CalendarSection.routeName:
         return _getPageRoute(const CalendarSection());
       case SettingsScreen.routeName:
