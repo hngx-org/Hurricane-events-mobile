@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/settings/provider/settings_provider.dart';
 import 'package:hurricane_events/app/presentation/settings/screens/settings.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
-import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
@@ -30,7 +29,9 @@ Future<void> main() async {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          kDebugMode ? details.exception.toString() : "Oops, something happened, try again.",
+          kDebugMode
+              ? details.exception.toString()
+              : "Oops, something happened, try again.",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
