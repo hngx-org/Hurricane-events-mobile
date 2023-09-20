@@ -13,36 +13,70 @@ class Splash extends StatefulWidget {
   State<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends State<Splash> with TickerProviderStateMixin {
+  late Animation<double> _heightAnimation;
+  late Animation<double> _widthAnimation;
+  late AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _widthAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 250), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 250, end: 200), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 200, end: 220), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 220, end: 250), weight: 200),
+    ]).animate(_controller);
+    _heightAnimation = TweenSequence(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 100), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 100, end: 60), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 60, end: 80), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 80, end: 60), weight: 200),
+    ]).animate(_controller);
+    _controller.forward();
     navigatetonextpage();
   }
 
   navigatetonextpage() async {
-    await Future.delayed(const Duration(milliseconds: 2500), (() {}));
+    await Future.delayed(const Duration(milliseconds: 2000), (() {}));
     BaseNavigator.pushNamedAndReplace(HomeScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(
-              image: AssetImage(
-                AppImages.imgSplashScreen,
-              ),
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, _) {
+                return SizedBox(
+                  height: _heightAnimation.value,
+                  width: _widthAnimation.value,
+                  child: Image.asset(
+                    AppImages.imgSplashScreen,
+                    height: 300,
+                    width: 300,
+                  ),
+                );
+              },
             ),
-            SizedBox(
+            const SizedBox(
               height: 18,
             ),
-            Text(
+            const Text(
               AppStrings.SplashScreenText,
-              style: TextStyle(color: AppColors.darkBlue1, fontSize: 32, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                color: AppColors.darkBlue1,
+                fontSize: 32,
+                fontWeight: FontWeight.w700,
+              ),
             )
           ],
         ),
