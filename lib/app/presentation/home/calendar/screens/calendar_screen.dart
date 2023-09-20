@@ -19,8 +19,6 @@ class CalendarSection extends StatefulWidget {
 class _CalendarState extends State<CalendarSection> {
   DateTime _selectedDate = DateTime.parse("2023-09-19 00:00:00Z");
 
-  List<EventsMockUp> dayEvents = [];
-
   List<EventsMockUp> dummyEvents = [
     EventsMockUp(
       name: "Hurricane Slack group meeting",

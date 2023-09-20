@@ -9,8 +9,6 @@ import 'package:hurricane_events/app/presentation/home/settings/screens/settings
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
-
-// import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
 import '../presentation/events/post_comment/post_comment.dart';
 
 class AppRouter {

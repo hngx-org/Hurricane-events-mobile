@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const TimelineScreen(),
     const GroupScreen(),
     const CalendarSection(),
-    const SettingsScreen()
+    const SettingsScreen(),
   ];
   @override
   Widget build(BuildContext context) {

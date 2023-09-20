@@ -3,6 +3,6 @@
 // ignore_for_file: constant_identifier_names
 
 class AppStrings {
-  static const String test = "test";
+  static const String test = "Test";
   static const String SplashScreenText = "WetinDeySup";
 }
