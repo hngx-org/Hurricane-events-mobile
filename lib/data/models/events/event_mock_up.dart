@@ -12,6 +12,7 @@ class EventsMockUp {
     this.endDateStartTime,
     this.endDateEndTime,
     this.comments,
+    this.isRsvpd,
   });
 
   String? name;
@@ -23,6 +24,7 @@ class EventsMockUp {
   TimeOfDay? endDateEndTime;
   DateTime? endDate;
   String? location;
+  bool? isRsvpd;
   List<Comment>? comments;
 
   factory EventsMockUp.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class EventsMockUp {
       startDateEndTime: TimeOfDay.fromDateTime(json["startDate"]),
       endDateStartTime: TimeOfDay.fromDateTime(json["endDate"]),
       endDateEndTime: TimeOfDay.fromDateTime(json["endDate"]),
+      isRsvpd: json["isRsvpd"],
       comments: List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
     );
   }
@@ -50,6 +53,7 @@ class EventsMockUp {
         "startDateEndTime": startDateEndTime,
         "endDateStartTime": endDateStartTime,
         "endDateEndTime": endDateEndTime,
+        "isRsvpd": isRsvpd,
         "comments": comments,
       };
 }

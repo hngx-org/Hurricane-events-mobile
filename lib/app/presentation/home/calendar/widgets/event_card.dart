@@ -33,11 +33,7 @@ class _EventCardState extends State<EventCard> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          PreCommentEventDetails(event: widget.event)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PreCommentEventDetails(event: widget.event)));
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -63,9 +59,9 @@ class _EventCardState extends State<EventCard> {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: const Svg(
-                    image: AppImages.hangoutIcon,
-                    color: AppColors.darkBlue1,
-                  ),
+                      image: AppImages.hangoutIcon,
+                      color: AppColors.darkBlue1,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -82,14 +78,8 @@ class _EventCardState extends State<EventCard> {
                         ),
                         const SizedBox(height: 6),
                         Builder(builder: (context) {
-                          if (!widget.event.startDate!
-                                  .difference(DateTime.now())
-                                  .inDays
-                                  .isNegative &&
-                              widget.event.startDate!
-                                      .difference(DateTime.now())
-                                      .inDays >
-                                  0) {
+                          if (!widget.event.startDate!.difference(DateTime.now()).inDays.isNegative &&
+                              widget.event.startDate!.difference(DateTime.now()).inDays > 0) {
                             return Text(
                               "In ${widget.event.startDate!.difference(DateTime.now()).inDays} days",
                               style: context.body1.copyWith(
@@ -126,8 +116,7 @@ class _EventCardState extends State<EventCard> {
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate!)}",
+                                text: " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate!)}",
                                 style: context.body2.copyWith(
                                   fontSize: 11,
                                   color: AppColors.designBlack1,
@@ -179,17 +168,18 @@ class _EventCardState extends State<EventCard> {
                             ],
                           ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                ClickWidget(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.more_vert,
-                    size: 20,
-                  ),
-                )
-              ],
+                  ClickWidget(
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.more_vert,
+                      size: 20,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Container(
@@ -201,7 +191,7 @@ class _EventCardState extends State<EventCard> {
               ),
             ),
             child: Builder(builder: (context) {
-              if (widget.comments != null && widget.comments!.isNotEmpty) {
+              if (widget.event.comments != null && widget.event.comments!.isNotEmpty) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -210,7 +200,7 @@ class _EventCardState extends State<EventCard> {
                     ),
                     4.width,
                     Text(
-                      "${widget.comments?.length} ${widget.comments?.length == 1 ? 'comment' : 'comments'}",
+                      "${widget.event.comments?.length} ${widget.event.comments?.length == 1 ? 'comment' : 'comments'}",
                       style: context.body2.copyWith(
                         fontSize: 12,
                         color: AppColors.designBlack1,
@@ -218,8 +208,8 @@ class _EventCardState extends State<EventCard> {
                     ),
                     const Spacer(),
                     Builder(builder: (context) {
-                      if (widget.endDate != null) {
-                        if (widget.endDate!.difference(nowDate).inDays.isNegative) {
+                      if (widget.event.endDate != null) {
+                        if (widget.event.endDate!.difference(nowDate).inDays.isNegative) {
                           return const CustomButton(
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                             radius: 32,
@@ -228,7 +218,7 @@ class _EventCardState extends State<EventCard> {
                           );
                         }
                       } else {
-                        if (widget.startDate.difference(nowDate).inDays.isNegative) {
+                        if (widget.event.startDate!.difference(nowDate).inDays.isNegative) {
                           return const CustomButton(
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                             radius: 32,
@@ -241,11 +231,11 @@ class _EventCardState extends State<EventCard> {
                         onPressed: () {},
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                         radius: 32,
-                        backgroundColor: widget.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
+                        backgroundColor: widget.event.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
                         buttonWidget: Row(
                           children: [
                             Builder(builder: (context) {
-                              if (widget.isRsvpd == false) {
+                              if (widget.event.isRsvpd == false) {
                                 return const SizedBox.shrink();
                               }
                               return const Icon(
@@ -254,7 +244,7 @@ class _EventCardState extends State<EventCard> {
                                 size: 20,
                               );
                             }),
-                            widget.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
+                            widget.event.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
                             Text(
                               "RSVP",
                               style: context.headline2.copyWith(
@@ -284,8 +274,8 @@ class _EventCardState extends State<EventCard> {
                   ),
                   const Spacer(),
                   Builder(builder: (context) {
-                    if (widget.endDate != null) {
-                      if (widget.endDate!.difference(nowDate).inDays.isNegative) {
+                    if (widget.event.endDate != null) {
+                      if (widget.event.endDate!.difference(nowDate).inDays.isNegative) {
                         return const CustomButton(
                           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
@@ -294,7 +284,7 @@ class _EventCardState extends State<EventCard> {
                         );
                       }
                     } else {
-                      if (widget.startDate.difference(nowDate).inDays.isNegative) {
+                      if (widget.event.startDate!.difference(nowDate).inDays.isNegative) {
                         return const CustomButton(
                           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
@@ -307,11 +297,11 @@ class _EventCardState extends State<EventCard> {
                       onPressed: () {},
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                       radius: 32,
-                      backgroundColor: widget.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
+                      backgroundColor: widget.event.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
                       buttonWidget: Row(
                         children: [
                           Builder(builder: (context) {
-                            if (widget.isRsvpd == false) {
+                            if (widget.event.isRsvpd == false) {
                               return const SizedBox.shrink();
                             }
                             return const Icon(
@@ -320,7 +310,7 @@ class _EventCardState extends State<EventCard> {
                               size: 20,
                             );
                           }),
-                          widget.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
+                          widget.event.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
                           Text(
                             "RSVP",
                             style: context.headline2.copyWith(

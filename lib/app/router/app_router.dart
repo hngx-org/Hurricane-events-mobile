@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
-import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
-import 'package:hurricane_events/app/presentation/home/my_group/screens/group_screen.dart';
-import 'package:hurricane_events/app/presentation/home/settings/screens/settings.dart';
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 // import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
