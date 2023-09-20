@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:hurricane_events/app/presentation/timeline/widgets/event_card.dart';
+import 'package:hurricane_events/app/presentation/home/calendar/widgets/event_card.dart';
 
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';

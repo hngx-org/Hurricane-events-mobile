@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
-
-import '../../timeline/screens/calendar_screen.dart';
 
 class Splash extends StatefulWidget {
   static const String routeName = "splash-screen";
@@ -23,7 +22,7 @@ class _SplashState extends State<Splash> {
 
   navigatetonextpage() async {
     await Future.delayed(const Duration(milliseconds: 2500), (() {}));
-    BaseNavigator.pushNamedAndReplace(CalendarSection.routeName);
+    BaseNavigator.pushNamedAndReplace(HomeScreen.routeName);
   }
 
   @override
