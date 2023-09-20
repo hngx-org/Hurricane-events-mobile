@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/component/constants/color.dart';
-import 'package:hurricane_events/component/constants/images.dart';
-import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
+import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/constants/images.dart';
+import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
@@ -83,7 +84,7 @@ class _AddEventState extends State<AddEvent> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Form(
           key: _formKey,
@@ -133,6 +134,7 @@ class _AddEventState extends State<AddEvent> {
                 height: 40.0,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
                   itemCount: userGroups.length,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -163,7 +165,7 @@ class _AddEventState extends State<AddEvent> {
               ),
               6.height,
 
-              ///start date row
+              // ///start date row
               SizedBox(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,7 +221,9 @@ class _AddEventState extends State<AddEvent> {
                                     builder: (_) {
                                       // print(_startDateController);
                                       if (_startDateController != null) {
-                                        final text = "${_startDateController!.toLocal()}".split(' ')[0];
+                                        final text =
+                                            "${_startDateController!.toLocal()}"
+                                                .split(' ')[0];
 
                                         return Text(
                                           text,
@@ -293,8 +297,11 @@ class _AddEventState extends State<AddEvent> {
                                 Expanded(
                                   child: Builder(
                                     builder: (_) {
-                                      if (_startDateStartTimeController != null) {
-                                        final text = _startDateStartTimeController!.format(context);
+                                      if (_startDateStartTimeController !=
+                                          null) {
+                                        final text =
+                                            _startDateStartTimeController!
+                                                .format(context);
 
                                         return Text(
                                           text,
@@ -369,7 +376,9 @@ class _AddEventState extends State<AddEvent> {
                                   child: Builder(
                                     builder: (_) {
                                       if (_startDateEndTimeController != null) {
-                                        final text = _startDateEndTimeController!.format(context);
+                                        final text =
+                                            _startDateEndTimeController!
+                                                .format(context);
 
                                         return Text(
                                           text,
@@ -400,7 +409,7 @@ class _AddEventState extends State<AddEvent> {
               ),
               12.height,
 
-              ///End date
+              // ///End date
               Text(
                 'End of event (if event is more than a day)',
                 style: context.body2.copyWith(
@@ -409,7 +418,7 @@ class _AddEventState extends State<AddEvent> {
                 ),
               ),
 
-              ///End date row
+              // ///End date row
               SizedBox(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -464,7 +473,9 @@ class _AddEventState extends State<AddEvent> {
                                   child: Builder(
                                     builder: (_) {
                                       if (_endDateController != null) {
-                                        final text = "${_endDateController!.toLocal()}".split(' ')[0];
+                                        final text =
+                                            "${_endDateController!.toLocal()}"
+                                                .split(' ')[0];
 
                                         return Text(
                                           text,
@@ -539,7 +550,9 @@ class _AddEventState extends State<AddEvent> {
                                   child: Builder(
                                     builder: (_) {
                                       if (_endDateStartTimeController != null) {
-                                        final text = _endDateStartTimeController!.format(context);
+                                        final text =
+                                            _endDateStartTimeController!
+                                                .format(context);
 
                                         return Text(
                                           text,
@@ -614,7 +627,8 @@ class _AddEventState extends State<AddEvent> {
                                   child: Builder(
                                     builder: (_) {
                                       if (_endDateEndTimeController != null) {
-                                        final text = _endDateEndTimeController!.format(context);
+                                        final text = _endDateEndTimeController!
+                                            .format(context);
 
                                         return Text(
                                           text,
@@ -645,7 +659,7 @@ class _AddEventState extends State<AddEvent> {
               ),
               24.height,
 
-              ///Location editor
+              // ///Location editor
               Text(
                 'Location',
                 style: context.body2.copyWith(
@@ -684,7 +698,7 @@ class _AddEventState extends State<AddEvent> {
               ),
               24.height,
 
-              ///Event Icon
+              // ///Event Icon
               Text(
                 'Choose an icon',
                 style: context.body2.copyWith(
@@ -693,8 +707,8 @@ class _AddEventState extends State<AddEvent> {
               ),
               8.height,
 
-              ///Event Icon Row
-              ///having issues inserting the required images
+              // ///Event Icon Row
+              // ///having issues inserting the required images
               Row(children: [
                 Container(
                   height: 76.0,
@@ -741,7 +755,7 @@ class _AddEventState extends State<AddEvent> {
                   ),
                 )
               ]),
-              const Spacer(),
+              const Gap(20),
 
               CustomButton(
                 radius: 32,
