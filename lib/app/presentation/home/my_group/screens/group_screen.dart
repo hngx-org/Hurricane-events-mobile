@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_group/screens/add_group.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_card.dart';
+import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/groups/group_mock_up.dart';
@@ -54,14 +56,15 @@ class GroupScreen extends StatelessWidget {
       )),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            //TODO: Navigate to add group screen
+            BaseNavigator.pushNamed(AddGroupScreen.routeName);
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
           ),
           elevation: 0.0,
           backgroundColor: AppColors.darkBlue1,
-          extendedPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          extendedPadding:
+              const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           label: Row(
             children: [
               const Icon(
