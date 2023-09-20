@@ -52,7 +52,7 @@ class TimelineCard extends StatelessWidget {
                   child: SvgPicture.asset(
                     iconString,
                     height: 56,
-                    color: AppColors.darkBlue2,
+                    color: AppColors.darkBlue1,
                   ),
                 ),
                 16.width,
