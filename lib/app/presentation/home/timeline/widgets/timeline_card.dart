@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
@@ -5,17 +7,16 @@ import 'package:intl/intl.dart';
 import '../../../../../../component/constants/color.dart';
 
 class TimelineCard extends StatelessWidget {
-  const TimelineCard({
-    super.key,
-    required this.title,
-    required this.onTap,
-    required this.eventType,
-    required this.endTime,
-    required this.startTime,
-    required this.location,
-    required this.moreButtonFunction,
-    required this.iconString
-  });
+  const TimelineCard(
+      {super.key,
+      required this.title,
+      required this.onTap,
+      required this.eventType,
+      required this.endTime,
+      required this.startTime,
+      required this.location,
+      required this.moreButtonFunction,
+      required this.iconString});
   final String title;
   final String eventType;
   final VoidCallback onTap;
@@ -45,8 +46,7 @@ class TimelineCard extends StatelessWidget {
                 Container(
                   decoration: ShapeDecoration(
                     color: AppColors.lightBlue1,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   padding: const EdgeInsets.all(4),
                   child: SvgPicture.asset(
@@ -56,7 +56,8 @@ class TimelineCard extends StatelessWidget {
                   ),
                 ),
                 16.width,
-                Column( // expanded was here
+                Column(
+                  // expanded was here
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -72,9 +73,7 @@ class TimelineCard extends StatelessWidget {
                       calculateTimeStatus(startTime, endTime)[0],
                       style: context.body1.copyWith(
                         fontSize: 12,
-                        color: calculateTimeStatus(startTime, endTime)[1]
-                            ? AppColors.darkBlue2
-                            : AppColors.designBlack3,
+                        color: calculateTimeStatus(startTime, endTime)[1] ? AppColors.darkBlue2 : AppColors.designBlack3,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -154,7 +153,10 @@ class TimelineCard extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      icon: const Icon(Icons.more_vert, color: AppColors.darkGrey,),
+                      icon: const Icon(
+                        Icons.more_vert,
+                        color: AppColors.darkGrey,
+                      ),
                       onPressed: moreButtonFunction,
                     ),
                   ),
@@ -175,7 +177,7 @@ class TimelineCard extends StatelessWidget {
 
     // Check if the event is happening now
     if (startDateTime.isBefore(now) && endDateTime.isAfter(now)) {
-      statusString =  "LIVE";
+      statusString = "LIVE";
       isHappeningNow = true;
     } else if (startDateTime.isAfter(now)) {
       // Calculate the time difference
@@ -183,23 +185,24 @@ class TimelineCard extends StatelessWidget {
 
       if (difference.inDays >= 7) {
         // More than 1 week in the future
-        statusString =  "In ${difference.inDays~/7} week(s)";
+        statusString = "In ${difference.inDays ~/ 7} week(s)";
       } else if (difference.inDays >= 1) {
         // 1 day to 1 week in the future
-        statusString =  "In ${difference.inDays} day(s)";
+        statusString = "In ${difference.inDays} day(s)";
       } else if (difference.inHours >= 1) {
         // Less than 1 day but more than 1 hour in the future
-        statusString =  "In ${difference.inHours} hour(s)";
+        statusString = "In ${difference.inHours} hour(s)";
       } else {
         // Less than 1 hour in the future
-        statusString =  "In ${difference.inMinutes} minute(s)";
+        statusString = "In ${difference.inMinutes} minute(s)";
       }
     } else {
       // The event has already ended
-      statusString =  "Event Ended";
+      statusString = "Event Ended";
     }
     return [statusString, isHappeningNow];
   }
+
   String getAmOrPm(DateTime dateTime) {
     if (dateTime.hour < 12) {
       return "AM";
@@ -207,9 +210,9 @@ class TimelineCard extends StatelessWidget {
       return "PM";
     }
   }
-  int hourFormatter(DateTime time){
+
+  int hourFormatter(DateTime time) {
     int hour = time.hour;
     return (hour % 12 == 0) ? 12 : hour % 12;
   }
-
 }

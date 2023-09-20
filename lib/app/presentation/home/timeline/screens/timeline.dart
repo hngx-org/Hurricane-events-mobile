@@ -44,6 +44,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -69,8 +70,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       currentIndex = value;
                       setState(() {});
                     },
-                    indicator: const UnderlineTabIndicator(
-                        borderSide: BorderSide.none),
+                    indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
                     indicatorSize: TabBarIndicatorSize.label,
                     padding: EdgeInsets.zero,
                     labelPadding: const EdgeInsets.all(0),
@@ -99,9 +99,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                                 endTime: data.endTime,
                                 startTime: data.startTime,
                                 location: data.location,
-                                iconString: data.eventType == 'Sport Event'
-                                    ? AppImages.raceIcon
-                                    : AppImages.hangoutIcon))
+                                iconString: data.eventType == 'Sport Event' ? AppImages.raceIcon : AppImages.hangoutIcon))
                             .toList()),
                   )
                 ],
@@ -119,8 +117,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ),
           elevation: 0.0,
           backgroundColor: AppColors.darkBlue1,
-          extendedPadding:
-              const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          extendedPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           label: Row(
             children: [
               const Icon(

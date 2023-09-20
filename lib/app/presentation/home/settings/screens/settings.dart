@@ -39,8 +39,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 subtitle: Text(
                   "uche.samuel21@gmail.com",
-                  style: context.body2
-                      .copyWith(fontSize: 12, color: AppColors.designBlack5),
+                  style: context.body2.copyWith(fontSize: 12, color: AppColors.designBlack5),
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_rounded,
@@ -83,8 +82,7 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: () {},
                 color: AppColors.white,
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Center(
@@ -99,8 +97,7 @@ class SettingsScreen extends StatelessWidget {
                         const Gap(10),
                         Text(
                           "Logout",
-                          style: context.body2.copyWith(
-                              fontSize: 16, color: AppColors.designRed),
+                          style: context.body2.copyWith(fontSize: 16, color: AppColors.designRed),
                         ),
                       ],
                     ),

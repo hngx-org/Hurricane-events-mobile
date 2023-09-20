@@ -10,6 +10,8 @@ class EventsTextTheme extends ThemeExtension<EventsTextTheme> {
   final TextStyle? body3;
   final TextStyle? button1;
   final TextStyle? button2;
+  final TextStyle? testfield;
+  final TextStyle? testfield2;
 
   const EventsTextTheme({
     this.headline1,
@@ -20,6 +22,8 @@ class EventsTextTheme extends ThemeExtension<EventsTextTheme> {
     this.body3,
     this.button1,
     this.button2,
+    this.testfield,
+    this.testfield2,
   });
 
   /// This provides a fall back on every custom text theme (in this case) if not specified using the copyWith
@@ -69,6 +73,18 @@ class EventsTextTheme extends ThemeExtension<EventsTextTheme> {
             letterSpacing: 0,
           ),
           button2: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontFamily: "WorkSans",
+            height: 0,
+            letterSpacing: 0,
+          ),
+          testfield: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontFamily: "WorkSans",
+            height: 1.3,
+            letterSpacing: 0,
+          ),
+          testfield2: const TextStyle(
             fontWeight: FontWeight.w500,
             fontFamily: "WorkSans",
             height: 0,

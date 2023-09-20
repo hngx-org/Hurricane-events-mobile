@@ -15,12 +15,13 @@ class AppColors {
   static const Color designBlack5 = Color(0xFF8C8C8C);
   static const Color textFieldBackground = Color(0xFFF2F2F2);
 
-
   static const Color designOrange = Color(0xFFFFA800);
   static const Color opacityOrange = Color(0xFFFFF9EF);
 
   static const Color designGrey = Color(0xFFD9D9D9);
   static const Color darkGrey = Color(0xFF8C8C8C);
+  static const Color darkGrey2 = Color(0xFFF2F2F2);
+
   static const Color designRed = Color(0xFFE93131);
 
   static const Color backgroundColor = Color(0xFFFAFAFA);

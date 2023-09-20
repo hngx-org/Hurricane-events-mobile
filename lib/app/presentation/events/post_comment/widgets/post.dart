@@ -15,9 +15,9 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 1,color: AppColors.designGrey),
         )
@@ -36,9 +36,9 @@ class _PostState extends State<Post> {
                   children: [
                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text(widget.name), Text("Comment")],
+                      children: [Text(widget.name), const Text("Comment")],
                     ),
-                    SizedBox(height: 5,),
+                    const SizedBox(height: 5,),
                     Text(
                       widget.comment,
                       style: context.body2.copyWith(

@@ -28,9 +28,7 @@ Future<void> main() async {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          kDebugMode
-              ? details.exception.toString()
-              : "Oops, something happened, try again.",
+          kDebugMode ? details.exception.toString() : "Oops, something happened, try again.",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
