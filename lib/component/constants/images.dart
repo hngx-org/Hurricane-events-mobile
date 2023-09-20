@@ -45,4 +45,16 @@ class AppImages {
   static const String imgChinedu = "assets/images/img_chinedu.png";
   static const String imgUduak = "assets/images/img_uduak.png";
   static const String imgUgomma = "assets/images/img_ugomma.png";
+
+
+  //Settings Screen icon
+
+  static const String notifications = "assets/images/notifications.png";
+  static const String appearance = "assets/images/appearance.png";
+  static const String about = "assets/images/about.png";
+  static const String help = "assets/images/help.png";
+  static const String language = "assets/images/language.png";
+  static const String privacy = "assets/images/privacy.png";
+  static const String logout = "assets/images/logout.png";
+
 }

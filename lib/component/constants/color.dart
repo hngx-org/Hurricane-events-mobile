@@ -10,7 +10,7 @@ class AppColors {
   static const Color designBlack2 = Color(0xFF8C8C8C);
   static const Color designBlack3 = Color(0xFF727272);
   static const Color designBlack4 = Color(0xFF33313E);
-  static const Color designBlack5 = Color(0xFF84838B);
+  static const Color designBlack5 = Color(0xFF8C8C8C);
 
   static const Color designOrange = Color(0xFFFFA800);
   static const Color opacityOrange = Color(0xFFFFF9EF);
@@ -23,4 +23,9 @@ class AppColors {
   static const Color darkBlue2 = Color(0xFF0085FF);
   static const Color lightBlue1 = Color(0xFFE5F2FF);
   static const Color lightBlue2 = Color(0xFF66B5FF);
+
+  /// Please let us try using the naming convention of colors in the
+  /// UI design so it will be easier to use just like this below
+  /// 
+  static const Color p10 = Color(0xFFE5F3FF);
 }
