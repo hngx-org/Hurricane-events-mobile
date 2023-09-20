@@ -48,6 +48,9 @@ class AppRouter {
         return _getPageRoute(const Splash());
       case CalendarSection.routeName:
         return _getPageRoute(const CalendarSection());
+        // TODO : Dynamic Navigation to event details
+      // case EventDetails.routeName:
+      //   return _getPageRoute(const EventDetails(event: event))
       case SettingsScreen.routeName:
         return _getPageRoute(const SettingsScreen());
 

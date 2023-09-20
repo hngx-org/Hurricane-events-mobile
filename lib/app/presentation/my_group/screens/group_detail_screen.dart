@@ -89,10 +89,7 @@ class GroupDetailsScreen extends StatelessWidget {
             ),
             24.height,
             EventCard(
-                group: sampleEvent.groupName!,
-                startDate: sampleEvent.startDate!,
-                name: sampleEvent.name!,
-                location: sampleEvent.location!)
+                event: sampleEvent,)
           ],
         ),
       ),

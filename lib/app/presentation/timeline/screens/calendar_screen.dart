@@ -398,13 +398,7 @@ class _CalendarState extends State<CalendarSection> {
                     },
                     itemBuilder: (context, EventsMockUp element) {
                       return EventCard(
-                        group: element.groupName!,
-                        startDate: element.startDate!,
-                        endDate: element.endDate,
-                        name: element.name!,
-                        location: element.location!,
-                        startTime: element.startDateStartTime,
-                        endTime: element.startDateEndTime,
+                        event: element,
                       );
                     },
                   );
