@@ -68,7 +68,12 @@ class CommentTile extends StatelessWidget {
                   ),
                 ],
               ),
-              Text('${comment?.duration ?? 'X'} duration ago')
+              SizedBox(
+                  width: 80,
+                  child: Text(
+                    '${comment?.duration ?? 'X'} ago',
+                    style: const TextStyle(fontSize: 13),
+                  ))
             ],
           ),
         ],
