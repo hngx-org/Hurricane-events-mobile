@@ -58,7 +58,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   : const EdgeInsets.all(0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: widget.errorText != null ? AppColors.designRed : AppColors.designGrey,
+            color: widget.errorText != null
+                ? AppColors.designRed
+                : AppColors.designGrey,
           ),
           child: TextFormField(
             controller: widget.controller,
