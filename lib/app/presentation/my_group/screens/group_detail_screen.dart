@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/app/presentation/my_group/widgets/group_chip.dart';
 import 'package:hurricane_events/app/presentation/timeline/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
@@ -48,9 +50,17 @@ class GroupDetailsScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.people,
-                    size: 56,
+                  Container(
+                    decoration: ShapeDecoration(
+                      color: AppColors.lightBlue1,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: SvgPicture.asset(
+                      AppImages.techiesIcon,
+                      height: 56,
+                    ),
                   ),
                   16.width,
                   Column(

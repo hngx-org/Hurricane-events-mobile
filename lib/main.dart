@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
+import 'package:hurricane_events/app/presentation/my_group/screens/group_screen.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
@@ -103,7 +103,7 @@ class EventsApp extends StatelessWidget {
 
       /// Follow Definitions
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: Splash.routeName,
+      initialRoute: GroupScreen.routeName,
     );
   }
 }
