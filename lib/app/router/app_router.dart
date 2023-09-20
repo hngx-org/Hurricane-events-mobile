@@ -3,6 +3,7 @@ import 'package:hurricane_events/app/presentation/my_group/screens/group_detail_
 import 'package:hurricane_events/app/presentation/my_group/screens/group_screen.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
+import 'package:hurricane_events/post_comment/post_comment.dart';
 
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another
@@ -51,6 +52,8 @@ class AppRouter {
         return _getPageRoute(const GroupScreen());
       case GroupDetailsScreen.routeName:
         return _getPageRoute(const GroupDetailsScreen());
+        case PostComment.routeName:
+        return _getPageRoute(const PostComment());
       default:
         return _getPageRoute(const Splash());
     }

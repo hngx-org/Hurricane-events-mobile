@@ -19,8 +19,8 @@ class _PostState extends State<Post> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start, // Align text to the top
           children: [
-            Image.asset("assets/images/img_chinedu.png"),
-            const SizedBox(width: 10),
+            Image.asset("assets/images/img_person1.png"),
+            const SizedBox(width: 5),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,6 +42,7 @@ class _PostState extends State<Post> {
             ),
           ],
         ),
+        SizedBox(height: 20,)
       ],
     );
   }

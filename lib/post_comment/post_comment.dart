@@ -12,9 +12,12 @@ class PostComment extends StatefulWidget {
 
   @override
   State<PostComment> createState() => _PostCommentState();
+  static const String routeName = "post_comments";
+
 }
 
 class _PostCommentState extends State<PostComment> {
+
   String selectedCommentType = ""; // Initially no commentType is selected
 
   List<dynamic> postEvent = [
@@ -40,8 +43,10 @@ class _PostCommentState extends State<PostComment> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      padding: EdgeInsets.all(20),
+      color: Colors.white,
+
       child: Scaffold(
         bottomNavigationBar: Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -56,7 +61,7 @@ class _PostCommentState extends State<PostComment> {
               Container(
                 padding: EdgeInsets.all(5),
                 margin: EdgeInsets.only(right: 5),
-                child: SvgPicture.asset("assets/icons/icon_arrow_left.svg"),
+                child: SvgPicture.asset("assets/icons/icon_camera.svg"),
                 decoration: BoxDecoration(
                     border: Border(
                         right: BorderSide(
@@ -91,6 +96,11 @@ class _PostCommentState extends State<PostComment> {
         ),
         body: Column(
           children: [
+            EventCard(
+                group: "test",
+                startDate: DateTime.now(),
+                name: "test",
+                location: "test"),
             CommentType(
               commentType: "Pre-events comments",
               isSelected: selectedCommentType == "Pre-events comments",
@@ -115,6 +125,7 @@ class _PostCommentState extends State<PostComment> {
             )
           ],
         ),
+        backgroundColor: Colors.white,
       ),
     );
   }
@@ -163,7 +174,7 @@ class CommentType extends StatelessWidget {
               ),
             ),
             SvgPicture.asset(
-              "assets/icons/icon_arrow_left.svg",
+              isSelected?"assets/icons/icon_drop_down.svg":"assets/icons/icon_forward_arrow.svg",
               height: 20,
             )
           ],
