@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/home/home.dart';
+import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -26,16 +26,24 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
       vsync: this,
     );
     _widthAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 250), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 250, end: 200), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 200, end: 220), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 220, end: 250), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0, end: 250), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 250, end: 200), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 200, end: 220), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 220, end: 250), weight: 200),
     ]).animate(_controller);
     _heightAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 100), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 100, end: 60), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 60, end: 80), weight: 200),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 80, end: 60), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0, end: 100), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 100, end: 60), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 60, end: 80), weight: 200),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 80, end: 60), weight: 200),
     ]).animate(_controller);
     _controller.forward();
     navigatetonextpage();
@@ -43,7 +51,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   navigatetonextpage() async {
     await Future.delayed(const Duration(milliseconds: 2000), (() {}));
-    BaseNavigator.pushNamedAndReplace(HomeScreen.routeName);
+    BaseNavigator.pushNamedAndReplace(SignUpScreen.routeName);
   }
 
   @override
