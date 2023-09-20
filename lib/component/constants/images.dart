@@ -62,5 +62,21 @@ class AppImages {
   static const String img2 = "assets/images/img_person2.png";
   static const String img3 = "assets/images/img_person3.png";
   static const String imgSamuel = "assets/images/img_samuel.png";
+  static const String imgFolajomi = "assets/images/img_folajomi.png";
+  static const String imgChinedu = "assets/images/img_chinedu.png";
+  static const String imgUduak = "assets/images/img_uduak.png";
+  static const String imgUgomma = "assets/images/img_ugomma.png";
+
+
+  //Settings Screen icon
+
+  static const String notifications = "assets/images/notifications.png";
+  static const String appearance = "assets/images/appearance.png";
+  static const String about = "assets/images/about.png";
+  static const String help = "assets/images/help.png";
+  static const String language = "assets/images/language.png";
+  static const String privacy = "assets/images/privacy.png";
+  static const String logout = "assets/images/logout.png";
+
   static const String imgRunning = "assets/images/img_running.png";
 }

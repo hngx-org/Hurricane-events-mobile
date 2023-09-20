@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/settings/provider/settings_provider.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
@@ -54,7 +55,7 @@ Future<void> main() async {
 final _providers = <SingleChildWidget>[
   ///Example
   ///ChangeNotifierProvider<TestProvider>(create: (_) => TestProvider())
-
+  ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider()),
   ChangeNotifierProvider(
     create: (_) => GlobalProvider.instance,
   )
