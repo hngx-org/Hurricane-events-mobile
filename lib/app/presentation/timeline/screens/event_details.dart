@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/timeline/widgets/comment_tile.dart';
 import 'package:hurricane_events/app/presentation/timeline/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/data/models/comment_model.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
 class EventDetails extends StatefulWidget {
@@ -16,6 +17,52 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
+  ScrollController scrollController = ScrollController();
+// TODO: This should be in the provider somewhere...
+//? From here
+  List<CommentModel> comments = [
+    CommentModel(
+        avatar: 'avatar',
+        fullName: 'Alpha Beta',
+        comment: 'Test Comment 1',
+        duration: '10 minutes'),
+    CommentModel(
+        fullName: 'Test User',
+        comment: 'Test Comment 1',
+        duration: '10 minutes'),
+    CommentModel(
+        fullName: 'Foxtrot Exho',
+        comment: 'Test Comment 1',
+        duration: '10 minutes',
+        image:
+            'https://miro.medium.com/v2/resize:fit:400/1*_6Dh7jYd1Rh4GjFymFUA8w.png')
+  ];
+
+  void postComment(String comment) {
+    comments.add(CommentModel(
+        fullName: 'Current user', comment: comment, duration: 'Now'));
+    setState(() {});
+
+    // Remove the keyboard focus after sending the comment.
+    FocusScope.of(context).unfocus();
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+  //? To here
+
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
+  }
+
+  TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,39 +73,51 @@ class _EventDetailsState extends State<EventDetails> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          size: 20,
-                        )),
-                    const Text('Event',
-                        style: TextStyle(
-                          color: AppColors.designBlack1,
-                          fontSize: 16,
-                        )),
-                    const SizedBox()
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: const Icon(
+                              Icons.arrow_back_ios,
+                              size: 20,
+                            )),
+                        const Text('Event',
+                            style: TextStyle(
+                              color: AppColors.designBlack1,
+                              fontSize: 16,
+                            )),
+                        const SizedBox()
+                      ],
+                    ),
+                    const Gap(42.5),
+                    EventCard(
+                      event: widget.event,
+                    ),
+                    const Gap(20),
+                    SizedBox(
+                      height: 300,
+                      child: ListView(
+                        controller: scrollController,
+                        children: List.generate(
+                            comments.length,
+                            (index) => CommentTile(
+                                  comment: comments[index],
+                                )),
+                      ),
+                    ),
+                    const Divider(),
                   ],
                 ),
-                const Gap(42.5),
-                EventCard(
-                  event: widget.event,
-                ),
-                const Gap(20),
-                SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(2, (index) => const CommentTile()),
-                  ),
-                ),
-                const Divider(),
-              ],
+              ),
             ),
+            // Gap(100),
             Container(
+              alignment: Alignment.bottomCenter,
               decoration: BoxDecoration(
                   color: AppColors.textFieldBackground,
                   borderRadius: BorderRadius.circular(5)),
@@ -71,22 +130,29 @@ class _EventDetailsState extends State<EventDetails> {
                   const Gap(10),
                   const VerticalDivider(),
                   const Gap(10),
-                  const Flexible(
+                  Flexible(
                       child: TextField(
-                    decoration: InputDecoration(
+                    controller: commentController,
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Type your comment',
                         hintStyle: TextStyle(
                           color: AppColors.designBlack5,
                         )),
                   )),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.blue,
-                      ),
-                      padding: const EdgeInsets.all(5),
-                      child: SvgPicture.asset('assets/icons/icon_send.svg')),
+                  InkWell(
+                    onTap: () {
+                      postComment(commentController.text);
+                      commentController.clear();
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.blue,
+                        ),
+                        padding: const EdgeInsets.all(5),
+                        child: SvgPicture.asset('assets/icons/icon_send.svg')),
+                  ),
                   const Gap(10)
                 ],
               ),

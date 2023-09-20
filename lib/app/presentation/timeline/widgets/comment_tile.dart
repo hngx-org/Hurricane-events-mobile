@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/data/models/comment_model.dart';
 
 class CommentTile extends StatelessWidget {
@@ -41,7 +42,27 @@ class CommentTile extends StatelessWidget {
                           : SizedBox(
                               height: 40,
                               child: Center(
-                                child: Text(comment?.image ?? 'Image'),
+                                child: Image.network(comment?.image ?? 'Image',
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.black,
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  );
+                                }),
                               ))
                     ],
                   ),
