@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
+import 'package:hurricane_events/app/presentation/post_comment/post_comment.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
@@ -54,7 +56,7 @@ Future<void> main() async {
 final _providers = <SingleChildWidget>[
   ///Example
   ///ChangeNotifierProvider<TestProvider>(create: (_) => TestProvider())
-
+  ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider()),
   ChangeNotifierProvider(
     create: (_) => GlobalProvider.instance,
   )
@@ -103,7 +105,7 @@ class EventsApp extends StatelessWidget {
 
       /// Follow Definitions
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: Splash.routeName,
+      initialRoute: PostComment.routeName,
     );
   }
 }
