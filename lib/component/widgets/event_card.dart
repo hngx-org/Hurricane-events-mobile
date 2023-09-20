@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/events/pre_comment.dart/screens/event_details.dart';
+import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
@@ -26,11 +27,15 @@ class _EventCardState extends State<EventCard> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          PreCommentEventDetails(event: widget.event)));
+              //TODO: check if event is past its date
+
+              // bool pastDate = true;
+              // if (pastDate) {
+              //   BaseNavigator.pushNamed(PostCommentEventDetails.routeName,
+              //       args: widget.event);
+              // }
+              BaseNavigator.pushNamed(PreCommentEventDetails.routeName,
+                  args: widget.event);
             },
             child: Container(
               padding: const EdgeInsets.symmetric(

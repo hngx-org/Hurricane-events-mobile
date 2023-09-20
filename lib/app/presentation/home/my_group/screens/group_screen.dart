@@ -58,6 +58,7 @@ class GroupScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
           ),
+          elevation: 0.0,
           backgroundColor: AppColors.darkBlue1,
           extendedPadding:
               const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
