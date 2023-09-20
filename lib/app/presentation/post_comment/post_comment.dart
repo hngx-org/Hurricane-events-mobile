@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/post_comment/component/post.dart';
 
-import '../app/presentation/timeline/widgets/event_card.dart';
-import '../data/models/events/event_mock_up.dart';
+import '../timeline/widgets/event_card.dart';
+import 'component/post.dart';
 
 class PostComment extends StatefulWidget {
   const PostComment({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class PostComment extends StatefulWidget {
 
 class _PostCommentState extends State<PostComment> {
 
-  String selectedCommentType = ""; // Initially no commentType is selected
+  String selectedCommentType = "Pre-events comments"; // Initially no commentType is selected
 
   List<dynamic> postEvent = [
     Post(comment: 'Wahala fon come', name: "Unknown"),
