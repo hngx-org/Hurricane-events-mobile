@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_screen.dart';
 import 'package:hurricane_events/app/presentation/home/settings/screens/settings.dart';
+import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 
 class AppRouter {
@@ -47,14 +49,16 @@ class AppRouter {
     switch (settings.name) {
       case Splash.routeName:
         return _getPageRoute(const Splash());
-
+      case SignUpScreen.routeName:
+        return _getPageRoute(const SignUpScreen());
       case HomeScreen.routeName:
         return _getPageRoute(const HomeScreen());
       case CalendarSection.routeName:
         return _getPageRoute(const CalendarSection());
       case SettingsScreen.routeName:
         return _getPageRoute(const SettingsScreen());
-
+      case AddEvent.routeName:
+        return _getPageRoute(const AddEvent());
       case GroupScreen.routeName:
         return _getPageRoute(const GroupScreen());
       case GroupDetailsScreen.routeName:

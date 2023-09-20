@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
+import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -22,7 +23,7 @@ class _SplashState extends State<Splash> {
 
   navigatetonextpage() async {
     await Future.delayed(const Duration(milliseconds: 2500), (() {}));
-    BaseNavigator.pushNamedAndReplace(HomeScreen.routeName);
+    BaseNavigator.pushNamedAndReplace(SignUpScreen.routeName);
   }
 
   @override
