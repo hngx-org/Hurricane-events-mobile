@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_screen.dart';
 import 'package:hurricane_events/app/presentation/home/settings/screens/settings.dart';
+import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 // import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
-import '../presentation/post_comment/post_comment.dart';
+import '../presentation/events/post_comment/post_comment.dart';
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another
   /// The current setting sets up the app to mimic the navigation on IOS devices on every of our app variant
@@ -48,7 +50,8 @@ class AppRouter {
     switch (settings.name) {
       case Splash.routeName:
         return _getPageRoute(const Splash());
-
+      case SignUpScreen.routeName:
+        return _getPageRoute(const SignUpScreen());
       case HomeScreen.routeName:
         return _getPageRoute(const HomeScreen());
       case CalendarSection.routeName:
@@ -58,7 +61,8 @@ class AppRouter {
       //   return _getPageRoute(const EventDetails(event: event))
       case SettingsScreen.routeName:
         return _getPageRoute(const SettingsScreen());
-
+      case AddEvent.routeName:
+        return _getPageRoute(const AddEvent());
       case GroupScreen.routeName:
         return _getPageRoute(const GroupScreen());
       case GroupDetailsScreen.routeName:
