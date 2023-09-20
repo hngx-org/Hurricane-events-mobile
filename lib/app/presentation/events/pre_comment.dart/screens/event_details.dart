@@ -7,16 +7,16 @@ import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/data/models/comment_model.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
-class EventDetails extends StatefulWidget {
+class PreCommentEventDetails extends StatefulWidget {
   final EventsMockUp event;
   static const String routeName = "event_details";
-  const EventDetails({super.key, required this.event});
+  const PreCommentEventDetails({super.key, required this.event});
 
   @override
-  State<EventDetails> createState() => _EventDetailsState();
+  State<PreCommentEventDetails> createState() => _PreCommentEventDetailsState();
 }
 
-class _EventDetailsState extends State<EventDetails> {
+class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
   ScrollController scrollController = ScrollController();
 // TODO: This should be in the provider somewhere...
 //? From here

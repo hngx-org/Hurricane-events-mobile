@@ -8,7 +8,7 @@ import 'package:hurricane_events/app/presentation/home/settings/screens/settings
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 // import 'package:hurricane_events/app/presentation/timeline/screens/calendar_screen.dart';
-import '../presentation/post_comment/post_comment.dart';
+import '../presentation/events/post_comment/post_comment.dart';
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another
   /// The current setting sets up the app to mimic the navigation on IOS devices on every of our app variant
