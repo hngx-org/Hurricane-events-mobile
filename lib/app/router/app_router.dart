@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
-import 'package:hurricane_events/app/presentation/events/pre_comment.dart/screens/event_details.dart';
-import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
@@ -56,17 +54,9 @@ class AppRouter {
         return _getPageRoute(const SignUpScreen());
       case HomeScreen.routeName:
         return _getPageRoute(const HomeScreen());
-      case CalendarSection.routeName:
-        return _getPageRoute(const CalendarSection());
-      // TODO : Dynamic Navigation to event details
-      // case EventDetails.routeName:
-      //   return _getPageRoute(const EventDetails(event: event))
-//       case SettingsScreen.routeName:
-//         return _getPageRoute(const SettingsScreen());
       case AddEvent.routeName:
         return _getPageRoute(const AddEvent());
-//       case GroupScreen.routeName:
-//         return _getPageRoute(const GroupScreen());
+
       case GroupDetailsScreen.routeName:
         return _getPageRoute(const GroupDetailsScreen());
       case PostCommentEventDetails.routeName:

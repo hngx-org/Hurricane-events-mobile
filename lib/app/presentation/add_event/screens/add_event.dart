@@ -66,7 +66,9 @@ class _AddEventState extends State<AddEvent> {
         backgroundColor: AppColors.backgroundColor,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            BaseNavigator.pop();
+          },
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 20,
