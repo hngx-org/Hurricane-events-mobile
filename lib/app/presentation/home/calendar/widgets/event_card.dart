@@ -1,40 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/stacked_images.dart';
+import 'package:hurricane_events/app/presentation/events/pre_comment.dart/screens/event_details.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../../../data/models/events/event_mock_up.dart';
 
 class EventCard extends StatefulWidget {
-  final String group;
-  final String name;
-  final String location;
+  final EventsMockUp event;
 
-  final TimeOfDay? startTime;
-  final TimeOfDay? endTime;
-  final DateTime startDate;
-  final DateTime? endDate;
-
-  final bool? isRsvpd;
-  final List<Comment>? comments;
-
-  const EventCard({
-    super.key,
-    required this.group,
-    required this.startDate,
-    this.endDate,
-    required this.name,
-    required this.location,
-    this.startTime,
-    this.endTime,
-    this.isRsvpd,
-    this.comments,
-  });
+  const EventCard({super.key, required this.event});
 
   @override
   State<EventCard> createState() => _EventCardState();
@@ -50,138 +31,154 @@ class _EventCardState extends State<EventCard> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              border: Border(
-                top: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
-                bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          PreCommentEventDetails(event: widget.event)));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 76,
-                  width: 76,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightBlue1,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: const Svg(
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                border: Border(
+                  top: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                  bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 76,
+                    width: 76,
+                    decoration: BoxDecoration(
+                      color: AppColors.lightBlue1,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: const Svg(
                     image: AppImages.hangoutIcon,
                     color: AppColors.darkBlue1,
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.group,
-                        style: context.body2.copyWith(
-                          fontSize: 10,
-                          color: AppColors.designOrange,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.event.groupName ?? 'Group Name',
+                          style: context.body2.copyWith(
+                            fontSize: 10,
+                            color: AppColors.designOrange,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      Builder(builder: (context) {
-                        if (!widget.startDate.difference(DateTime.now()).inDays.isNegative && widget.startDate.difference(DateTime.now()).inDays > 0) {
+                        const SizedBox(height: 6),
+                        Builder(builder: (context) {
+                          if (!widget.event.startDate!
+                                  .difference(DateTime.now())
+                                  .inDays
+                                  .isNegative &&
+                              widget.event.startDate!
+                                      .difference(DateTime.now())
+                                      .inDays >
+                                  0) {
+                            return Text(
+                              "In ${widget.event.startDate!.difference(DateTime.now()).inDays} days",
+                              style: context.body1.copyWith(
+                                fontSize: 12,
+                                color: AppColors.designBlack3,
+                              ),
+                            );
+                          }
                           return Text(
-                            "In ${widget.startDate.difference(DateTime.now()).inDays} days",
+                            widget.event.groupName ?? 'Group',
                             style: context.body1.copyWith(
                               fontSize: 12,
                               color: AppColors.designBlack3,
                             ),
                           );
-                        }
-                        return Text(
-                          widget.group,
+                        }),
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.event.groupName ?? 'Group',
                           style: context.body1.copyWith(
-                            fontSize: 12,
-                            color: AppColors.designBlack3,
+                            fontSize: 23,
+                            color: AppColors.designBlack1,
                           ),
-                        );
-                      }),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.group,
-                        style: context.body1.copyWith(
-                          fontSize: 23,
-                          color: AppColors.designBlack1,
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Date",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack2,
+                        const SizedBox(height: 8),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Date",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack2,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: " ${DateFormat("EEEE dd, MMM").format(widget.startDate)}",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack1,
-                              ),
-                            )
-                          ],
+                              TextSpan(
+                                text:
+                                    " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate!)}",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack1,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Time",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack2,
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Time",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack2,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: " ${widget.startTime?.hour} - ${widget.endTime?.hour}${widget.endTime?.period.name.toUpperCase()}",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack1,
-                              ),
-                            )
-                          ],
+                              TextSpan(
+                                text:
+                                    " ${widget.event.startDateStartTime?.hour} - ${widget.event.startDateEndTime?.hour}${widget.event.startDateEndTime?.period.name.toUpperCase()}",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack1,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "Location",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack2,
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Location",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack2,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: " ${widget.location}",
-                              style: context.body2.copyWith(
-                                fontSize: 11,
-                                color: AppColors.designBlack1,
-                              ),
-                            )
-                          ],
+                              TextSpan(
+                                text: " ${widget.event.location}",
+                                style: context.body2.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.designBlack1,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

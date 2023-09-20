@@ -16,6 +16,17 @@ final sampleEvent = EventsMockUp(
   startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
   startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
   location: "Slack",
+   comments: [
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+      Comment(comment: "testing"),
+   ],
 );
 
 class GroupDetailsScreen extends StatelessWidget {
@@ -115,22 +126,8 @@ class GroupDetailsScreen extends StatelessWidget {
             ),
             24.height,
             EventCard(
-              group: sampleEvent.groupName!,
-              startDate: sampleEvent.startDate!,
-              name: sampleEvent.name!,
-              location: sampleEvent.location!,
-              comments: [
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-                Comment(comment: "testing"),
-              ],
-            )
+               event: sampleEvent,
+            ),
           ],
         ),
       ),
