@@ -17,63 +17,8 @@ class CalendarSection extends StatefulWidget {
 }
 
 class _CalendarState extends State<CalendarSection> {
-  DateTime _selectedDate = DateTime.parse("2023-09-19 00:00:00Z");
-
-  List<EventsMockUp> dayEvents = [];
-
-  List<EventsMockUp> dummyEvents = [
-    EventsMockUp(
-      name: "Hurricane Slack group meeting",
-      groupName: "Hangouts",
-      startDate: DateTime(2023, 9, 17),
-      endDate: DateTime(2023, 10, 1, 12),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      endDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      endDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-    EventsMockUp(
-      name: "Hurricane Slack meeting",
-      groupName: "Hangouts",
-      startDate: DateTime.now(),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-    EventsMockUp(
-      name: "Football meeting",
-      groupName: "Hangouts",
-      startDate: DateTime(2023, 9, 16, 00, 00, 00),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-    EventsMockUp(
-      name: "Yes meeting",
-      groupName: "Hangouts",
-      startDate: DateTime(2023, 9, 1, 00, 00, 00),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-    EventsMockUp(
-      name: "No meeting",
-      groupName: "Hangouts",
-      startDate: DateTime(2023, 9, 30, 00, 00, 00),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-    EventsMockUp(
-      name: "Submission Date",
-      groupName: "Submission",
-      startDate: DateTime(2023, 9, 22, 00, 00, 00),
-      startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-      startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-      location: "Slack",
-    ),
-  ];
+  final now = DateTime.now();
+  DateTime _selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   Map<DateTime, List<EventsMockUp>> events = {
     DateTime.parse("2023-09-17 00:00:00Z"): [
@@ -360,10 +305,8 @@ class _CalendarState extends State<CalendarSection> {
                     padding: EdgeInsets.zero,
                     elements: _getEventsForDay(_selectedDate),
                     groupBy: (element) => element.startDate!.toIso8601String(),
-                    itemComparator: (item1, item2) =>
-                        item2.startDate!.compareTo(item1.startDate!),
-                    groupComparator: (value1, value2) =>
-                        value2.compareTo(value1),
+                    itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                    groupComparator: (value1, value2) => value2.compareTo(value1),
                     order: GroupedListOrder.DESC,
                     useStickyGroupSeparators: false,
                     groupSeparatorBuilder: (value) {
@@ -371,10 +314,7 @@ class _CalendarState extends State<CalendarSection> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Builder(builder: (context) {
-                            if (DateTime.parse(value).month ==
-                                    DateTime.now().month &&
-                                DateTime.parse(value).day ==
-                                    DateTime.now().day) {
+                            if (DateTime.parse(value).month == DateTime.now().month && DateTime.parse(value).day == DateTime.now().day) {
                               return Text(
                                 "Today",
                                 style: context.body2.copyWith(
@@ -384,8 +324,7 @@ class _CalendarState extends State<CalendarSection> {
                               );
                             }
                             return Text(
-                              DateFormat("EEEE dd, MMM")
-                                  .format(DateTime.parse(value)),
+                              DateFormat("EEEE dd, MMM").format(DateTime.parse(value)),
                               style: context.body2.copyWith(
                                 fontSize: 12,
                                 color: AppColors.designBlack3,

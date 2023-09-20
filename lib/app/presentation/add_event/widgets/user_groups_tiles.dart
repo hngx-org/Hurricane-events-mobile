@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/utils/extensions.dart';
 
 class RoundedTile extends StatelessWidget {
   const RoundedTile({super.key, required this.groupName});
@@ -8,15 +10,18 @@ class RoundedTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120.0,
-      height: 40.0,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xAAf2f2f2),
-        borderRadius: BorderRadius.circular(10.0),
+        color: AppColors.darkGrey2,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Center(
-        child: Text(groupName),
+        child: Text(
+          groupName,
+          style: context.body2.copyWith(
+            fontSize: 12,
+          ),
+        ),
       ),
     );
   }

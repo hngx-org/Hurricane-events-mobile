@@ -17,6 +17,8 @@ class AppColors {
 
   static const Color designGrey = Color(0xFFD9D9D9);
   static const Color darkGrey = Color(0xFF8C8C8C);
+  static const Color darkGrey2 = Color(0xFFF2F2F2);
+
   static const Color designRed = Color(0xFFE93131);
 
   static const Color backgroundColor = Color(0xFFFAFAFA);
@@ -27,6 +29,6 @@ class AppColors {
 
   /// Please let us try using the naming convention of colors in the
   /// UI design so it will be easier to use just like this below
-  /// 
+  ///
   static const Color p10 = Color(0xFFE5F3FF);
 }

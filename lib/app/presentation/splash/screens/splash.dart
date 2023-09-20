@@ -32,16 +32,17 @@ class _SplashState extends State<Splash> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(image: AssetImage(AppImages.imgSplashScreen)),
+            Image(
+              image: AssetImage(
+                AppImages.imgSplashScreen,
+              ),
+            ),
             SizedBox(
               height: 18,
             ),
             Text(
               AppStrings.SplashScreenText,
-              style: TextStyle(
-                  color: AppColors.darkBlue1,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w700),
+              style: TextStyle(color: AppColors.darkBlue1, fontSize: 32, fontWeight: FontWeight.w700),
             )
           ],
         ),

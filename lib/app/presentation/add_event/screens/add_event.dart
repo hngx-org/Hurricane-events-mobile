@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_event/widgets/custom_textfield.dart';
+import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/component/widgets/custom_button.dart';
+import 'package:hurricane_events/component/widgets/svg_picture.dart';
 
 class AddEvent extends StatefulWidget {
   static const String routeName = "add_event-screen";
@@ -20,20 +26,28 @@ class _AddEventState extends State<AddEvent> {
     'lorem ipsum',
     'lorem ipsum',
     'lorem ipsum',
-    AppStrings.test
+    AppStrings.test,
   ];
 
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _startDateStartTimeController =
-      TextEditingController();
-  final TextEditingController _endDateStartTimeController =
-      TextEditingController();
-  final TextEditingController _startDateEndTimeController =
-      TextEditingController();
-  final TextEditingController _endDateEndTimeController =
-      TextEditingController();
+  String? nameError;
+  String? locationError;
+
+  DateTime? _startDateController;
+  DateTime? _endDateController;
+
+  TimeOfDay? _startDateStartTimeController;
+  TimeOfDay? _startDateEndTimeController;
+
+  TimeOfDay? _endDateStartTimeController;
+  TimeOfDay? _endDateEndTimeController;
+
+  final nameFocus = FocusNode();
+  final TextEditingController _name = TextEditingController();
+
+  final locationFocus = FocusNode();
+  final TextEditingController _location = TextEditingController();
 
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
@@ -43,102 +57,76 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay startDateEndTime = TimeOfDay.now();
   TimeOfDay endDateEndTime = TimeOfDay.now();
 
-  ///function to select date using DateTime
-  Future<void> _selectDate(
-      {required BuildContext context,
-      required DateTime selectedDate,
-      required controller}) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        controller.text = "${selectedDate.toLocal()}".split(' ')[0];
-      });
-    }
-  }
-  ///function to select time using TimeofDay
-  Future<void> _selectTime(
-      {required BuildContext context,
-      required TimeOfDay selectedTime,
-      required controller}) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-    );
-
-    if (pickedTime != null && pickedTime != selectedTime) {
-      setState(() {
-        selectedTime = pickedTime;
-        controller.text = "${selectedTime.format(context)}";
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor,
         elevation: 0.0,
-        backgroundColor: const Color(0xAAFAFAFA),
         leading: IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.chevron_left),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 20,
+          ),
         ),
-        title: const Text('Add Event'),
+        title: Text(
+          'Add Event',
+          textAlign: TextAlign.center,
+          style: context.headline3.copyWith(
+            fontSize: 16,
+          ),
+        ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ///name of event textField
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 32.0, 0.0, 8.0),
-              child: Text(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              32.height,
+              Text(
                 'Name of Event',
-                style: context.body1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 16.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xAAd9d9d9),
-                      width: 1.0,
-                    ),
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: 'Enter name of event',
-                  hintStyle:
-                      context.body1.copyWith(color: const Color(0xAA84838B)),
+                style: context.body2.copyWith(
+                  fontSize: 12,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 24.0, 0.0, 8.0),
-              child: Text(
+              8.height,
+              CustomTextField(
+                focus: nameFocus,
+                filled: true,
+                controller: _name,
+                errorText: nameError,
+                hintText: "Enter name of event",
+                validator: (p0) {
+                  if (p0 == null || p0.trim().isEmpty) {
+                    nameError = "Please enter your event name";
+                    setState(() {});
+                    return nameError;
+                  }
+
+                  nameError = null;
+                  setState(() {});
+                  return nameError;
+                },
+              ),
+              24.height,
+              Text(
                 'Select a group',
                 textAlign: TextAlign.left,
-                style: context.body1,
+                style: context.body2.copyWith(
+                  fontSize: 12,
+                ),
               ),
-            ),
-            ///user group horizontal scroll
-            ///I think it should have radio function to enable selecting just one at a time.
-            ///no function implemented yet
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
-              child: SizedBox(
+              8.height,
+
+              ///user group horizontal scroll
+              ///I think it should have radio function to enable selecting just one at a time.
+              ///no function implemented yet
+              SizedBox(
                 height: 40.0,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -151,29 +139,29 @@ class _AddEventState extends State<AddEvent> {
                   },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 24.0, 0.0, 8.0),
-              child: Text(
+              24.height,
+
+              Text(
                 'Date of event',
                 textAlign: TextAlign.left,
-                style: context.body1,
+                style: context.body2.copyWith(
+                  fontSize: 12,
+                ),
               ),
-            ),
-            ///start date
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
-              child: Text(
+              8.height,
+
+              ///start date
+              Text(
                 'Start of event',
-                style: context.body1.copyWith(color: const Color(0xAA737373)),
+                style: context.body2.copyWith(
+                  color: AppColors.designBlack3,
+                  fontSize: 12,
+                ),
               ),
-            ),
-            ///start date row
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24.0,
-              ),
-              child: SizedBox(
+              6.height,
+
+              ///start date row
+              SizedBox(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -183,100 +171,245 @@ class _AddEventState extends State<AddEvent> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: TextField(
-                          style: context.body2.copyWith(color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: 'Start day',
-                            hintStyle: context.body3.copyWith(
-                              color: const Color(0xAA404040),
-                            ),
-                            border: InputBorder.none,
-                            prefixIcon: const Icon(
-                              Icons.calendar_month,
-                              size: 13.0,
-                            ),
-                          ),
-                          controller: _startDateController,
-                          onTap: () {
-                            _selectDate(
+                        child: ClickWidget(
+                          onTap: () async {
+                            final res = await showDatePicker(
                               context: context,
-                              selectedDate: startDate,
-                              controller: _startDateController,
-                            ); // Show date picker when tapped
+                              initialDate: startDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                            );
+                            if (!mounted) return;
+
+                            if (res != null) {
+                              setState(() {
+                                _startDateController = res.toLocal();
+                              });
+                            }
                           },
-                          readOnly: true,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.calendar_month,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      // print(_startDateController);
+                                      if (_startDateController != null) {
+                                        final text = "${_startDateController!.toLocal()}".split(' ')[0];
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "Start day",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       flex: 3,
-                      child: TextField(
-                        style: context.body2.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                          hintText: 'Start time',
-                          hintStyle: context.body3
-                              .copyWith(color: const Color(0xAA404040)),
-                          border: InputBorder.none,
-                          prefixIcon: const Icon(
-                            Icons.access_time_outlined,
-                            size: 13.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ClickWidget(
+                          onTap: () async {
+                            final TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: startDateStartTime,
+                            );
+                            if (!mounted) return;
+
+                            if (pickedTime != null) {
+                              setState(() {
+                                _startDateStartTimeController = pickedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.access_time_outlined,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      if (_startDateStartTimeController != null) {
+                                        final text = _startDateStartTimeController!.format(context);
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "Start time",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        controller: _startDateStartTimeController,
-                        onTap: () {
-                          _selectTime(
-                              context: context,
-                              selectedTime: startDateStartTime,
-                              controller: _startDateStartTimeController);
-                        },
-                        readOnly: true,
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       flex: 3,
-                      child: TextField(
-                        style: context.body2.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                          hintText: 'End time',
-                          hintStyle: context.body3
-                              .copyWith(color: const Color(0xAA404040)),
-                          border: InputBorder.none,
-                          prefixIcon: const Icon(
-                            Icons.access_time_outlined,
-                            size: 13.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ClickWidget(
+                          onTap: () async {
+                            final TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: startDateEndTime,
+                            );
+                            if (!mounted) return;
+
+                            if (pickedTime != null) {
+                              setState(() {
+                                _startDateEndTimeController = pickedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.access_time_outlined,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      if (_startDateEndTimeController != null) {
+                                        final text = _startDateEndTimeController!.format(context);
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "End time",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        controller: _startDateEndTimeController,
-                        onTap: () {
-                          _selectTime(
-                              context: context,
-                              selectedTime: startDateEndTime,
-                              controller: _startDateEndTimeController);
-                        },
-                        readOnly: true,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            ///End date
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 0.0),
-              child: Text(
+              12.height,
+
+              ///End date
+              Text(
                 'End of event (if event is more than a day)',
-                style: context.body1.copyWith(color: const Color(0xAA737373)),
+                style: context.body2.copyWith(
+                  color: AppColors.designBlack3,
+                  fontSize: 12,
+                ),
               ),
-            ),
-            ///End date row
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24.0,
-              ),
-              child: SizedBox(
+
+              ///End date row
+              SizedBox(
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       flex: 4,
@@ -284,179 +417,357 @@ class _AddEventState extends State<AddEvent> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: TextField(
-                          style: context.body2.copyWith(color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: 'End day',
-                            hintStyle: context.body3.copyWith(
-                              color: const Color(0xAA404040),
-                            ),
-                            border: InputBorder.none,
-                            prefixIcon: const Icon(
-                              Icons.calendar_month,
-                              size: 13.0,
-                            ),
-                          ),
-                          controller: _endDateController,
-                          onTap: () {
-                            _selectDate(
+                        child: ClickWidget(
+                          onTap: () async {
+                            final res = await showDatePicker(
                               context: context,
-                              selectedDate: startDate,
-                              controller: _endDateController,
+                              initialDate: endDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
                             );
+                            if (!mounted) return;
+
+                            if (res != null) {
+                              setState(() {
+                                _endDateController = res.toLocal();
+                              });
+                            }
                           },
-                          readOnly: true,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.calendar_month,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      if (_endDateController != null) {
+                                        final text = "${_endDateController!.toLocal()}".split(' ')[0];
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "End day",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       flex: 3,
-                      child: TextField(
-                        style: context.body2.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                          hintText: 'Start time',
-                          hintStyle: context.body3
-                              .copyWith(color: const Color(0xAA404040)),
-                          border: InputBorder.none,
-                          prefixIcon: const Icon(
-                            Icons.access_time_outlined,
-                            size: 13.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ClickWidget(
+                          onTap: () async {
+                            final TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: endDateStartTime,
+                            );
+                            if (!mounted) return;
+
+                            if (pickedTime != null) {
+                              setState(() {
+                                _endDateStartTimeController = pickedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.access_time_outlined,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      if (_endDateStartTimeController != null) {
+                                        final text = _endDateStartTimeController!.format(context);
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "Start time",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        controller: _endDateStartTimeController,
-                        onTap: () {
-                          _selectTime(
-                              context: context,
-                              selectedTime: endDateStartTime,
-                              controller: _endDateStartTimeController);
-                        },
-                        readOnly: true,
                       ),
                     ),
                     const SizedBox(width: 8.0),
                     Expanded(
                       flex: 3,
-                      child: TextField(
-                        style: context.body2.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                          hintText: 'End time',
-                          hintStyle: context.body3
-                              .copyWith(color: const Color(0xAA404040)),
-                          border: InputBorder.none,
-                          prefixIcon: const Icon(
-                            Icons.access_time_outlined,
-                            size: 13.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ClickWidget(
+                          onTap: () async {
+                            final TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: endDateEndTime,
+                            );
+                            if (!mounted) return;
+
+                            if (pickedTime != null) {
+                              setState(() {
+                                _endDateEndTimeController = pickedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.access_time_outlined,
+                                  size: 16.0,
+                                ),
+                                8.width,
+                                Container(
+                                  height: 16,
+                                  width: 1,
+                                  color: AppColors.designGrey,
+                                ),
+                                8.width,
+                                Expanded(
+                                  child: Builder(
+                                    builder: (_) {
+                                      if (_endDateEndTimeController != null) {
+                                        final text = _endDateEndTimeController!.format(context);
+
+                                        return Text(
+                                          text,
+                                          style: context.body2.copyWith(
+                                            fontSize: 12,
+                                            color: AppColors.designBlack1,
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        "End time",
+                                        style: context.body2.copyWith(
+                                          fontSize: 10,
+                                          color: AppColors.designBlack3,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        controller: _endDateEndTimeController,
-                        onTap: () {
-                          _selectTime(
-                              context: context,
-                              selectedTime: endDateEndTime,
-                              controller: _endDateEndTimeController);
-                        },
-                        readOnly: true,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            ///Location editor
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 8.0),
-              child: Text(
+              24.height,
+
+              ///Location editor
+              Text(
                 'Location',
-                style: context.body1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 16.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xAAd9d9d9),
-                      width: 1.0,
-                    ),
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: 'Enter location of event',
-                  hintStyle:
-                      context.body1.copyWith(color: const Color(0xAA84838B)),
+                style: context.body2.copyWith(
+                  fontSize: 12,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: TextButton(
-                onPressed: () {},
+              8.height,
+              CustomTextField(
+                focus: locationFocus,
+                filled: true,
+                errorText: locationError,
+                controller: _location,
+                hintText: "Enter location of event",
+                validator: (p0) {
+                  if (p0 == null || p0.trim().isEmpty) {
+                    locationError = "Please enter a valid location";
+                    setState(() {});
+                    return nameError;
+                  }
+
+                  locationError = null;
+                  setState(() {});
+                  return locationError;
+                },
+              ),
+              12.height,
+              ClickWidget(
+                onTap: () {},
                 child: Text(
                   'Use current location instead',
-                  style: context.body2.copyWith(color: const Color(0xAA0085FF)),
+                  style: context.body1.copyWith(
+                    color: AppColors.darkBlue1,
+                    fontSize: 12,
+                  ),
                 ),
               ),
-            ),
-            ///Event Icon
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 0.0, 8.0),
-              child: Text(
+              24.height,
+
+              ///Event Icon
+              Text(
                 'Choose an icon',
-                style: context.body1,
-              ),
-            ),
-            ///Event Icon Row
-            ///having issues inserting the required images
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: SizedBox(
-                child: Row(children: [
-                  Container(
-                    height: 76.0,
-                    width: 76.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0)),
-                    // child: Image.asset(AppImages.legEventsIcon),
-                    
-                  ),
-                  const SizedBox(
-                    width: 12.0,
-                  ),
-                  Container(
-                    height: 76.0,
-                    width: 76.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0)),
-                    // child: Image.asset(AppImages.chatEventsIcon),
-                  ),
-                  const SizedBox(
-                    width: 12.0,
-                  ),
-                ]),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xAA0085FF),
-                          foregroundColor: const Color(0xAAfFffff)),
-                      onPressed: () {},
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add Event')),
+                style: context.body2.copyWith(
+                  fontSize: 12,
                 ),
               ),
-            ),
-          ],
+              8.height,
+
+              ///Event Icon Row
+              ///having issues inserting the required images
+              Row(children: [
+                Container(
+                  height: 76.0,
+                  width: 76.0,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24.0),
+                    color: AppColors.darkGrey2,
+                  ),
+                  child: const Svg(
+                    image: AppImages.techiesIcon,
+                  ),
+                ),
+                const SizedBox(width: 12.0),
+                Container(
+                  height: 76.0,
+                  width: 76.0,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24.0),
+                    color: AppColors.darkGrey2,
+                  ),
+                  child: const Svg(
+                    image: AppImages.techiesIcon,
+                  ),
+                ),
+                12.width,
+                ClickWidget(
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        color: AppColors.designOrange,
+                      ),
+                      7.width,
+                      Text(
+                        "Add from\nGallery",
+                        style: context.body1.copyWith(
+                          fontSize: 12,
+                          color: AppColors.designOrange,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ]),
+              const Spacer(),
+
+              CustomButton(
+                radius: 32,
+                backgroundColor: AppColors.darkBlue1,
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {}
+                },
+                buttonWidget: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    7.width,
+                    Text(
+                      "Add Event",
+                      style: context.button2.copyWith(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              48.height,
+            ],
+          ),
         ),
       ),
     );

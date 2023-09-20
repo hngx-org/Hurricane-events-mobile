@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_chip.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/event_card.dart';
+import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
 final sampleEvent = EventsMockUp(
@@ -23,7 +25,25 @@ class GroupDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 24),
+          child: ClickWidget(
+            onTap: () {
+              BaseNavigator.pop();
+            },
+            child: const SizedBox(
+              height: 30,
+              width: 30,
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
         title: Text(
           "My Group",
           style: context.headline3.copyWith(
@@ -42,9 +62,7 @@ class GroupDetailsScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  left: BorderSide(color: Color(0xFFCCE6FF)),
                   top: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
-                  right: BorderSide(color: Color(0xFFCCE6FF)),
                   bottom: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
                 ),
               ),
@@ -53,8 +71,7 @@ class GroupDetailsScreen extends StatelessWidget {
                   Container(
                     decoration: ShapeDecoration(
                       color: AppColors.lightBlue1,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                     padding: const EdgeInsets.all(4),
                     child: SvgPicture.asset(
@@ -94,15 +111,26 @@ class GroupDetailsScreen extends StatelessWidget {
             40.height,
             Text(
               "Upcoming events",
-              style: context.body1
-                  .copyWith(fontSize: 16, color: AppColors.darkGrey),
+              style: context.body1.copyWith(fontSize: 16, color: AppColors.darkGrey),
             ),
             24.height,
             EventCard(
-                group: sampleEvent.groupName!,
-                startDate: sampleEvent.startDate!,
-                name: sampleEvent.name!,
-                location: sampleEvent.location!)
+              group: sampleEvent.groupName!,
+              startDate: sampleEvent.startDate!,
+              name: sampleEvent.name!,
+              location: sampleEvent.location!,
+              comments: [
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+                Comment(comment: "testing"),
+              ],
+            )
           ],
         ),
       ),

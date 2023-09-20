@@ -16,40 +16,41 @@ class GroupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          12.height,
-          Text(
-            "My Group",
-            textAlign: TextAlign.center,
-            style: context.headline3.copyWith(
-              fontSize: 16,
-            ),
-          ),
-          40.height,
-          SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: List.generate(
-                2,
-                (index) {
-                  final group = myGroupSampleData[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: MyGroupCard(
-                      title: group.title!,
-                      numberOfEvent: group.numOfEvent!,
-                      numberOfPeople: group.numOfPeople!,
-                    ),
-                  );
-                },
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            12.height,
+            Text(
+              "My Group",
+              textAlign: TextAlign.center,
+              style: context.headline3.copyWith(
+                fontSize: 16,
               ),
             ),
-          )
-        ],
+            40.height,
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  final group = myGroupSampleData[index];
+                  return MyGroupCard(
+                    title: group.title!,
+                    numberOfEvent: group.numOfEvent!,
+                    numberOfPeople: group.numOfPeople!,
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return 16.height;
+                },
+                itemCount: myGroupSampleData.length,
+              ),
+            ),
+          ],
+        ),
       )),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -59,8 +60,7 @@ class GroupScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(32),
           ),
           backgroundColor: AppColors.darkBlue1,
-          extendedPadding:
-              const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          extendedPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           label: Row(
             children: [
               const Icon(

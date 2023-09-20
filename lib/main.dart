@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
@@ -28,9 +29,7 @@ Future<void> main() async {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          kDebugMode
-              ? details.exception.toString()
-              : "Oops, something happened, try again.",
+          kDebugMode ? details.exception.toString() : "Oops, something happened, try again.",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -104,7 +103,7 @@ class EventsApp extends StatelessWidget {
 
       /// Follow Definitions
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: Splash.routeName,
+      initialRoute: AddEvent.routeName,
     );
   }
 }
