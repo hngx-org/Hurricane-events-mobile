@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
-import 'package:hurricane_events/app/presentation/home/calendar/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/data/models/comment_model.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
 class PreCommentEventDetails extends StatefulWidget {
-  final EventsMockUp event;
-  static const String routeName = "event_details";
-  const PreCommentEventDetails({super.key, required this.event});
+   final EventsMockUp event;
+  static const String routeName = "pre_comment";
+  const PreCommentEventDetails({
+    super.key, required this.event,
+  });
 
   @override
   State<PreCommentEventDetails> createState() => _PreCommentEventDetailsState();
@@ -65,6 +67,8 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
   TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    //final event = ModalRoute.of(context)!.settings.arguments as EventsMockUp;
+
     return Scaffold(
       body: SafeArea(
           child: Padding(
