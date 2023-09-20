@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/event_card.dart';
-import 'package:hurricane_events/app/presentation/timeline/widgets/comment_tile.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/data/models/comment_model.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
