@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376199061162",
+    "project_id": "hng-event-app",
+    "storage_bucket": "hng-event-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376199061162:android:33938dbaede69ada717ad3",
+        "android_client_info": {
+          "package_name": "com.example.hurricane_events"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfnKyQjGDjguFVA7W6L9h3KABlaoNUmlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
