@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
@@ -6,12 +7,18 @@ import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
 import 'package:hurricane_events/domain/providers/global_provider.dart';
+import 'package:hurricane_events/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 Future<void> main() async {
   //This is the main entry point of the app. This is where services are initialized
   WidgetsFlutterBinding.ensureInitialized();
+  
+//firebase initialize
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   ///The error widget is a UI render builder that is used for managing error views
   ///in debug mode and release modes.
@@ -28,7 +35,9 @@ Future<void> main() async {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          kDebugMode ? details.exception.toString() : "Oops, something happened, try again.",
+          kDebugMode
+              ? details.exception.toString()
+              : "Oops, something happened, try again.",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
