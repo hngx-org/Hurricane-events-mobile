@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
@@ -10,6 +12,7 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddEvent extends StatefulWidget {
   static const String routeName = "add_event-screen";
@@ -58,6 +61,27 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay endDateStartTime = TimeOfDay.now();
   TimeOfDay startDateEndTime = TimeOfDay.now();
   TimeOfDay endDateEndTime = TimeOfDay.now();
+
+  File? _customEventIcon;
+
+  Future<void> _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Create a new Image widget for the selected image
+      final image = File(pickedFile.path);
+      setState(() {
+        _customEventIcon = image;
+      });
+    }
+  }
+
+  void removeImage() {
+    setState(() {
+      _customEventIcon = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -736,24 +760,60 @@ class _AddEventState extends State<AddEvent> {
                   ),
                 ),
                 12.width,
-                ClickWidget(
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.add,
-                        color: AppColors.designOrange,
-                      ),
-                      7.width,
-                      Text(
-                        "Add from\nGallery",
-                        style: context.body1.copyWith(
-                          fontSize: 12,
+                Visibility(
+                  visible: _customEventIcon != null,
+                  child: Container(
+                    height: 76.0,
+                    width: 76.0,
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24.0),
+                      color: AppColors.darkGrey2,
+                    ),
+                    child: _customEventIcon != null
+                        ? ClipRRect(
+                            child: Image.file(
+                              _customEventIcon!,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : const Placeholder(),
+                  ),
+                ),
+                12.width,
+                Visibility(
+                  visible: _customEventIcon == null,
+                  child: ClickWidget(
+                    onTap: _getImageFromGallery,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.add,
                           color: AppColors.designOrange,
                         ),
-                      ),
-                    ],
+                        7.width,
+                        Text(
+                          "Add from\nGallery",
+                          style: context.body1.copyWith(
+                            fontSize: 12,
+                            color: AppColors.designOrange,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
+                12.width,
+                Visibility(
+                  visible: _customEventIcon != null,
+                  child: ClickWidget(
+                    onTap: removeImage,
+                    child: const Icon(
+                      Icons.close,
+                      color: AppColors.designOrange,
+                    ),
+                  ),
+                ),
               ]),
               const Gap(20),
 
