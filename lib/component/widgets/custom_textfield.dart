@@ -58,9 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   : const EdgeInsets.all(0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: widget.errorText != null
-                ? AppColors.designRed
-                : AppColors.designGrey,
+            color: widget.errorText != null ? AppColors.designRed : AppColors.designGrey,
           ),
           child: TextFormField(
             controller: widget.controller,
@@ -153,6 +151,137 @@ class _CustomTextFieldState extends State<CustomTextField> {
             );
           },
         ),
+      ],
+    );
+  }
+}
+
+@immutable
+class CustomTextField2 extends StatefulWidget {
+  final bool? inputlabelPresent;
+  final String? labelText;
+  final String? hintText;
+  final bool? filled;
+  final TextEditingController? controller;
+  final FocusNode? focus;
+  final String? Function(String?)? validator;
+  final Color? fillColor;
+  bool? obscureText;
+  final bool? suffix;
+  final int? maxLines;
+  final Widget? suffixIcon;
+  final TextInputType? textInputType;
+  final String? errorText;
+  final Function(String)? onChanged;
+  Function(bool)? external;
+
+  CustomTextField2({
+    super.key,
+    this.inputlabelPresent,
+    this.labelText,
+    this.hintText,
+    this.filled,
+    this.validator,
+    this.controller,
+    this.focus,
+    this.obscureText,
+    this.suffix,
+    this.errorText,
+    this.onChanged,
+    this.external,
+    this.suffixIcon,
+    this.maxLines,
+    this.fillColor,
+    this.textInputType,
+  });
+
+  @override
+  State<CustomTextField2> createState() => _CustomTextField2State();
+}
+
+class _CustomTextField2State extends State<CustomTextField2> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: widget.controller,
+          focusNode: widget.focus,
+          onChanged: widget.onChanged,
+          keyboardType: widget.textInputType,
+          cursorColor: Colors.black.withOpacity(.5),
+          style: context.test.copyWith(
+            color: Colors.black.withOpacity(.7),
+            fontSize: 14,
+          ),
+          obscureText: widget.obscureText ?? false,
+          onTapOutside: (event) {
+            FocusScope.of(context).unfocus();
+          },
+          obscuringCharacter: "*",
+          cursorHeight: 16,
+          maxLines: widget.maxLines ?? 1,
+          decoration: InputDecoration(
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            filled: widget.filled,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.all(14),
+            hintText: widget.hintText,
+            errorMaxLines: 1,
+            hintStyle: context.body2.copyWith(
+              color: Colors.black.withOpacity(.4),
+              fontSize: 14,
+            ),
+            errorStyle: const TextStyle(
+              color: Colors.transparent,
+              fontSize: 0,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(.3),
+                width: 0.1,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppColors.designRed,
+                width: 0.0,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(.3),
+                width: 0.1,
+              ),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(.3),
+                width: 0.1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(.3),
+                width: 0.1,
+              ),
+            ),
+            suffixIcon: widget.suffixIcon,
+            prefixIcon: const Icon(
+              Icons.camera_alt_outlined,
+              size: 16,
+              color: AppColors.darkBlue1,
+            ),
+          ),
+        ),
+        8.height,
       ],
     );
   }
