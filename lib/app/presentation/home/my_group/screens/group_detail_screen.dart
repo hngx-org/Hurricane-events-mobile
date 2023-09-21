@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/widgets/group_chip.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
-import 'package:hurricane_events/component/widgets/click_button.dart';
-import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
 final sampleEvent = EventsMockUp(
@@ -175,7 +175,8 @@ class GroupDetailsScreen extends StatelessWidget {
                   Container(
                     decoration: ShapeDecoration(
                       color: AppColors.lightBlue1,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
                     padding: const EdgeInsets.all(4),
                     child: SvgPicture.asset(
@@ -215,15 +216,25 @@ class GroupDetailsScreen extends StatelessWidget {
             40.height,
             Text(
               "Upcoming events",
-              style: context.body1.copyWith(fontSize: 16, color: AppColors.darkGrey),
+              style: context.body1
+                  .copyWith(fontSize: 16, color: AppColors.darkGrey),
             ),
             24.height,
-            EventCard(
-              event: sampleEvent,
-            ),
-            EventCard(
-              event: sampleEvent2,
-            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(
+                    4,
+                    (index) {
+                      final event = index.isEven ? sampleEvent : sampleEvent2;
+                      return EventCard(
+                        event: event,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
