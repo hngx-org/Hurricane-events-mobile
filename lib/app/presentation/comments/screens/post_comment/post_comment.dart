@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:hurricane_events/app/presentation/events/post_comment/widgets/comment_type.dart';
+import 'package:hurricane_events/app/presentation/comments/screens/post_comment/widgets/comment_type.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
-import '../../../../component/widgets/event_card.dart';
+import '../../../../../component/widgets/event_card.dart';
 import 'widgets/post.dart';
 
 final sampleEvent = EventsMockUp(

@@ -1,101 +1,102 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/comment_model.dart';
+import 'package:hurricane_events/data/models/events/event_mock_up.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentTile extends StatelessWidget {
-  final CommentModel? comment;
-  const CommentTile({super.key, this.comment});
+  final Comment? comment;
+
+  const CommentTile({
+    super.key,
+    this.comment,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
+      width: context.fullWidth,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    // TODO: uncomment background Image - removed to avoid console error
-                    // backgroundImage: NetworkImage(comment?.avatar ?? ''),
-                    child: comment?.avatar == null
-                        ? Center(
-                            child: Text(
-                              comment?.fullName[0] ?? 'U',
-                              style: context.body2.copyWith(
-                                fontSize: 12,
-                              ),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+          Builder(
+            builder: (context) {
+              if (comment?.userImage != null) {
+                return CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                    comment?.image ?? '',
                   ),
-                  const Gap(30),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        comment?.fullName ?? 'Name',
-                        style: context.body2.copyWith(
-                          fontSize: 12,
-                        ),
-                      ),
-                      10.height,
-                      Text(
-                        comment?.comment ?? 'Comment',
-                        style: context.body2.copyWith(
-                          fontSize: 14,
-                        ),
-                      ),
-                      comment?.image == null
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              height: 40,
-                              child: Center(
-                                child: Image.network(
-                                  comment?.image ?? 'Image',
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (
-                                    BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress,
-                                  ) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    }
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.black,
-                                        value: loadingProgress.expectedTotalBytes != null
-                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                    ],
+                  radius: 15,
+                );
+              }
+              return CircleAvatar(
+                radius: 15,
+                child: Center(
+                  child: Text(
+                    comment?.userName?[0] ?? 'U',
+                    style: context.body2.copyWith(
+                      fontSize: 12,
+                    ),
                   ),
-                ],
-              ),
-              SizedBox(
-                width: 80,
-                child: Text(
-                  '${comment?.duration ?? 'X'} ago',
+                ),
+              );
+            },
+          ),
+          12.width,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  comment?.userName ?? 'Name',
                   style: context.body2.copyWith(
                     fontSize: 12,
                   ),
                 ),
-              )
-            ],
+                10.height,
+                Text(
+                  comment?.comment ?? 'comment',
+                  style: context.body2.copyWith(
+                    fontSize: 14,
+                  ),
+                ),
+                Builder(
+                  builder: (_) {
+                    if (comment?.hasImage == null || comment?.hasImage == false) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        8.height,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: comment?.image ?? "",
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Text(
+            timeago.format(comment?.createdAt ?? DateTime.now()),
+            style: context.body2.copyWith(
+              fontSize: 12,
+            ),
           ),
         ],
       ),

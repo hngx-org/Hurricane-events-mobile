@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
 import 'package:hurricane_events/app/presentation/add_group/screens/add_group.dart';
-import 'package:hurricane_events/app/presentation/events/pre_comment.dart/screens/event_details.dart';
+import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/screens/calendar_screen.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
@@ -11,7 +11,7 @@ import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
-import '../presentation/events/post_comment/post_comment.dart';
+import '../presentation/comments/screens/post_comment/post_comment.dart';
 
 class AppRouter {
   /// A custom screen navigation handler that handles the animation of moving from one screen to another

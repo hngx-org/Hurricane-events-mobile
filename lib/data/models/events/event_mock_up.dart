@@ -61,17 +61,37 @@ class EventsMockUp {
 class Comment {
   Comment({
     this.comment,
+    this.createdAt,
+    this.image,
+    this.hasImage,
+    this.userImage,
+    this.userName,
   });
 
   String? comment;
+  String? userName;
+  DateTime? createdAt;
+  bool? hasImage;
+  String? image;
+  String? userImage;
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       comment: json['comment'],
+      userName: json['userName'],
+      hasImage: json['hasImage'],
+      image: json['image'],
+      userImage: json['comment'],
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 
   Map<String, dynamic> toJson() => {
         "comment": comment,
+        "userName": userName,
+        "hasImage": hasImage,
+        "image": image,
+        "userImage": userImage,
+        "createdAt": createdAt?.toIso8601String(),
       };
 }
