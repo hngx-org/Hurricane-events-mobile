@@ -8,6 +8,8 @@ environment:
   sdk: ">=3.1.2 <4.0.0"
 
 dependencies:
+  animate_do: ^3.1.2
+  cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.2
   dio: ^5.3.2
   flutter:
@@ -21,6 +23,7 @@ dependencies:
   retrofit: ^4.0.1
   table_calendar: ^3.0.9
   talker_dio_logger: ^2.3.0
+  timeago: ^3.5.0
   tuple: ^2.0.2
 
 dev_dependencies:

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/data/models/comment_model.dart';
@@ -21,26 +20,17 @@ class _EventDetailsState extends State<EventDetails> {
 // TODO: This should be in the provider somewhere...
 //? From here
   List<CommentModel> comments = [
-    CommentModel(
-        avatar: 'avatar',
-        fullName: 'Alpha Beta',
-        comment: 'Test Comment 1',
-        duration: '10 minutes'),
-    CommentModel(
-        fullName: 'Test User',
-        comment: 'Test Comment 1',
-        duration: '10 minutes'),
+    CommentModel(avatar: 'avatar', fullName: 'Alpha Beta', comment: 'Test Comment 1', duration: '10 minutes'),
+    CommentModel(fullName: 'Test User', comment: 'Test Comment 1', duration: '10 minutes'),
     CommentModel(
         fullName: 'Foxtrot Exho',
         comment: 'Test Comment 1',
         duration: '10 minutes',
-        image:
-            'https://miro.medium.com/v2/resize:fit:400/1*_6Dh7jYd1Rh4GjFymFUA8w.png')
+        image: 'https://miro.medium.com/v2/resize:fit:400/1*_6Dh7jYd1Rh4GjFymFUA8w.png')
   ];
 
   void postComment(String comment) {
-    comments.add(CommentModel(
-        fullName: 'Current user', comment: comment, duration: 'Now'));
+    comments.add(CommentModel(fullName: 'Current user', comment: comment, duration: 'Now'));
     setState(() {});
 
     // Remove the keyboard focus after sending the comment.
@@ -68,8 +58,7 @@ class _EventDetailsState extends State<EventDetails> {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding:
-            const EdgeInsets.only(left: 36.0, right: 36.0, top: 56, bottom: 40),
+        padding: const EdgeInsets.only(left: 36.0, right: 36.0, top: 56, bottom: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -99,17 +88,17 @@ class _EventDetailsState extends State<EventDetails> {
                       event: widget.event,
                     ),
                     const Gap(20),
-                    SizedBox(
-                      height: 300,
-                      child: ListView(
-                        controller: scrollController,
-                        children: List.generate(
-                            comments.length,
-                            (index) => CommentTile(
-                                  comment: comments[index],
-                                )),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 300,
+                    //   child: ListView(
+                    //     controller: scrollController,
+                    //     children: List.generate(
+                    //         comments.length,
+                    //         (index) => CommentTile(
+                    //               comment: comments[index],
+                    //             )),
+                    //   ),
+                    // ),
                     const Divider(),
                   ],
                 ),
@@ -118,9 +107,7 @@ class _EventDetailsState extends State<EventDetails> {
             // Gap(100),
             Container(
               alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                  color: AppColors.textFieldBackground,
-                  borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(color: AppColors.textFieldBackground, borderRadius: BorderRadius.circular(5)),
               width: double.infinity,
               height: 40,
               child: Row(
