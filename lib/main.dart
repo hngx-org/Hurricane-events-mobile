@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
@@ -16,7 +17,6 @@ import 'package:provider/single_child_widget.dart';
 Future<void> main() async {
   //This is the main entry point of the app. This is where services are initialized
   WidgetsFlutterBinding.ensureInitialized();
-
 //firebase initialize
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -40,7 +40,9 @@ Future<void> main() async {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          kDebugMode ? details.exception.toString() : "Oops, something happened, try again.",
+          kDebugMode
+              ? details.exception.toString()
+              : "Oops, something happened, try again.",
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -119,7 +121,7 @@ class EventsApp extends StatelessWidget {
 
       /// Follow Definitions
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: Splash.routeName,
+      initialRoute: HomeScreen.routeName,
     );
   }
 }

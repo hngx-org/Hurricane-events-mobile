@@ -13,12 +13,18 @@ extension TextTheming on BuildContext {
   TextStyle get body2 => Theme.of(this).extension<EventsTextTheme>()!.body2!;
   TextStyle get body3 => Theme.of(this).extension<EventsTextTheme>()!.body3!;
   TextStyle get test => Theme.of(this).extension<EventsTextTheme>()!.testfield!;
-  TextStyle get test2 => Theme.of(this).extension<EventsTextTheme>()!.testfield2!;
-  TextStyle get headline1 => Theme.of(this).extension<EventsTextTheme>()!.headline1!;
-  TextStyle get headline2 => Theme.of(this).extension<EventsTextTheme>()!.headline2!;
-  TextStyle get headline3 => Theme.of(this).extension<EventsTextTheme>()!.headline3!;
-  TextStyle get button1 => Theme.of(this).extension<EventsTextTheme>()!.button1!;
-  TextStyle get button2 => Theme.of(this).extension<EventsTextTheme>()!.button2!;
+  TextStyle get test2 =>
+      Theme.of(this).extension<EventsTextTheme>()!.testfield2!;
+  TextStyle get headline1 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline1!;
+  TextStyle get headline2 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline2!;
+  TextStyle get headline3 =>
+      Theme.of(this).extension<EventsTextTheme>()!.headline3!;
+  TextStyle get button1 =>
+      Theme.of(this).extension<EventsTextTheme>()!.button1!;
+  TextStyle get button2 =>
+      Theme.of(this).extension<EventsTextTheme>()!.button2!;
 }
 
 extension Sizing on BuildContext {
@@ -28,11 +34,27 @@ extension Sizing on BuildContext {
 //An extension to shorten spacing
 /* Instead of SizedBox(height: 30), use 30.height, */
 extension SizedBoxing on num {
-  Widget get height => SizedBox(
-        height: toDouble(),
-      );
+  Widget get height {
+    //To get MediQuery.of(context).size.height without context
+    final height = WidgetsBinding
+            .instance.platformDispatcher.views.first.physicalSize.height /
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
-  Widget get width => SizedBox(
-        width: toDouble(),
-      );
+    //Get the height in response to the design height
+    ///This is to make your spacing relative to device height.
+    final relativeHeight = (height / 926) * this;
+    return SizedBox(
+      height: relativeHeight,
+    );
+  }
+
+  Widget get width {
+    final width = WidgetsBinding
+            .instance.platformDispatcher.views.first.physicalSize.width /
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+    final relativeWidth = (width / 428) * this;
+    return SizedBox(
+      width: relativeWidth,
+    );
+  }
 }
