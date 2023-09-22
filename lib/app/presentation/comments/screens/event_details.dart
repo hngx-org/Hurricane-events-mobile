@@ -230,8 +230,9 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
       body: SafeArea(
         child: Consumer<EventProvider>(
           builder: (context, eventProvider, _) {
-            if (eventProvider.eventState == AppState.loading) {}
-            // return EventShimmer();
+            if (eventProvider.eventState == AppState.loading) {
+              return const EventShimmer();
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Builder(
