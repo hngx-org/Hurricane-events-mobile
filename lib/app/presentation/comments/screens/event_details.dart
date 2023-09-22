@@ -3,7 +3,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -13,12 +12,9 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/widgets/event_shimmer.dart';
-import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
-import 'dart:math' as math;
-
 import 'package:provider/provider.dart';
 
 class PreCommentEventDetails extends StatefulWidget {
@@ -36,7 +32,8 @@ class PreCommentEventDetails extends StatefulWidget {
 }
 
 class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
-  DateTime nowDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime nowDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   TextEditingController commentController = TextEditingController();
 
@@ -385,7 +382,8 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                                   ),
                                   const SizedBox(height: 24),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24),
                                     child: Text(
                                       "There are no comments to view for this event timeline.",
                                       textAlign: TextAlign.center,
