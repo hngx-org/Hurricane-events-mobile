@@ -7,19 +7,18 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
+import 'package:hurricane_events/data/models/comments/comment.dart';
+
 import 'package:intl/intl.dart';
 
-import '../../../../../data/models/events/event_mock_up.dart';
-
 class EventCard extends StatefulWidget {
-  final EventsMockUp event;
-
   final EventFull? eventFull;
+  final List<Comment>? comments;
 
   const EventCard({
     super.key,
-    required this.event,
     this.eventFull,
+    this.comments,
   });
 
   @override
@@ -72,7 +71,7 @@ class _EventCardState extends State<EventCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.event.groupName ?? 'Hangouts',
+                        'Hangouts',
                         style: context.body1.copyWith(
                           fontSize: 12,
                           color: Colors.orange,
@@ -182,7 +181,7 @@ class _EventCardState extends State<EventCard> {
               ),
             ),
             child: Builder(builder: (context) {
-              if (widget.event.comments != null && widget.event.comments!.isNotEmpty) {
+              if (widget.comments != null && widget.comments!.isNotEmpty) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -191,7 +190,7 @@ class _EventCardState extends State<EventCard> {
                     ),
                     4.width,
                     Text(
-                      "${widget.event.comments?.length} ${widget.event.comments?.length == 1 ? 'comment' : 'comments'}",
+                      "${widget.comments?.length} ${widget.comments?.length == 1 ? 'comment' : 'comments'}",
                       style: context.body2.copyWith(
                         fontSize: 12,
                         color: AppColors.designBlack1,
@@ -199,7 +198,7 @@ class _EventCardState extends State<EventCard> {
                     ),
                     const Spacer(),
                     Builder(builder: (context) {
-                      if (widget.event.endDate != null) {
+                      if (widget.eventFull?.endDate != null) {
                         if (widget.eventFull!.endDate!.difference(nowDate).inDays.isNegative) {
                           return const CustomButton(
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
@@ -222,20 +221,17 @@ class _EventCardState extends State<EventCard> {
                         onPressed: () {},
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                         radius: 32,
-                        backgroundColor: widget.event.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
+                        backgroundColor: AppColors.lightBlue2,
                         buttonWidget: Row(
                           children: [
                             Builder(builder: (context) {
-                              if (widget.event.isRsvpd == false) {
-                                return const SizedBox.shrink();
-                              }
                               return const Icon(
                                 Icons.check,
                                 color: AppColors.white,
                                 size: 20,
                               );
                             }),
-                            widget.event.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "RSVP",
                               style: context.headline2.copyWith(
@@ -265,8 +261,8 @@ class _EventCardState extends State<EventCard> {
                   ),
                   const Spacer(),
                   Builder(builder: (context) {
-                    if (widget.event.endDate != null) {
-                      if (widget.event.endDate!.difference(nowDate).inDays.isNegative) {
+                    if (widget.eventFull?.endDate != null) {
+                      if (widget.eventFull!.endDate!.difference(nowDate).inDays.isNegative) {
                         return const CustomButton(
                           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
@@ -275,7 +271,7 @@ class _EventCardState extends State<EventCard> {
                         );
                       }
                     } else {
-                      if (widget.event.startDate!.difference(nowDate).inDays.isNegative) {
+                      if (widget.eventFull!.startDate!.difference(nowDate).inDays.isNegative) {
                         return const CustomButton(
                           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
@@ -288,20 +284,17 @@ class _EventCardState extends State<EventCard> {
                       onPressed: () {},
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                       radius: 32,
-                      backgroundColor: widget.event.isRsvpd == false ? AppColors.darkBlue1 : AppColors.lightBlue2,
+                      backgroundColor: AppColors.lightBlue2,
                       buttonWidget: Row(
                         children: [
                           Builder(builder: (context) {
-                            if (widget.event.isRsvpd == false) {
-                              return const SizedBox.shrink();
-                            }
                             return const Icon(
                               Icons.check,
                               color: AppColors.white,
                               size: 20,
                             );
                           }),
-                          widget.event.isRsvpd == false ? const SizedBox.shrink() : const SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             "RSVP",
                             style: context.headline2.copyWith(

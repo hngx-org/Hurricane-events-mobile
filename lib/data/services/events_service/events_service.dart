@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/events/add_event_resp.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
@@ -28,13 +29,13 @@ abstract class EventsService {
   Future deleteEventsDetails();
 
   @POST("/events/{id}/comments")
-  Future createComment(
+  Future<AddEventResp> createComment(
     @Path("id") String id,
     @Body() Map<String, dynamic> body,
   );
 
   @GET("/events/{id}/comments")
-  Future getCommentsForEvent(@Path("id") String id);
+  Future<List<Comment>?> getCommentsForEvent(@Path("id") String id);
 
   @POST("/comments/{id}/images")
   Future addImagesToComment(

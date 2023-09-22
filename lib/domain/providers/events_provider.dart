@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
+import 'package:hurricane_events/data/models/comments/comment.dart';
+import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
+import 'package:hurricane_events/data/repository/comment_repositpory/comments_repository.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository.dart';
 
 class EventProvider extends ChangeNotifier {
@@ -11,6 +14,7 @@ class EventProvider extends ChangeNotifier {
   static final EventProvider instance = EventProvider._();
 
   final _event = EventRepository.instance;
+  final _comm = CommentsRepository.instance;
 
   AppState _state = AppState.init;
   AppState _timelineState = AppState.init;
@@ -19,6 +23,8 @@ class EventProvider extends ChangeNotifier {
   EventFull? _ev;
 
   final List<EventNorm> _events = [];
+  final List<Comment> _comments = [];
+
   final Map<DateTime, List<EventNorm>> _eventsCalendar = {};
 
   createEvent({
@@ -112,10 +118,55 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  getComments(String id) async {
+    try {
+      final s = await _comm.getComments(id: id);
+      if (s.item1 != null) {
+        _comments.clear();
+        _comments.addAll(s.item1 ?? []);
+        notifyListeners();
+      }
+    } catch (e) {}
+  }
+
+  refreshComments(String id) async {
+    try {
+      final s = await _comm.getComments(id: id);
+      if (s.item1 != null) {
+        _comments.clear();
+        _comments.addAll(s.item1 ?? []);
+        notifyListeners();
+      }
+    } catch (e) {}
+  }
+
+  createComment(
+    String id,
+    CreateComment comment,
+  ) async {
+    try {
+      final s = await _comm.createComment(
+        id: id,
+        body: comment,
+      );
+      if (s.item1 != null) {
+        if (s.item1 == true) {
+          await Future.delayed(const Duration(milliseconds: 200));
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   AppState get state => _state;
   AppState get timelineState => _timelineState;
   AppState get eventState => _eventState;
   EventFull? get event => _ev;
   Map<DateTime, List<EventNorm>> get eventsCalendar => _eventsCalendar;
   List<EventNorm> get events => _events;
+  List<Comment> get comments => _comments;
 }

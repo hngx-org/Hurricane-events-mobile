@@ -84,9 +84,7 @@ class _EventDetailsState extends State<EventDetails> {
                       ],
                     ),
                     const Gap(42.5),
-                    EventCard(
-                      event: widget.event,
-                    ),
+
                     const Gap(20),
                     // SizedBox(
                     //   height: 300,
