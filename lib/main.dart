@@ -3,13 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
-import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
 import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
 import 'package:hurricane_events/domain/providers/auth_provider.dart';
 import 'package:hurricane_events/domain/providers/global_provider.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:hurricane_events/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -75,6 +75,9 @@ final _providers = <SingleChildWidget>[
   ),
   ChangeNotifierProvider<AuthProvider>(
     create: (_) => AuthProvider.instance,
+  ),
+   ChangeNotifierProvider<UserProvider>(
+    create: (_) => UserProvider.instance,
   )
 ];
 
