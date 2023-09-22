@@ -3,14 +3,6 @@ import 'package:dio/dio.dart';
 class Dummy extends Interceptor {}
 
 class ApiInterceptor extends Interceptor {
-  @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) {
-    super.onRequest(options, handler);
-    return handler.next(options);
-  }
 
   @override
   void onError(
@@ -55,5 +47,4 @@ class ApiInterceptor extends Interceptor {
       );
     }
   }
-
 }

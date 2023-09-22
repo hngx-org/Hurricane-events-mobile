@@ -1,15 +1,15 @@
 class UserId {
-    final String userId;
+  final String? userId;
 
-    UserId({
-        required this.userId,
-    });
+  UserId({
+    this.userId,
+  });
 
-    factory UserId.fromJson(Map<String, dynamic> json) => UserId(
+  factory UserId.fromJson(Map<String, dynamic> json) => UserId(
         userId: json["user_id"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "user_id": userId,
-    };
+      };
 }
