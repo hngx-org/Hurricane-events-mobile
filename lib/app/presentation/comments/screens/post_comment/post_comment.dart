@@ -22,14 +22,12 @@ class PostCommentEventDetails extends StatefulWidget {
   const PostCommentEventDetails({Key? key}) : super(key: key);
 
   @override
-  State<PostCommentEventDetails> createState() =>
-      _PostCommentEventDetailsState();
+  State<PostCommentEventDetails> createState() => _PostCommentEventDetailsState();
   static const String routeName = "post_comments";
 }
 
 class _PostCommentEventDetailsState extends State<PostCommentEventDetails> {
-  String selectedCommentType =
-      "Pre-events comments"; // Initially no commentType is selected
+  String selectedCommentType = "Pre-events comments"; // Initially no commentType is selected
 
   List<dynamic> postEvent = [
     const Post(comment: 'Wahala fon come', name: "Unknown"),
@@ -68,9 +66,7 @@ class _PostCommentEventDetailsState extends State<PostCommentEventDetails> {
       ),
       bottomNavigationBar: Container(
         alignment: Alignment.bottomCenter,
-        decoration: BoxDecoration(
-            color: AppColors.textFieldBackground,
-            borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: AppColors.textFieldBackground, borderRadius: BorderRadius.circular(5)),
         width: double.infinity,
         height: 40,
         child: Row(
@@ -112,9 +108,6 @@ class _PostCommentEventDetailsState extends State<PostCommentEventDetails> {
         child: Column(
           children: [
             40.height,
-            EventCard(
-              event: sampleEvent,
-            ),
             CommentType(
               commentType: "Pre-events comments",
               isSelected: selectedCommentType == "Pre-events comments",
@@ -127,13 +120,9 @@ class _PostCommentEventDetailsState extends State<PostCommentEventDetails> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: selectedCommentType == "Pre-events comments"
-                    ? preEvent.length
-                    : postEvent.length,
+                itemCount: selectedCommentType == "Pre-events comments" ? preEvent.length : postEvent.length,
                 itemBuilder: (context, index) {
-                  return selectedCommentType == "Pre-events comments"
-                      ? preEvent[index]
-                      : postEvent[index];
+                  return selectedCommentType == "Pre-events comments" ? preEvent[index] : postEvent[index];
                 },
               ),
             )

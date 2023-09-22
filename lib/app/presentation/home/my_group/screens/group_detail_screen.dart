@@ -220,21 +220,21 @@ class GroupDetailsScreen extends StatelessWidget {
                 style: context.body1.copyWith(fontSize: 16, color: AppColors.darkGrey),
               ),
               24.height,
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(
-                      4,
-                      (index) {
-                        final event = index.isEven ? sampleEvent : sampleEvent2;
-                        return EventCard(
-                          event: event,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              )
+              // Expanded(
+              //   child: SingleChildScrollView(
+              //     child: Column(
+              //       children: List.generate(
+              //         4,
+              //         (index) {
+              //           final event = index.isEven ? sampleEvent : sampleEvent2;
+              //           return EventCard(
+              //             event: event,
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

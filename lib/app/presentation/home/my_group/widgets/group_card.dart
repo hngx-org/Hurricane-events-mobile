@@ -22,7 +22,7 @@ class MyGroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        BaseNavigator.pushNamed(GroupDetailsScreen.routeName);
+        // BaseNavigator.pushNamed(GroupDetailsScreen.routeName);
       },
       child: Container(
         decoration: ShapeDecoration(
