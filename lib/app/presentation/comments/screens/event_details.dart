@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -118,8 +120,8 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
     super.initState();
     eventCommentsCheck();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print(preEventComment);
-      print(postEventComment);
+      log(preEventComment.toString());
+      log(postEventComment.toString());
 
       if (preEventComment.isNotEmpty) {
         preSelected.value = true;

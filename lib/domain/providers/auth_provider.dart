@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/data/repository/auth_repository/auth_repository.dart';
@@ -19,7 +21,7 @@ class AuthProvider extends ChangeNotifier {
 
       final result = await _auth.googleAuth();
       if (result.item1 != null) {
-        print(result.item1);
+        log(result.item1.toString());
 
         _state = AppState.success;
         notifyListeners();
