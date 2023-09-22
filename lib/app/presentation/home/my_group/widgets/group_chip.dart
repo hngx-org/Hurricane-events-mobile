@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
@@ -22,8 +20,10 @@ class MyGroupChip extends StatelessWidget {
       ),
       child: Text(
         title,
-        style:
-            context.body2.copyWith(fontSize: 10, color: AppColors.designOrange),
+        style: context.body1.copyWith(
+          fontSize: 12,
+          color: Colors.orange,
+        ),
       ),
     );
   }

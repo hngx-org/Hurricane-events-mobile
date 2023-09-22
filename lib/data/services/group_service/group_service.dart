@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:hurricane_events/data/models/groups/add_user.dart';
 import 'package:hurricane_events/data/models/groups/create_group.dart';
+import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'group_service.g.dart';
@@ -13,4 +15,20 @@ abstract class GroupService {
     @Body() required Map<String, dynamic> body,
   });
 
+  @POST("/groups/{group_id}/members/{user_id}")
+  Future<AddUser> addUser({
+    @Path("user_id") required String userId,
+    @Path("group_id") required String groupId,
+  });
+
+  @DELETE("/groups/{group_id}/members/{user_id}")
+  Future<AddUser> removeUser({
+    @Path("user_id") required String userId,
+    @Path("group_id") required String groupId,
+  });
+
+  @GET("/groups")
+  Future<List<GroupDetails>> getGroupsList(
+    // @Path() String userId,
+  );
 }

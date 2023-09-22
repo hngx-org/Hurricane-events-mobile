@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final FocusNode? focus;
   final String? Function(String?)? validator;
   bool? obscureText;
+  final bool? enabled;
   final bool? suffix;
   final int? maxLines;
   final Widget? suffixIcon;
@@ -37,6 +38,7 @@ class CustomTextField extends StatefulWidget {
     this.external,
     this.suffixIcon,
     this.maxLines,
+    this.enabled,
   });
 
   @override
@@ -65,6 +67,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             focusNode: widget.focus,
             onChanged: widget.onChanged,
             cursorColor: Colors.black,
+            enabled: widget.enabled,
             style: context.test.copyWith(
               color: Colors.black.withOpacity(.7),
               fontSize: 14,
