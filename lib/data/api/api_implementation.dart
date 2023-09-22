@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hurricane_events/data/api/api_interceptor.dart';
+import 'package:hurricane_events/data/services/group_service/group_service.dart';
 import 'package:hurricane_events/data/services/test_service/test_service.dart';
 import 'package:hurricane_events/data/services/user_service/user_service.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
@@ -41,5 +42,9 @@ abstract class ApiImplementation {
 
   UserService userService() {
     return UserService(_getDioWith(interceptors: [ApiInterceptor()]));
+  }
+
+  GroupService groupService() {
+    return GroupService(_getDioWith(interceptors: [ApiInterceptor()]));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/add_group/providers/add_group_provider.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
@@ -76,6 +77,9 @@ final _providers = <SingleChildWidget>[
   ),
   ChangeNotifierProvider<UserProvider>(
     create: (_) => UserProvider.instance,
+  ),
+  ChangeNotifierProvider<AddGroupProvider>(
+    create: (_) => AddGroupProvider.instance,
   )
 ];
 
