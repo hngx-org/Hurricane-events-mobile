@@ -181,8 +181,8 @@ class _CalendarState extends State<CalendarSection> {
                             child: Text(
                               "${_getEventsForDay(_selectedDate).length} Events remaining",
                               textAlign: TextAlign.left,
-                              style: context.body2.copyWith(
-                                color: AppColors.designOrange,
+                              style: context.body1.copyWith(
+                                color: Colors.orange,
                                 fontSize: 12,
                               ),
                             ),
