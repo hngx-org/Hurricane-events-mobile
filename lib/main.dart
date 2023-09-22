@@ -9,6 +9,7 @@ import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
 import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
 import 'package:hurricane_events/domain/providers/auth_provider.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/global_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:hurricane_events/firebase_options.dart';
@@ -80,6 +81,9 @@ final _providers = <SingleChildWidget>[
   ),
   ChangeNotifierProvider<AddGroupProvider>(
     create: (_) => AddGroupProvider.instance,
+  ),
+  ChangeNotifierProvider<EventProvider>(
+    create: (_) => EventProvider.instance,
   )
 ];
 

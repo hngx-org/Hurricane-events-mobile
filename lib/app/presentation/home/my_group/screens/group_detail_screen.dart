@@ -131,6 +131,7 @@ class GroupDetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: AppColors.backgroundColor,
         leading: Padding(
           padding: const EdgeInsets.only(left: 24),
@@ -155,87 +156,87 @@ class GroupDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            40.height,
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
-                  bottom: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: ShapeDecoration(
-                      color: AppColors.lightBlue1,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: SvgPicture.asset(
-                      AppImages.techiesIcon,
-                      height: 56,
-                    ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              24.height,
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
+                    bottom: BorderSide(width: 1, color: Color(0xFFCCE6FF)),
                   ),
-                  16.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //Group name
-                      Text(
-                        "Hangout",
-                        style: context.body1.copyWith(fontSize: 16),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: ShapeDecoration(
+                        color: AppColors.lightBlue1,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
-                      12.height,
-                      Row(
-                        children: [
-                          //Number of people
-                          const MyGroupChip(
-                            title: "33 people",
-                          ),
-                          12.width,
+                      padding: const EdgeInsets.all(4),
+                      child: SvgPicture.asset(
+                        AppImages.techiesIcon,
+                        height: 56,
+                      ),
+                    ),
+                    16.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Group name
+                        Text(
+                          "Hangout",
+                          style: context.body1.copyWith(fontSize: 16),
+                        ),
+                        12.height,
+                        Row(
+                          children: [
+                            //Number of people
+                            const MyGroupChip(
+                              title: "33 people",
+                            ),
+                            12.width,
 
-                          //Number of events
-                          const MyGroupChip(
-                            title: "3 Upcoming events",
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            40.height,
-            Text(
-              "Upcoming events",
-              style: context.body1
-                  .copyWith(fontSize: 16, color: AppColors.darkGrey),
-            ),
-            24.height,
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    4,
-                    (index) {
-                      final event = index.isEven ? sampleEvent : sampleEvent2;
-                      return EventCard(
-                        event: event,
-                      );
-                    },
-                  ),
+                            //Number of events
+                            const MyGroupChip(
+                              title: "3 Upcoming events",
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+              40.height,
+              Text(
+                "Upcoming events",
+                style: context.body1.copyWith(fontSize: 16, color: AppColors.darkGrey),
+              ),
+              24.height,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: List.generate(
+                      4,
+                      (index) {
+                        final event = index.isEven ? sampleEvent : sampleEvent2;
+                        return EventCard(
+                          event: event,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
