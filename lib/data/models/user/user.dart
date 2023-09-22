@@ -1,14 +1,14 @@
 class AppUser {
-  final String avatar;
-  final String email;
-  final String id;
-  final String name;
+  final String? avatar;
+  final String? email;
+  final String? id;
+  final String? name;
 
   AppUser({
-    required this.avatar,
-    required this.email,
-    required this.id,
-    required this.name,
+    this.avatar,
+    this.email,
+    this.id,
+    this.name,
   });
 
   AppUser copyWith({

@@ -10,7 +10,9 @@ abstract class UserService {
   factory UserService(Dio dio, {String baseUrl}) = _UserService;
 
   @POST("/auth")
-  Future<UserId> createUser({@Body() required Map<String, dynamic> body});
+  Future<UserId> createUser({
+    @Body() required Map<String, dynamic> body,
+  });
 
   @GET("/users/{user_id}")
   Future<AppUser> getUserDetails(@Path("user_id") String id);
