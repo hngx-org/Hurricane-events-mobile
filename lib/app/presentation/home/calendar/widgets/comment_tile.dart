@@ -4,7 +4,6 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class CommentTile extends StatelessWidget {
   final Comment? comment;
