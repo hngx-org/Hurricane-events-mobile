@@ -8,6 +8,7 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
+import 'package:hurricane_events/data/models/groups/group_details.dart';
 
 final sampleEvent = EventsMockUp(
   name: "Hurricane Slack meeting",
@@ -124,7 +125,12 @@ final sampleEvent2 = EventsMockUp(
 
 class GroupDetailsScreen extends StatelessWidget {
   static const String routeName = "group_details";
-  const GroupDetailsScreen({super.key});
+  final GroupDetails groupDetail;
+
+  const GroupDetailsScreen({
+    super.key,
+    required this.groupDetail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +183,8 @@ class GroupDetailsScreen extends StatelessWidget {
                     Container(
                       decoration: ShapeDecoration(
                         color: AppColors.lightBlue1,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       padding: const EdgeInsets.all(4),
                       child: SvgPicture.asset(
@@ -191,7 +198,7 @@ class GroupDetailsScreen extends StatelessWidget {
                       children: [
                         //Group name
                         Text(
-                          "Hangout",
+                          groupDetail.title!,
                           style: context.body1.copyWith(fontSize: 16),
                         ),
                         12.height,
@@ -217,7 +224,8 @@ class GroupDetailsScreen extends StatelessWidget {
               40.height,
               Text(
                 "Upcoming events",
-                style: context.body1.copyWith(fontSize: 16, color: AppColors.darkGrey),
+                style: context.body1
+                    .copyWith(fontSize: 16, color: AppColors.darkGrey),
               ),
               24.height,
               Expanded(
