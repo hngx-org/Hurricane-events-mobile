@@ -224,6 +224,10 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
             if (eventProvider.eventState == AppState.loading) {
               return const EventShimmer();
             }
+
+            if (eventProvider.event == null) {
+              return const SizedBox.shrink();
+            }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Builder(

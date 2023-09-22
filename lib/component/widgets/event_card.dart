@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/stacked_images.dart';
-import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
@@ -83,11 +81,9 @@ class _EventCardState extends State<EventCard> {
                       const SizedBox(height: 6),
                       Builder(builder: (context) {
                         return Text(
-                          calculateTimeStatus(
-                            widget.eventFull!.startDate!,
-                          )[0],
+                          calculateTimeStatus(widget.eventFull!.startDate!)[0],
                           style: context.body1.copyWith(
-                            fontSize: 12,
+                            fontSize: 13,
                             color: AppColors.designBlack3,
                           ),
                         );
@@ -204,7 +200,7 @@ class _EventCardState extends State<EventCard> {
                     const Spacer(),
                     Builder(builder: (context) {
                       if (widget.event.endDate != null) {
-                        if (widget.event.endDate!.difference(nowDate).inDays.isNegative) {
+                        if (widget.eventFull!.endDate!.difference(nowDate).inDays.isNegative) {
                           return const CustomButton(
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                             radius: 32,
@@ -213,7 +209,7 @@ class _EventCardState extends State<EventCard> {
                           );
                         }
                       } else {
-                        if (widget.event.startDate!.difference(nowDate).inDays.isNegative) {
+                        if (widget.eventFull!.startDate!.difference(nowDate).inDays.isNegative) {
                           return const CustomButton(
                             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                             radius: 32,
