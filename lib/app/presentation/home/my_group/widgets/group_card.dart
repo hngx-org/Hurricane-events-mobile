@@ -41,8 +41,7 @@ class MyGroupCard extends StatelessWidget {
             Container(
               decoration: ShapeDecoration(
                 color: AppColors.lightBlue1,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               padding: const EdgeInsets.all(4),
               child: SvgPicture.asset(
@@ -56,7 +55,9 @@ class MyGroupCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: context.body1.copyWith(fontSize: 16),
+                  style: context.body1.copyWith(
+                    fontSize: 16,
+                  ),
                 ),
                 12.height,
                 Row(

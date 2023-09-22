@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:hurricane_events/component/widgets/event_card.dart';
-
+import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
+import 'package:hurricane_events/app/presentation/home/timeline/widgets/timeline_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/events/event_mock_up.dart';
+import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../../../router/base_navigator.dart';
 
 class CalendarSection extends StatefulWidget {
   static const String routeName = "calender";
@@ -19,98 +21,15 @@ class CalendarSection extends StatefulWidget {
 }
 
 class _CalendarState extends State<CalendarSection> {
-  DateTime _selectedDate = DateTime.now();
-
-  Map<DateTime, List<EventsMockUp>> events = {
-    DateTime.parse("2023-09-17 00:00:00Z"): [
-      EventsMockUp(
-        name: "Hurricane Slack group meeting",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-17 00:00:00Z"),
-        endDate: DateTime(2023, 10, 1),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        endDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        endDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      )
-    ],
-    DateTime.parse("2023-09-19 00:00:00Z"): [
-      EventsMockUp(
-        name: "Hurricane Slack meeting",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-19 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      ),
-      EventsMockUp(
-        name: "Hurricane group",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-19 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Lagos, Nigeria",
-      ),
-      EventsMockUp(
-        name: "Bayern vs Manchester United",
-        groupName: "Champions League",
-        startDate: DateTime.parse("2023-09-20 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 20, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 22, minute: 00),
-        location: "Lagos, Nigeria",
-      ),
-    ],
-    DateTime.parse("2023-09-16 00:00:00Z"): [
-      EventsMockUp(
-        name: "Football meeting",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-16 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      )
-    ],
-    DateTime.parse("2023-09-01 00:00:00Z"): [
-      EventsMockUp(
-        name: "Yes meeting",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-01 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      )
-    ],
-    DateTime.parse("2023-09-30 00:00:00Z"): [
-      EventsMockUp(
-        name: "No meeting",
-        groupName: "Hangouts",
-        startDate: DateTime.parse("2023-09-30 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      )
-    ],
-    DateTime.parse("2023-09-22 00:00:00Z"): [
-      EventsMockUp(
-        name: "Submission Date",
-        groupName: "Submission",
-        startDate: DateTime.parse("2023-09-22 00:00:00Z"),
-        startDateStartTime: const TimeOfDay(hour: 12, minute: 00),
-        startDateEndTime: const TimeOfDay(hour: 12, minute: 00),
-        location: "Slack",
-      )
-    ]
-  };
+  DateTime _selectedDate = DateTime.parse("${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String()}Z");
 
   @override
   void initState() {
     super.initState();
-    _getEventsForDay(_selectedDate);
   }
 
-  List<EventsMockUp> _getEventsForDay(DateTime day) {
-    final s = events[day] ?? [];
+  List<EventNorm> _getEventsForDay(DateTime day) {
+    final s = context.read<EventProvider>().eventsCalendar[day] ?? [];
     return s;
   }
 
@@ -262,8 +181,8 @@ class _CalendarState extends State<CalendarSection> {
                             child: Text(
                               "${_getEventsForDay(_selectedDate).length} Events remaining",
                               textAlign: TextAlign.left,
-                              style: context.body2.copyWith(
-                                color: AppColors.designOrange,
+                              style: context.body1.copyWith(
+                                color: Colors.orange,
                                 fontSize: 12,
                               ),
                             ),
@@ -302,7 +221,7 @@ class _CalendarState extends State<CalendarSection> {
                         ],
                       );
                     }
-                    return GroupedListView<EventsMockUp, String>(
+                    return GroupedListView<EventNorm, String>(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       elements: _getEventsForDay(_selectedDate),
@@ -337,8 +256,15 @@ class _CalendarState extends State<CalendarSection> {
                           ],
                         );
                       },
-                      itemBuilder: (context, EventsMockUp element) {
-                        return EventCard(
+                      itemBuilder: (context, EventNorm element) {
+                        return TimelineCard(
+                          onTap: () {
+                            BaseNavigator.pushNamed(
+                              PreCommentEventDetails.routeName,
+                              args: element.id,
+                            );
+                          },
+                          moreButtonFunction: () {},
                           event: element,
                         );
                       },
