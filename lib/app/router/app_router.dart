@@ -9,7 +9,6 @@ import 'package:hurricane_events/app/presentation/home/my_group/screens/group_sc
 import 'package:hurricane_events/app/presentation/home/settings/screens/settings.dart';
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
-import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
 import '../presentation/comments/screens/post_comment/post_comment.dart';
 
@@ -73,14 +72,11 @@ class AppRouter {
       case PostCommentEventDetails.routeName:
         return _getPageRoute(const PostCommentEventDetails());
       case PreCommentEventDetails.routeName:
-        {
-          final event = settings.arguments as EventsMockUp;
-          return _getPageRoute(PreCommentEventDetails(event: event));
-        }
+        final s = settings.arguments as String;
+        return _getPageRoute(PreCommentEventDetails(id: s));
 
       default:
         return _getPageRoute(const Splash());
     }
-    // return null;
   }
 }

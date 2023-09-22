@@ -17,14 +17,19 @@ class AddGroupProvider extends ChangeNotifier {
     try {
       _state = AppState.loading;
       notifyListeners();
-      final res = await _group.createGroup(title: groupTitle);
+      final res = await _group.createGroup(
+        title: groupTitle,
+      );
 
       if (res.item1 != null) {
         _state = AppState.success;
         notifyListeners();
-        await Future.delayed(const Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 200));
         BaseNavigator.pop();
       }
+
+      _state = AppState.error;
+      notifyListeners();
     } catch (e) {
       _state = AppState.error;
       notifyListeners();

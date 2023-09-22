@@ -8,6 +8,7 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../data/models/events/event_mock_up.dart';
