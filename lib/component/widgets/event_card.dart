@@ -16,9 +16,12 @@ import '../../../../../data/models/events/event_mock_up.dart';
 class EventCard extends StatefulWidget {
   final EventsMockUp event;
 
+  final EventFull? eventFull;
+
   const EventCard({
     super.key,
     required this.event,
+    this.eventFull,
   });
 
   @override
@@ -35,158 +38,143 @@ class _EventCardState extends State<EventCard> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          InkWell(
-            onTap: () {
-              BaseNavigator.pushNamed(
-                PreCommentEventDetails.routeName,
-                args: widget.event,
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            decoration: const BoxDecoration(
+              color: AppColors.white,
+              border: Border(
+                top: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
               ),
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                border: Border(
-                  top: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
-                  bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 76,
+                  width: 76,
+                  decoration: BoxDecoration(
+                    color: AppColors.lightBlue1,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  padding: const EdgeInsets.all(14),
+                  child: const Svg(
+                    image: AppImages.hangoutIcon,
+                    color: AppColors.darkBlue1,
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 76,
-                    width: 76,
-                    decoration: BoxDecoration(
-                      color: AppColors.lightBlue1,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: const Svg(
-                      image: AppImages.hangoutIcon,
-                      color: AppColors.darkBlue1,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.event.groupName ?? 'Group Name',
-                          style: context.body2.copyWith(
-                            fontSize: 10,
-                            color: AppColors.designOrange,
-                          ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.event.groupName ?? 'Hangouts',
+                        style: context.body1.copyWith(
+                          fontSize: 12,
+                          color: Colors.orange,
                         ),
-                        const SizedBox(height: 6),
-                        Builder(builder: (context) {
-                          if (!widget.event.startDate!.difference(DateTime.now()).inDays.isNegative &&
-                              widget.event.startDate!.difference(DateTime.now()).inDays > 0) {
-                            return Text(
-                              "In ${widget.event.startDate!.difference(DateTime.now()).inDays} days",
-                              style: context.body1.copyWith(
-                                fontSize: 12,
-                                color: AppColors.designBlack3,
-                              ),
-                            );
-                          }
-                          return Text(
-                            widget.event.groupName ?? 'Group',
-                            style: context.body1.copyWith(
-                              fontSize: 12,
-                              color: AppColors.designBlack3,
-                            ),
-                          );
-                        }),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.event.name ?? 'Group',
+                      ),
+                      const SizedBox(height: 6),
+                      Builder(builder: (context) {
+                        return Text(
+                          calculateTimeStatus(
+                            widget.eventFull!.startDate!,
+                          )[0],
                           style: context.body1.copyWith(
-                            fontSize: 23,
-                            color: AppColors.designBlack1,
+                            fontSize: 12,
+                            color: AppColors.designBlack3,
                           ),
+                        );
+                      }),
+                      const SizedBox(height: 4),
+                      Text(
+                        widget.eventFull?.title ?? 'Group',
+                        style: context.body1.copyWith(
+                          fontSize: 23,
+                          color: AppColors.designBlack1,
                         ),
-                        const SizedBox(height: 8),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Date",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack2,
-                                ),
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Date",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack2,
                               ),
-                              TextSpan(
-                                text: " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate!)}",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack1,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Time",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack2,
-                                ),
+                            ),
+                            TextSpan(
+                              text: " ${DateFormat("EEEE dd, MMM").format(widget.eventFull!.startDate!)}",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack1,
                               ),
-                              TextSpan(
-                                text:
-                                    " ${widget.event.startDateStartTime?.hour} - ${widget.event.startDateEndTime?.hour}${widget.event.startDateEndTime?.period.name.toUpperCase()}",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack1,
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 4),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Location",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack2,
-                                ),
+                      ),
+                      const SizedBox(height: 4),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Time",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack2,
                               ),
-                              TextSpan(
-                                text: " ${widget.event.location}",
-                                style: context.body2.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.designBlack1,
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                            TextSpan(
+                              text:
+                                  " ${parseTimeOfDay(widget.eventFull!.startTime!).hour}:${parseTimeOfDay(widget.eventFull!.startTime!).minute}${parseTimeOfDay(widget.eventFull!.startTime!).period.name.toUpperCase()} - ${parseTimeOfDay(widget.eventFull!.endTime!).hour}:${parseTimeOfDay(widget.eventFull!.endTime!).minute}${parseTimeOfDay(widget.eventFull!.endTime!).period.name.toUpperCase()}",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack1,
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 4),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Location",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack2,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " ${widget.eventFull?.location}",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack1,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  ClickWidget(
-                    onTap: () {},
-                    child: const Icon(
-                      Icons.more_vert,
-                      size: 20,
-                    ),
-                  )
-                ],
-              ),
+                ),
+                ClickWidget(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.more_vert,
+                    size: 20,
+                  ),
+                )
+              ],
             ),
           ),
           Container(
@@ -336,5 +324,58 @@ class _EventCardState extends State<EventCard> {
         ],
       ),
     );
+  }
+
+  TimeOfDay parseTimeOfDay(String timeString) {
+    final parts = timeString.split(':');
+    if (parts.length == 3) {
+      final hour = int.tryParse(parts[0]);
+      final minute = int.tryParse(parts[1]);
+
+      if (hour != null && minute != null) {
+        return TimeOfDay(hour: hour, minute: minute);
+      }
+    }
+
+    // Handle invalid input here or return a default value if needed
+    throw FormatException("Invalid time format: $timeString");
+  }
+
+  List calculateTimeStatus(
+    DateTime startDateTime,
+  ) {
+    DateTime now = DateTime.now();
+    String statusString = '';
+    bool isHappeningNow = false;
+
+    // Check if the event is happening now
+    if (startDateTime.difference(now).inDays.isNegative) {
+      statusString = "LIVE";
+      isHappeningNow = true;
+    } else if (startDateTime.isAfter(now)) {
+      // Calculate the time difference
+      Duration difference = startDateTime.difference(now);
+
+      if (difference.inDays >= 7) {
+        // More than 1 week in the future
+        statusString = "In ${difference.inDays ~/ 7} week(s)";
+      } else if (difference.inDays >= 1) {
+        // 1 day to 1 week in the future
+        statusString = "In ${difference.inDays} day(s)";
+      } else if (difference.inHours >= 1) {
+        // Less than 1 day but more than 1 hour in the future
+        statusString = "In ${difference.inHours} hour(s)";
+      } else {
+        // Less than 1 hour in the future
+        statusString = "In ${difference.inMinutes} minute(s)";
+      }
+    } else if (startDateTime.difference(now).inDays == 0) {
+      statusString = "Happening Today";
+      isHappeningNow = true;
+    } else {
+      // The event has already ended
+      statusString = "Event Ended";
+    }
+    return [statusString, isHappeningNow];
   }
 }

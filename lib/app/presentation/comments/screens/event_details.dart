@@ -12,7 +12,6 @@ import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/widgets/event_shimmer.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
-import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'dart:math' as math;
 
@@ -42,8 +41,6 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
   ValueNotifier preSelected = ValueNotifier(false);
   ValueNotifier postSelected = ValueNotifier(false);
-
-  late EventFull fullEvent;
 
   EventsMockUp event = EventsMockUp(
     name: "Hurricane Slack meeting",
@@ -109,15 +106,8 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
   getEventsDetails() async {
     try {
-      final s = await context.read<EventProvider>().getEventId(id: widget.id);
-
-      if (s != null) {
-        fullEvent = s;
-        setState(() {});
-      } else {
-        BaseNavigator.pop();
-      }
-    } catch (e) {
+      await context.read<EventProvider>().getEventId(id: widget.id);
+    } catch (_) {
       BaseNavigator.pop();
     }
   }
@@ -178,8 +168,8 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getEventsDetails();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await getEventsDetails();
       eventCommentsCheck();
       if (preEventComment.isNotEmpty) {
         preSelected.value = true;
@@ -193,6 +183,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
   @override
   void dispose() {
+    focus.dispose();
     commentController.dispose();
     super.dispose();
   }
@@ -244,6 +235,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                       12.height,
                       EventCard(
                         event: event,
+                        eventFull: eventProvider.event,
                       ),
                       30.height,
                       ClickWidget(

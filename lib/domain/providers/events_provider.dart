@@ -16,6 +16,8 @@ class EventProvider extends ChangeNotifier {
   AppState _timelineState = AppState.init;
   AppState _eventState = AppState.init;
 
+  EventFull? _ev;
+
   final List<EventNorm> _events = [];
 
   createEvent({
@@ -43,7 +45,7 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  Future<EventFull?> getEventId({required String id}) async {
+  getEventId({required String id}) async {
     try {
       _eventState = AppState.loading;
       notifyListeners();
@@ -51,19 +53,16 @@ class EventProvider extends ChangeNotifier {
       final s = await _event.getEventDetail(id);
       if (s.item1 != null) {
         await Future.delayed(const Duration(milliseconds: 200));
+        _ev = s.item1;
         _eventState = AppState.success;
         notifyListeners();
-
-        return s.item1;
       }
 
       _eventState = AppState.error;
       notifyListeners();
-      return null;
     } catch (e) {
       _eventState = AppState.error;
       notifyListeners();
-      return null;
     }
   }
 
@@ -102,5 +101,6 @@ class EventProvider extends ChangeNotifier {
   AppState get state => _state;
   AppState get timelineState => _timelineState;
   AppState get eventState => _eventState;
+  EventFull? get event => _ev;
   List<EventNorm> get events => _events;
 }
