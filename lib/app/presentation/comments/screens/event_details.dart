@@ -118,9 +118,6 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
     super.initState();
     eventCommentsCheck();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print(preEventComment);
-      print(postEventComment);
-
       if (preEventComment.isNotEmpty) {
         preSelected.value = true;
         setState(() {});

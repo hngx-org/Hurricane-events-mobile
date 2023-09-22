@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/app/presentation/home/home.dart';
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/app_strings.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
+import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
 
 class Splash extends StatefulWidget {
   static const String routeName = "splash-screen";
@@ -18,6 +20,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   late Animation<double> _widthAnimation;
   late AnimationController _controller;
 
+  final _local = AppStorage.instance;
+
   @override
   void initState() {
     super.initState();
@@ -26,24 +30,16 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
       vsync: this,
     );
     _widthAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0, end: 250), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 250, end: 200), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 200, end: 220), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 220, end: 250), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 250), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 250, end: 200), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 200, end: 220), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 220, end: 250), weight: 200),
     ]).animate(_controller);
     _heightAnimation = TweenSequence(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0, end: 100), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 100, end: 60), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 60, end: 80), weight: 200),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 80, end: 60), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 100), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 100, end: 60), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 60, end: 80), weight: 200),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 80, end: 60), weight: 200),
     ]).animate(_controller);
     _controller.forward();
     navigatetonextpage();
@@ -51,7 +47,11 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   navigatetonextpage() async {
     await Future.delayed(const Duration(milliseconds: 2000), (() {}));
-    BaseNavigator.pushNamedAndReplace(SignUpScreen.routeName);
+    if (_local.userHasId == true) {
+      BaseNavigator.pushNamedAndReplace(HomeScreen.routeName);
+    } else {
+      BaseNavigator.pushNamedAndReplace(SignUpScreen.routeName);
+    }
   }
 
   @override
