@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
@@ -56,9 +58,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
                         physics: const ClampingScrollPhysics(),
                         padding: EdgeInsets.zero,
                         elements: events.events,
-                        groupBy: (element) => element.startDate!.toIso8601String(),
-                        itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
-                        groupComparator: (value1, value2) => value2.compareTo(value1),
+                        groupBy: (element) =>
+                            element.startDate!.toIso8601String(),
+                        itemComparator: (item1, item2) =>
+                            item2.startDate!.compareTo(item1.startDate!),
+                        groupComparator: (value1, value2) =>
+                            value2.compareTo(value1),
                         order: GroupedListOrder.DESC,
                         useStickyGroupSeparators: false,
                         groupSeparatorBuilder: (value) {
@@ -102,7 +107,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ),
           elevation: 0.0,
           backgroundColor: AppColors.darkBlue1,
-          extendedPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          extendedPadding:
+              const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           label: Row(
             children: [
               const Icon(

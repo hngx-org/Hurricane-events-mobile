@@ -11,4 +11,6 @@ abstract class EventRepositoryInterface {
   Future<Tuple2<List<EventNorm>?, String?>> getEvents();
 
   Future<Tuple2<EventFull?, String?>> getEventDetail(String id);
+
+  Future<Tuple2<bool?, String?>> deleteEvent(String id);
 }

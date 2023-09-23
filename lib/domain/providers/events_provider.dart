@@ -87,6 +87,28 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  deleteEvent({required String eventId}) async {
+    try {
+      _state = AppState.loading;
+      notifyListeners();
+
+      final s = await _event.deleteEvent(eventId);
+      if (s.item1 != null) {
+        if (s.item1 == true) {
+          await Future.delayed(const Duration(milliseconds: 200));
+          _state = AppState.success;
+          notifyListeners();
+        }
+      }
+
+      _state = AppState.error;
+      notifyListeners();
+    } catch (e) {
+      _state = AppState.error;
+      notifyListeners();
+    }
+  }
+
   getEventId({required String id}) async {
     try {
       _eventState = AppState.loading;
@@ -180,7 +202,7 @@ class EventProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-        log(e.toString());
+      log(e.toString());
     }
   }
 

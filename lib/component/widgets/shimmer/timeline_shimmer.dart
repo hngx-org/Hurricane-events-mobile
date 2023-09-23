@@ -19,7 +19,7 @@ class TimelineShimmer extends StatelessWidget {
           highlightColor: Colors.grey.withOpacity(0.1),
           enabled: true,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
