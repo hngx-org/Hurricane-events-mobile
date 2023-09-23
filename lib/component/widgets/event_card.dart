@@ -6,10 +6,13 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
-import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
-
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EventCard extends StatefulWidget {
   final EventFull? eventFull;
@@ -26,9 +29,11 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
-  DateTime nowDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime nowDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserProvider>(context).user?.id;
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
       child: Column(
@@ -107,7 +112,8 @@ class _EventCardState extends State<EventCard> {
                               ),
                             ),
                             TextSpan(
-                              text: " ${DateFormat("EEEE dd, MMM").format(widget.eventFull!.startDate!)}",
+                              text:
+                                  " ${DateFormat("EEEE dd, MMM").format(widget.eventFull!.startDate!)}",
                               style: context.body2.copyWith(
                                 fontSize: 11,
                                 color: AppColors.designBlack1,
@@ -199,49 +205,35 @@ class _EventCardState extends State<EventCard> {
                     const Spacer(),
                     Builder(builder: (context) {
                       if (widget.eventFull?.endDate != null) {
-                        if (widget.eventFull!.endDate!.difference(nowDate).inDays.isNegative) {
+                        if (widget.eventFull!.endDate!
+                            .difference(nowDate)
+                            .inDays
+                            .isNegative) {
                           return const CustomButton(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                            radius: 32,
-                            backgroundColor: AppColors.designGrey,
-                            buttonText: "EVENT ENDED",
-                          );
-                        }
-                      } else {
-                        if (widget.eventFull!.startDate!.difference(nowDate).inDays.isNegative) {
-                          return const CustomButton(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 32),
                             radius: 32,
                             backgroundColor: AppColors.designGrey,
                             buttonText: "EVENT ENDED",
                           );
                         }
                       }
-                      return CustomButton(
-                        onPressed: () {},
-                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                        radius: 32,
-                        backgroundColor: AppColors.lightBlue2,
-                        buttonWidget: Row(
-                          children: [
-                            Builder(builder: (context) {
-                              return const Icon(
-                                Icons.check,
-                                color: AppColors.white,
-                                size: 20,
-                              );
-                            }),
-                            const SizedBox(width: 10),
-                            Text(
-                              "RSVP",
-                              style: context.headline2.copyWith(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      // else {
+                      //   if (widget.eventFull!.startDate!
+                      //       .difference(nowDate)
+                      //       .inDays
+                      //       .isNegative) {
+                      //     return const CustomButton(
+                      //       padding: EdgeInsets.symmetric(
+                      //           vertical: 8, horizontal: 32),
+                      //       radius: 32,
+                      //       backgroundColor: AppColors.designGrey,
+                      //       buttonText: "EVENT ENDED",
+                      //     );
+                      //   }
+                      // }
+                      return RSVPButton(
+                          userId: userId!, eventId: widget.eventFull!.id!);
                     })
                   ],
                 );
@@ -262,49 +254,34 @@ class _EventCardState extends State<EventCard> {
                   const Spacer(),
                   Builder(builder: (context) {
                     if (widget.eventFull?.endDate != null) {
-                      if (widget.eventFull!.endDate!.difference(nowDate).inDays.isNegative) {
+                      if (widget.eventFull!.endDate!
+                          .difference(nowDate)
+                          .inDays
+                          .isNegative) {
                         return const CustomButton(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
                           backgroundColor: AppColors.designGrey,
                           buttonText: "EVENT ENDED",
                         );
                       }
                     } else {
-                      if (widget.eventFull!.startDate!.difference(nowDate).inDays.isNegative) {
+                      if (widget.eventFull!.startDate!
+                          .difference(nowDate)
+                          .inDays
+                          .isNegative) {
                         return const CustomButton(
-                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                           radius: 32,
                           backgroundColor: AppColors.designGrey,
                           buttonText: "EVENT ENDED",
                         );
                       }
                     }
-                    return CustomButton(
-                      onPressed: () {},
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                      radius: 32,
-                      backgroundColor: AppColors.lightBlue2,
-                      buttonWidget: Row(
-                        children: [
-                          Builder(builder: (context) {
-                            return const Icon(
-                              Icons.check,
-                              color: AppColors.white,
-                              size: 20,
-                            );
-                          }),
-                          const SizedBox(width: 10),
-                          Text(
-                            "RSVP",
-                            style: context.headline2.copyWith(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                    return RSVPButton(
+                        userId: userId!, eventId: widget.eventFull!.id!);
                   })
                 ],
               );
@@ -366,5 +343,90 @@ class _EventCardState extends State<EventCard> {
       statusString = "Event Ended";
     }
     return [statusString, isHappeningNow];
+  }
+}
+
+class RSVPButton extends StatefulWidget {
+  const RSVPButton({
+    super.key,
+    required this.userId,
+    required this.eventId,
+  });
+
+  final String userId;
+  final String eventId;
+
+  @override
+  State<RSVPButton> createState() => _RSVPButtonState();
+}
+
+class _RSVPButtonState extends State<RSVPButton> {
+  bool interested = false;
+
+  checkForInterest() {
+    final event = GlobalProvider.instance.userEvents
+        .where((element) => element!.id == widget.eventId)
+        .isNotEmpty;
+    if (event) {
+      setState(() {
+        interested = true;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    checkForInterest();
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<EventProvider>(builder: (context, eventProvider, child) {
+      return CustomButton(
+        onPressed: () async {
+          if (interested) {
+            final deletedInterest = await eventProvider.deleteInterest(
+                widget.userId, widget.eventId);
+
+            setState(() {
+              interested = !deletedInterest;
+            });
+          } else {
+            final expressedInterest = await eventProvider.expressInterest(
+                widget.userId, widget.eventId);
+
+            setState(() {
+              interested = expressedInterest;
+            });
+          }
+        },
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+        radius: 32,
+        backgroundColor:
+            interested ? AppColors.lightBlue2 : AppColors.darkBlue1,
+        buttonWidget: Row(
+          children: [
+            interested
+                ? Builder(builder: (context) {
+                    return const Icon(
+                      Icons.check,
+                      color: AppColors.white,
+                      size: 20,
+                    );
+                  })
+                : const SizedBox(),
+            const SizedBox(width: 10),
+            Text(
+              "RSVP",
+              style: context.headline2.copyWith(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
