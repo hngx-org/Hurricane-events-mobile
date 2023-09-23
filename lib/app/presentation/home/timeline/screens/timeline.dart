@@ -92,9 +92,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
             if (!mounted) return;
 
             context.read<EventProvider>().refreshEvents(
-                  eventTitle: s[0],
-                  location: s[1],
-                  groupId: s[2],
+                 
                 );
           },
           shape: RoundedRectangleBorder(
