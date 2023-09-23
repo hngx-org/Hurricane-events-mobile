@@ -25,9 +25,10 @@ class MyGroupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-
-        BaseNavigator.pushNamed(GroupDetailsScreen.routeName,
-            args: {"data": groupDetail});
+        BaseNavigator.pushNamed(
+          GroupDetailsScreen.routeName,
+          args: {"data": groupDetail},
+        );
       },
       child: Container(
         decoration: ShapeDecoration(
@@ -53,6 +54,7 @@ class MyGroupCard extends StatelessWidget {
             16.width,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   title,
@@ -60,18 +62,18 @@ class MyGroupCard extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                12.height,
-                Row(
-                  children: [
-                    MyGroupChip(
-                      title: "$numberOfPeople people",
-                    ),
-                    12.width,
-                    MyGroupChip(
-                      title: "$numberOfEvent Upcoming events",
-                    ),
-                  ],
-                )
+                // 12.height,
+                // Row(
+                //   children: [
+                //     MyGroupChip(
+                //       title: "$numberOfPeople people",
+                //     ),
+                //     12.width,
+                //     MyGroupChip(
+                //       title: "$numberOfEvent Upcoming events",
+                //     ),
+                //   ],
+                // )
               ],
             )
           ],
