@@ -2,42 +2,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../component/constants/color.dart';
 
 class TimelineCard extends StatelessWidget {
-  const TimelineCard(
-      {super.key,
-      required this.title,
-      required this.onTap,
-      required this.eventType,
-      required this.endTime,
-      required this.startTime,
-      required this.location,
-      required this.moreButtonFunction,
-      required this.iconString});
-  final String title;
-  final String eventType;
+  const TimelineCard({
+    super.key,
+    required this.onTap,
+    required this.moreButtonFunction,
+    required this.event,
+  });
+
+  final EventNorm event;
   final VoidCallback onTap;
-  final DateTime startTime;
-  final DateTime endTime;
-  final String location;
   final VoidCallback moreButtonFunction;
-  final String iconString;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return ClickWidget(
       onTap: onTap,
       child: Container(
-        decoration: ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9)),
           ),
         ),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           children: [
             Row(
@@ -50,133 +44,132 @@ class TimelineCard extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(4),
                   child: SvgPicture.asset(
-                    iconString,
+                    AppImages.hangoutIcon,
                     height: 56,
                     color: AppColors.darkBlue2,
                   ),
                 ),
                 16.width,
-                Column(
-                  // expanded was here
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      eventType,
-                      style: context.body2.copyWith(
-                        fontSize: 10,
-                        color: AppColors.designOrange,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      calculateTimeStatus(startTime, endTime)[0],
-                      style: context.body1.copyWith(
-                        fontSize: 12,
-                        color: calculateTimeStatus(startTime, endTime)[1] ? AppColors.darkBlue2 : AppColors.designBlack3,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      title,
-                      style: context.body1.copyWith(
-                        fontSize: 23,
-                        color: AppColors.designBlack1,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Date",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack2,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " ${DateFormat("EEEE dd, MMM").format(startTime)}",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack1,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Time",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack2,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " ${hourFormatter(startTime)} - ${hourFormatter(endTime)}${getAmOrPm(endTime)}",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack1,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Location",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack2,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " $location",
-                            style: context.body2.copyWith(
-                              fontSize: 11,
-                              color: AppColors.designBlack1,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
                 Expanded(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: AppColors.darkGrey,
+                  child: Column(
+                    // expanded was here
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        event.description ?? "",
+                        style: context.body2.copyWith(
+                          fontSize: 10,
+                          color: AppColors.designOrange,
+                        ),
                       ),
-                      onPressed: moreButtonFunction,
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Builder(
+                            builder: (context) {
+                              if (calculateTimeStatus(
+                                        event.startDate!,
+                                      )[0]
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "live" ||
+                                  calculateTimeStatus(
+                                        event.startDate!,
+                                      )[0]
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "happening today") {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      height: 6,
+                                      width: 6,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.designOrange,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    5.width,
+                                  ],
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          Text(
+                            calculateTimeStatus(
+                              event.startDate!,
+                            )[0],
+                            style: context.body1.copyWith(
+                              fontSize: 12,
+                              color: calculateTimeStatus(event.startDate!)[1] ? AppColors.darkBlue2 : AppColors.designBlack3,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        event.title ?? "",
+                        style: context.body1.copyWith(
+                          fontSize: 23,
+                          color: AppColors.designBlack1,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Date",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack2,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " ${DateFormat("EEEE dd, MMM").format(event.startDate ?? DateTime.now())}",
+                              style: context.body2.copyWith(
+                                fontSize: 11,
+                                color: AppColors.designBlack1,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: AppColors.designBlack1,
+                      size: 16,
                     ),
+                    onPressed: moreButtonFunction,
                   ),
                 )
               ],
             ),
-            const Divider()
           ],
         ),
       ),
     );
   }
 
-  List calculateTimeStatus(DateTime startDateTime, DateTime endDateTime) {
+  List calculateTimeStatus(
+    DateTime startDateTime,
+  ) {
     DateTime now = DateTime.now();
     String statusString = '';
     bool isHappeningNow = false;
 
     // Check if the event is happening now
-    if (startDateTime.isBefore(now) && endDateTime.isAfter(now)) {
+    if (startDateTime.difference(now).inDays.isNegative) {
       statusString = "LIVE";
       isHappeningNow = true;
     } else if (startDateTime.isAfter(now)) {
@@ -196,6 +189,9 @@ class TimelineCard extends StatelessWidget {
         // Less than 1 hour in the future
         statusString = "In ${difference.inMinutes} minute(s)";
       }
+    } else if (startDateTime.difference(now).inDays == 0) {
+      statusString = "Happening Today";
+      isHappeningNow = true;
     } else {
       // The event has already ended
       statusString = "Event Ended";
