@@ -4,14 +4,16 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 
 class AddPeopleButton extends StatelessWidget {
+  final Function() function;
   const AddPeopleButton({
     super.key,
+    required this.function,
   });
 
   @override
   Widget build(BuildContext context) {
     return ClickWidget(
-      onTap: () {},
+      onTap: function,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

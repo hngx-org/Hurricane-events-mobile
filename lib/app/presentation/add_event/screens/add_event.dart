@@ -56,26 +56,6 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay startDateEndTime = TimeOfDay.now();
   TimeOfDay endDateEndTime = TimeOfDay.now();
 
-  // File? _customEventIcon;
-
-  // Future<void> _getImageFromGallery() async {
-  //   final picker = ImagePicker();
-  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-  //   if (pickedFile != null) {
-  //     // Create a new Image widget for the selected image
-  //     final image = File(pickedFile.path);
-  //     setState(() {
-  //       _customEventIcon = image;
-  //     });
-  //   }
-  // }
-
-  // void removeImage() {
-  //   setState(() {
-  //     _customEventIcon = null;
-  //   });
-  // }
 
   @override
   void initState() {

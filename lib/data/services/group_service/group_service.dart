@@ -3,6 +3,7 @@ import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/add_user.dart';
 import 'package:hurricane_events/data/models/groups/create_group.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
+import 'package:hurricane_events/data/models/groups/invite_users.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'group_service.g.dart';
@@ -40,6 +41,13 @@ abstract class GroupService {
   Future<AddUser> addEventToGroup({
     @Path("group_id") required String groupId,
     @Path("event_id") required String eventId,
+  });
+
+  @POST("/users/{user_id}/groups/{group_id}")
+  Future<InviteUsers> inviteUsersToGroups({
+    @Path("user_id") required String userId,
+    @Path("group_id") required String groupId,
+    @Body() required Map<String, dynamic> body,
   });
 
   @DELETE("/groups/{group_id}/events/{event_id}")
