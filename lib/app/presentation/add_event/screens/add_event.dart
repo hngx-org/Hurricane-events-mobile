@@ -26,13 +26,9 @@ class AddEvent extends StatefulWidget {
 ///navigation not done.
 ///
 class _AddEventState extends State<AddEvent> {
-  List<String> userGroups = [
-    AppStrings.test,
-    'lorem ipsum',
-    'lorem ipsum',
-    'lorem ipsum',
-    AppStrings.test,
-  ];
+  List<String> userGroups = [];
+  String eventGroup = '';
+  final selectedIndex = 0;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -159,11 +155,27 @@ class _AddEventState extends State<AddEvent> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: userGroups.length,
+                  itemCount: userGroups.isEmpty ? 1 : userGroups.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                      child: RoundedTile(groupName: userGroups[index]),
+                      child: InkWell(
+                        onTap: () {
+                          if (userGroups.isEmpty) {
+                            BaseNavigator.pushNamed("add_group");
+                          } else {
+                            eventGroup = userGroups[index];
+                            print(eventGroup);
+                            setState(() {
+                              // RoundedTile.backgoundColor
+                            });
+                          }
+                        },
+                        child: RoundedTile(
+                            groupName: userGroups.isEmpty
+                                ? '+ Add Group'
+                                : userGroups[index]),
+                      ),
                     );
                   },
                 ),
