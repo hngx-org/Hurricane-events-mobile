@@ -8,6 +8,9 @@ import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/repository/comment_repositpory/comments_repository.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository.dart';
+import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
+
+import '../../data/models/groups/group_details.dart';
 
 class EventProvider extends ChangeNotifier {
   EventProvider._();
@@ -15,20 +18,46 @@ class EventProvider extends ChangeNotifier {
 
   final _event = EventRepository.instance;
   final _comm = CommentsRepository.instance;
+  final _group = GroupRepository.instance;
 
   AppState _state = AppState.init;
   AppState _timelineState = AppState.init;
   AppState _eventState = AppState.init;
+  AppState _getGroupState = AppState.init;
 
   EventFull? _ev;
+
+  List<GroupDetails?> _allGroups = [];
 
   final List<EventNorm> _events = [];
   final List<Comment> _comments = [];
 
   final Map<DateTime, List<EventNorm>> _eventsCalendar = {};
 
+  getGroups() async {
+    try {
+      _getGroupState = AppState.loading;
+      notifyListeners();
+
+      final res = await _group.getAllGroups();
+      if (res.item1 != null) {
+        _allGroups.clear();
+        _allGroups = res.item1!;
+        _getGroupState = AppState.success;
+        notifyListeners();
+      }
+
+      _getGroupState = AppState.error;
+      notifyListeners();
+    } catch (e) {
+      _getGroupState = AppState.error;
+      notifyListeners();
+    }
+  }
+
   createEvent({
     required AddEventsRequest body,
+    required GroupDetails group,
   }) async {
     try {
       _state = AppState.loading;
@@ -40,7 +69,11 @@ class EventProvider extends ChangeNotifier {
           await Future.delayed(const Duration(milliseconds: 200));
           _state = AppState.success;
           notifyListeners();
-          BaseNavigator.pop();
+          BaseNavigator.pop([
+            body.title,
+            body.location,
+            group.id,
+          ]);
         }
       }
 
@@ -73,7 +106,11 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  refreshEvents() async {
+  refreshEvents({
+    String? eventTitle,
+    String? location,
+    String? groupId,
+  }) async {
     try {
       final s = await _event.getEvents();
       if (s.item1 != null) {
@@ -87,6 +124,7 @@ class EventProvider extends ChangeNotifier {
           });
         }
         notifyListeners();
+        if (location != null && eventTitle != null) {}
       }
     } catch (_) {}
   }
@@ -165,6 +203,8 @@ class EventProvider extends ChangeNotifier {
   AppState get state => _state;
   AppState get timelineState => _timelineState;
   AppState get eventState => _eventState;
+  AppState get getGroupState => _getGroupState;
+  List<GroupDetails?> get allGroups => _allGroups;
   EventFull? get event => _ev;
   Map<DateTime, List<EventNorm>> get eventsCalendar => _eventsCalendar;
   List<EventNorm> get events => _events;
