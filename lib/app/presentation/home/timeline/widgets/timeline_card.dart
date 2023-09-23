@@ -44,7 +44,7 @@ class TimelineCard extends StatelessWidget {
             await provider.deleteEvent(
               eventId: event.id!,
             );
-           
+            await provider.getEvents();
           },
           confirmDismiss: (direction) async {
             if (context.read<UserProvider>().user?.id != event.creatorId) {

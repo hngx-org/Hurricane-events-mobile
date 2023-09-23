@@ -8,6 +8,7 @@ import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,10 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final local = _local.getId();
-      if (local != null) {
+      final userId = _local.getId();
+      if (userId != null) {
         BaseNavigator.currentContext.read<UserProvider>().getUserDetails();
         BaseNavigator.currentContext.read<EventProvider>().getEvents();
+        Provider.of<GlobalProvider>(context, listen: false).getUserEvents(userId);
         Provider.of<MyGroupProvider>(context, listen: false).getGroups();
       }
     });

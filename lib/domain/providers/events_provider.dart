@@ -11,6 +11,7 @@ import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/repository/comment_repositpory/comments_repository.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository.dart';
 import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
 
 import '../../data/models/groups/group_details.dart';
 
@@ -32,7 +33,10 @@ class EventProvider extends ChangeNotifier {
   List<GroupDetails?> _allGroups = [];
 
   final List<EventNorm> _events = [];
+
   final List<Comment> _comments = [];
+
+  bool expressedInterest = false;
 
   final Map<DateTime, List<EventNorm>> _eventsCalendar = {};
 
@@ -161,6 +165,7 @@ class EventProvider extends ChangeNotifier {
 
       final s = await _event.getEvents();
       if (s.item1 != null) {
+        _events.clear();
         _events.addAll(s.item1 ?? []);
         for (var i = 0; i < s.item1!.length; i++) {
           final data = s.item1![i];
@@ -225,6 +230,54 @@ class EventProvider extends ChangeNotifier {
 
       return false;
     } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> expressInterest(String id, String eventId) async {
+    try {
+      // bool interested = false;
+      final s = await _event.expressInterest(id, eventId);
+      if (s.item1 != null) {
+        if (s.item1!.message == "success") {
+          return GlobalProvider.instance.getUserEvents(id).then((_) {
+            final isAvailable = GlobalProvider.instance.userEvents
+                .where((element) => element!.id == eventId)
+                .isNotEmpty;
+            return isAvailable;
+          });
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteInterest(String id, String eventId) async {
+    try {
+      // bool interested = false;
+      final s = await _event.deleteInterest(id, eventId);
+      if (s.item1 != null) {
+        if (s.item1!.message == "success") {
+          return GlobalProvider.instance.getUserEvents(id).then((_) {
+            final isNotAvailable = GlobalProvider.instance.userEvents
+                .where((element) => element!.id == eventId)
+                .isEmpty;
+            return isNotAvailable;
+          });
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
       return false;
     }
   }

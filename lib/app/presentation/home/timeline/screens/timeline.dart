@@ -90,15 +90,11 @@ class _TimelineScreenState extends State<TimelineScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            final s = await BaseNavigator.pushNamed(AddEvent.routeName);
+            await BaseNavigator.pushNamed(AddEvent.routeName);
 
             if (!mounted) return;
 
-            context.read<EventProvider>().refreshEvents(
-                  eventTitle: s[0],
-                  location: s[1],
-                  groupId: s[2],
-                );
+            context.read<EventProvider>().refreshEvents();
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),

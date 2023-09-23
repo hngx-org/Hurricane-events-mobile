@@ -26,7 +26,10 @@ class AddEvent extends StatefulWidget {
 ///navigation not done.
 ///
 class _AddEventState extends State<AddEvent> {
+  
+
   GroupDetails? selectedGroup;
+
   final _formKey = GlobalKey<FormState>();
 
   String? nameError;
@@ -985,6 +988,23 @@ class _AddEventState extends State<AddEvent> {
                             );
                             return;
                           }
+
+                          if (_startDateStartTimeController == null && _startDateEndTimeController == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: AppColors.lightBlue1,
+                                content: Text(
+                                  "You must input event start time and end time to continue",
+                                  style: context.body1.copyWith(
+                                    fontSize: 12,
+                                    color: AppColors.designBlack1,
+                                  ),
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          
 
                           if (_startDateController != null) {
                             AddEventsRequest request = AddEventsRequest(

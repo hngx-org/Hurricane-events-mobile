@@ -1,11 +1,12 @@
-class AddEventResp {
+class MessageResponse {
   String? message;
 
-  AddEventResp({
+  MessageResponse({
     this.message,
   });
 
-  factory AddEventResp.fromJson(Map<String, dynamic> json) => AddEventResp(
+  factory MessageResponse.fromJson(Map<String, dynamic> json) =>
+      MessageResponse(
         message: json["message"],
       );
 
