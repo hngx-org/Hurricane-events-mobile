@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
 import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
+import 'package:hurricane_events/app/presentation/home/timeline/widgets/custom_tab_widget.dart';
 
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -22,8 +23,34 @@ class TimelineScreen extends StatefulWidget {
   State<TimelineScreen> createState() => _TimelineScreenState();
 }
 
-class _TimelineScreenState extends State<TimelineScreen> {
+class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStateMixin {
   int currentIndex = 0;
+
+  late TabController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = TabController(
+      length: 2,
+      vsync: this,
+    );
+
+    controller.addListener(() {
+      if (!controller.indexIsChanging) {
+        setState(() {
+          currentIndex = controller.index;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,41 +73,74 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       fontSize: 16,
                     ),
                   ),
+                  24.height,
+                  DefaultTabController(
+                    length: 2,
+                    child: TabBar(
+                      controller: controller,
+                      onTap: (value) {
+                        currentIndex = value;
+                        setState(() {});
+                      },
+                      indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      padding: EdgeInsets.zero,
+                      labelPadding: const EdgeInsets.all(0),
+                      tabs: [
+                        CustomTab(
+                          currentIndex: currentIndex,
+                          title: 'Friends',
+                          index: 0,
+                        ),
+                        CustomTab(
+                          currentIndex: currentIndex,
+                          title: 'Everyone',
+                          index: 1,
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
-                    child: Builder(builder: (context) {
-                      if (events.timelineState == AppState.loading) {
-                        return const TimelineShimmer();
-                      }
+                    child: TabBarView(
+                      controller: controller,
+                      children: [
+                        Builder(builder: (context) {
+                          if (events.timelineState == AppState.loading) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 26),
+                              child: TimelineShimmer(),
+                            );
+                          }
 
-                      return GroupedListView<EventNorm, String>(
-                        physics: const ClampingScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        elements: events.events,
-                        groupBy: (element) =>
-                            element.startDate!.toIso8601String(),
-                        itemComparator: (item1, item2) =>
-                            item2.startDate!.compareTo(item1.startDate!),
-                        groupComparator: (value1, value2) =>
-                            value2.compareTo(value1),
-                        order: GroupedListOrder.DESC,
-                        useStickyGroupSeparators: false,
-                        groupSeparatorBuilder: (value) {
-                          return 16.height;
-                        },
-                        itemBuilder: (context, EventNorm element) {
-                          return TimelineCard(
-                            onTap: () {
-                              BaseNavigator.pushNamed(
-                                PreCommentEventDetails.routeName,
-                                args: element.id,
+                          return GroupedListView<EventNorm, String>(
+                            physics: const ClampingScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            elements: events.events,
+                            groupBy: (element) => element.startDate!.toIso8601String(),
+                            itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                            groupComparator: (value1, value2) => value2.compareTo(value1),
+                            order: GroupedListOrder.DESC,
+                            useStickyGroupSeparators: false,
+                            groupSeparatorBuilder: (value) {
+                              return 16.height;
+                            },
+                            itemBuilder: (context, EventNorm element) {
+                              return TimelineCard(
+                                onTap: () {
+                                  BaseNavigator.pushNamed(
+                                    PreCommentEventDetails.routeName,
+                                    args: element.id,
+                                  );
+                                },
+                                moreButtonFunction: () {},
+                                event: element,
                               );
                             },
-                            moreButtonFunction: () {},
-                            event: element,
                           );
-                        },
-                      );
-                    }),
+                        }),
+                        Container(),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -101,8 +161,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ),
           elevation: 0.0,
           backgroundColor: AppColors.darkBlue1,
-          extendedPadding:
-              const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          extendedPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           label: Row(
             children: [
               const Icon(
