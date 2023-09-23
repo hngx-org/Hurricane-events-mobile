@@ -1,34 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/add_event/screens/add_event.dart';
+import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
+
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/timeline/timeline_data.dart';
+import 'package:hurricane_events/component/widgets/shimmer/timeline_shimmer.dart';
+import 'package:hurricane_events/data/models/events/event_normal.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../../component/constants/images.dart';
-import '../widgets/custom_tab_widget.dart';
 import '../widgets/timeline_card.dart';
-
-final sampleData = [
-  TimelineData(
-      title: "400m Race",
-      location: 'Teslim Balogun Stadium',
-      startTime: DateTime(2023, 9, 25, 16),
-      endTime: DateTime(2023, 9, 25, 18),
-      eventType: 'Sport Event'),
-  TimelineData(
-      title: "800m Race",
-      location: 'Teslim Balogun Stadium',
-      startTime: DateTime(2023, 9, 30, 16),
-      endTime: DateTime(2023, 9, 30, 18),
-      eventType: 'Sport Event'),
-  TimelineData(
-      title: "Techies hangout",
-      location: 'Amusement Park, Abuja',
-      startTime: DateTime(2023, 9, 20, 12),
-      endTime: DateTime(2023, 9, 20, 18),
-      eventType: 'Hangout'),
-];
 
 class TimelineScreen extends StatefulWidget {
   static const String routeName = "my_group";
@@ -45,72 +29,71 @@ class _TimelineScreenState extends State<TimelineScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          12.height,
-          Text(
-            "Timeline",
-            textAlign: TextAlign.center,
-            style: context.headline3.copyWith(
-              fontSize: 16,
-            ),
-          ),
-          40.height,
-          DefaultTabController(
-            length: 2,
+      body: Consumer<EventProvider>(
+        builder: (context, events, _) {
+          return SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TabBar(
-                    onTap: (value) {
-                      currentIndex = value;
-                      setState(() {});
-                    },
-                    indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    padding: EdgeInsets.zero,
-                    labelPadding: const EdgeInsets.all(0),
-                    tabs: [
-                      CustomTab(
-                        currentIndex: currentIndex,
-                        title: 'Friends',
-                        index: 0,
-                      ),
-                      CustomTab(
-                        currentIndex: currentIndex,
-                        title: 'Everyone',
-                        index: 1,
-                      ),
-                    ],
+                  12.height,
+                  Text(
+                    "Timeline",
+                    textAlign: TextAlign.center,
+                    style: context.headline3.copyWith(
+                      fontSize: 16,
+                    ),
                   ),
-                  32.height,
-                  SingleChildScrollView(
-                    child: Column(
-                        children: sampleData
-                            .map((data) => TimelineCard(
-                                title: data.title,
-                                onTap: () {},
-                                moreButtonFunction: () {},
-                                eventType: data.eventType,
-                                endTime: data.endTime,
-                                startTime: data.startTime,
-                                location: data.location,
-                                iconString: data.eventType == 'Sport Event' ? AppImages.raceIcon : AppImages.hangoutIcon))
-                            .toList()),
+                  Expanded(
+                    child: Builder(builder: (context) {
+                      if (events.timelineState == AppState.loading) {
+                        return const TimelineShimmer();
+                      }
+
+                      return GroupedListView<EventNorm, String>(
+                        physics: const ClampingScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        elements: events.events,
+                        groupBy: (element) => element.startDate!.toIso8601String(),
+                        itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                        groupComparator: (value1, value2) => value2.compareTo(value1),
+                        order: GroupedListOrder.DESC,
+                        useStickyGroupSeparators: false,
+                        groupSeparatorBuilder: (value) {
+                          return 16.height;
+                        },
+                        itemBuilder: (context, EventNorm element) {
+                          return TimelineCard(
+                            onTap: () {
+                              BaseNavigator.pushNamed(
+                                PreCommentEventDetails.routeName,
+                                args: element.id,
+                              );
+                            },
+                            moreButtonFunction: () {},
+                            event: element,
+                          );
+                        },
+                      );
+                    }),
                   )
                 ],
               ),
             ),
-          )
-        ],
-      )),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            BaseNavigator.pushNamed(AddEvent.routeName);
+          onPressed: () async {
+            final s = await BaseNavigator.pushNamed(AddEvent.routeName);
+
+            if (!mounted) return;
+
+            context.read<EventProvider>().refreshEvents(
+                 
+                );
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),

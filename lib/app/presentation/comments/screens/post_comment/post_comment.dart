@@ -6,7 +6,6 @@ import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/events/event_mock_up.dart';
 
-import '../../../../../component/widgets/event_card.dart';
 import 'widgets/post.dart';
 
 final sampleEvent = EventsMockUp(
@@ -112,9 +111,6 @@ class _PostCommentEventDetailsState extends State<PostCommentEventDetails> {
         child: Column(
           children: [
             40.height,
-            EventCard(
-              event: sampleEvent,
-            ),
             CommentType(
               commentType: "Pre-events comments",
               isSelected: selectedCommentType == "Pre-events comments",

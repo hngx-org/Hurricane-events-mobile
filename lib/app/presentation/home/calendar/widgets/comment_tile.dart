@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/events/event_mock_up.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:hurricane_events/data/models/comments/comment.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class CommentTile extends StatelessWidget {
   final Comment? comment;
@@ -28,7 +29,7 @@ class CommentTile extends StatelessWidget {
         children: [
           Builder(
             builder: (context) {
-              if (comment?.userImage != null) {
+              if (comment?.image != null) {
                 return CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(
                     comment?.image ?? '',
@@ -40,7 +41,7 @@ class CommentTile extends StatelessWidget {
                 radius: 15,
                 child: Center(
                   child: Text(
-                    comment?.userName?[0] ?? 'U',
+                    context.read<UserProvider>().user?.name![0] ?? "HNG",
                     style: context.body2.copyWith(
                       fontSize: 12,
                     ),
@@ -56,21 +57,21 @@ class CommentTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  comment?.userName ?? 'Name',
+                  'No name from Backend',
                   style: context.body2.copyWith(
                     fontSize: 12,
                   ),
                 ),
                 10.height,
                 Text(
-                  comment?.comment ?? 'comment',
+                  comment?.body ?? 'comment',
                   style: context.body2.copyWith(
                     fontSize: 14,
                   ),
                 ),
                 Builder(
                   builder: (_) {
-                    if (comment?.hasImage == null || comment?.hasImage == false) {
+                    if (comment?.image == null) {
                       return const SizedBox.shrink();
                     }
 
@@ -92,12 +93,12 @@ class CommentTile extends StatelessWidget {
               ],
             ),
           ),
-          Text(
-            timeago.format(comment?.createdAt ?? DateTime.now()),
-            style: context.body2.copyWith(
-              fontSize: 12,
-            ),
-          ),
+          // Text(
+          //   timeago.format(comment?.createdAt ?? DateTime.now()),
+          //   style: context.body2.copyWith(
+          //     fontSize: 12,
+          //   ),
+          // ),
         ],
       ),
     );
