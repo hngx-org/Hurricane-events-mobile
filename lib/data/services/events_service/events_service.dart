@@ -26,7 +26,7 @@ abstract class EventsService {
   Future updateEventsDetails(@Path("id") String id);
 
   @DELETE("/events/{id}")
-  Future deleteEventsDetails();
+  Future deleteEventsDetails(@Path("id") String id);
 
   @POST("/events/{id}/comments")
   Future<AddEventResp> createComment(

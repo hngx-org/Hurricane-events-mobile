@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/component/constants/images.dart';
@@ -38,9 +40,11 @@ class TimelineCard extends StatelessWidget {
           ),
           key: UniqueKey(),
           onDismissed: (direction) async {
+            log(event.id.toString());
             await provider.deleteEvent(
               eventId: event.id!,
             );
+           
           },
           confirmDismiss: (direction) async {
             if (context.read<UserProvider>().user?.id != event.creatorId) {

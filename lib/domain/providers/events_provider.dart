@@ -107,6 +107,7 @@ class EventProvider extends ChangeNotifier {
       _state = AppState.error;
       notifyListeners();
     }
+    notifyListeners();
   }
 
   getEventId({required String id}) async {

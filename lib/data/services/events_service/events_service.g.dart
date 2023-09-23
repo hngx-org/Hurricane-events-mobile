@@ -132,7 +132,7 @@ class _EventsService implements EventsService {
   }
 
   @override
-  Future<dynamic> deleteEventsDetails() async {
+  Future<dynamic> deleteEventsDetails(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -144,7 +144,7 @@ class _EventsService implements EventsService {
     )
         .compose(
           _dio.options,
-          '/events/{id}',
+          '/events/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

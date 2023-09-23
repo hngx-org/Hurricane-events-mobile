@@ -7,7 +7,8 @@ import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository_interface.dart';
 import 'package:tuple/tuple.dart';
 
-class EventRepository extends ApiImplementation implements EventRepositoryInterface {
+class EventRepository extends ApiImplementation
+    implements EventRepositoryInterface {
   EventRepository._();
   static final EventRepository instance = EventRepository._();
 
@@ -103,13 +104,15 @@ class EventRepository extends ApiImplementation implements EventRepositoryInterf
       return const Tuple2(null, defaultError);
     }
   }
-  
+
   @override
-  Future<Tuple2<bool?, String?>> deleteEvent(String id)async{
-     try {
-      final result = await eventService().deleteEventsDetails();
+  Future<Tuple2<bool?, String?>> deleteEvent(String id) async {
+    try {
+      final result = await eventService().deleteEventsDetails(id);
       if (result != null) {
-        return Tuple2(result, null);
+        if (result.message?.toLowerCase() == "success") {
+          return const Tuple2(true, null);
+        }
       }
 
       return const Tuple2(null, defaultError);
