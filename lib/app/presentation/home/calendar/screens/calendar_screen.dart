@@ -197,27 +197,32 @@ class _CalendarState extends State<CalendarSection> {
                   child: Builder(builder: (context) {
                     if (_getEventsForDay(_selectedDate).isEmpty) {
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.free_cancellation_rounded,
-                            size: 100,
-                            color: AppColors.designBlack1,
-                          ),
-                          const SizedBox(height: 24),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
-                              "There are no events for this selected date",
-                              textAlign: TextAlign.center,
-                              style: context.body1.copyWith(
-                                color: AppColors.designBlack1,
-                                fontSize: 16,
-                              ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.free_cancellation_rounded,
+                                  size: 80,
+                                  color: AppColors.designBlack1,
+                                ),
+                                const SizedBox(height: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                                  child: Text(
+                                    "There are no events for this selected date",
+                                    textAlign: TextAlign.center,
+                                    style: context.body1.copyWith(
+                                      color: AppColors.designBlack1,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 48),
                         ],
                       );
                     }
