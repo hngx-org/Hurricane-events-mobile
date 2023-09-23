@@ -7,6 +7,7 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/overlays/delete_event.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../../../component/constants/color.dart';
@@ -156,80 +157,85 @@ class _TimelineCardState extends State<TimelineCard> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 100,
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: AppColors.designBlack1,
-                                size: 16,
+                    Builder(builder: (context) {
+                      if (widget.event.creatorId != context.read<UserProvider>().user?.id) {
+                        return const SizedBox.shrink();
+                      }
+                      return SizedBox(
+                        width: 100,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: AppColors.designBlack1,
+                                  size: 16,
+                                ),
+                                onPressed: () {
+                                  showOptions.value = !showOptions.value;
+                                },
                               ),
-                              onPressed: () {
-                                showOptions.value = !showOptions.value;
-                              },
                             ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            top: 4,
-                            child: ValueListenableBuilder(
-                              valueListenable: showOptions,
-                              builder: (context, value, child) {
-                                if (!value) {
-                                  return const SizedBox.shrink();
-                                }
-                                return FadeInRight(
-                                  duration: const Duration(milliseconds: 50),
-                                  child: Card(
-                                    elevation: 0,
-                                    margin: EdgeInsets.zero,
-                                    child: Container(
-                                      color: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 16,
-                                        horizontal: 16,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              showOptions.value = !showOptions.value;
-                                              final s = await AppOverlays.showDeleteDialog(
-                                                context,
-                                                widget.event,
-                                              );
+                            Positioned(
+                              right: 0,
+                              top: 4,
+                              child: ValueListenableBuilder(
+                                valueListenable: showOptions,
+                                builder: (context, value, child) {
+                                  if (!value) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return FadeInRight(
+                                    duration: const Duration(milliseconds: 50),
+                                    child: Card(
+                                      elevation: 0,
+                                      margin: EdgeInsets.zero,
+                                      child: Container(
+                                        color: Colors.white,
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 16,
+                                          horizontal: 16,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                showOptions.value = !showOptions.value;
+                                                final s = await AppOverlays.showDeleteDialog(
+                                                  context,
+                                                  widget.event,
+                                                );
 
-                                              if (!mounted) return;
+                                                if (!mounted) return;
 
-                                              if (s != null && s == true) {
-                                                context.read<EventProvider>().refreshEvents();
-                                              }
-                                            },
-                                            child: Text(
-                                              "Delete",
-                                              style: context.body2.copyWith(
-                                                fontSize: 13,
-                                                color: AppColors.designBlack1,
+                                                if (s != null && s == true) {
+                                                  context.read<EventProvider>().refreshEvents();
+                                                }
+                                              },
+                                              child: Text(
+                                                "Delete",
+                                                style: context.body2.copyWith(
+                                                  fontSize: 13,
+                                                  color: AppColors.designBlack1,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          ],
+                        ),
+                      );
+                    })
                   ],
                 ),
               ],

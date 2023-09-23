@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (userId != null) {
         BaseNavigator.currentContext.read<UserProvider>().getUserDetails();
         BaseNavigator.currentContext.read<EventProvider>().getEvents();
+        BaseNavigator.currentContext.read<EventProvider>().getUserAndFriendsEvents();
         Provider.of<GlobalProvider>(context, listen: false).getUserEvents(userId);
         Provider.of<MyGroupProvider>(context, listen: false).getGroups();
       }

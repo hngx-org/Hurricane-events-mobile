@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
-import 'package:hurricane_events/app/presentation/home/timeline/widgets/timeline_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +29,8 @@ class _CalendarState extends State<CalendarSection> {
     super.initState();
   }
 
-  List<EventNorm> _getEventsForDay(DateTime day) {
-    final s = context.read<EventProvider>().eventsCalendar[day] ?? [];
+  List<EventFull> _getEventsForDay(DateTime day) {
+    final s = context.read<EventProvider>().userEventsCalendar[day] ?? [];
     return s;
   }
 
@@ -226,7 +227,7 @@ class _CalendarState extends State<CalendarSection> {
                         ],
                       );
                     }
-                    return GroupedListView<EventNorm, String>(
+                    return GroupedListView<EventFull, String>(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       elements: _getEventsForDay(_selectedDate),
@@ -261,17 +262,28 @@ class _CalendarState extends State<CalendarSection> {
                           ],
                         );
                       },
-                      itemBuilder: (context, EventNorm element) {
-                        return TimelineCard(
+                      itemBuilder: (context, EventFull element) {
+                        return ClickWidget(
                           onTap: () {
                             BaseNavigator.pushNamed(
                               PreCommentEventDetails.routeName,
                               args: element.id,
                             );
                           },
-                          moreButtonFunction: () {},
-                          event: element,
+                          child: EventCard(
+                            eventFull: element,
+                          ),
                         );
+                        // return TimelineCard(
+                        //   onTap: () {
+                        //     BaseNavigator.pushNamed(
+                        //       PreCommentEventDetails.routeName,
+                        //       args: element.id,
+                        //     );
+                        //   },
+                        //   moreButtonFunction: () {},
+                        //   event: element,
+                        // );
                       },
                     );
                   }),

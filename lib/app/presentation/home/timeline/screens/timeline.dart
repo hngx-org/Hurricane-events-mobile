@@ -8,8 +8,11 @@ import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/widgets/shimmer/timeline_shimmer.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -105,10 +108,119 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
                       controller: controller,
                       children: [
                         Builder(builder: (context) {
+                          if (events.timelineFriend == AppState.loading) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 26),
+                              child: TimelineShimmer(),
+                            );
+                          }
+
+                          if (events.personalEvent.isEmpty) {
+                            return Column(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.free_cancellation_rounded,
+                                        size: 80,
+                                        color: AppColors.designBlack1,
+                                      ),
+                                      const SizedBox(height: 24),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                                        child: Text(
+                                          "There are no events on your timeline and that of your friends.",
+                                          textAlign: TextAlign.center,
+                                          style: context.body1.copyWith(
+                                            color: AppColors.designBlack1,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+
+                          return GroupedListView<EventFull, String>(
+                            physics: const ClampingScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            elements: events.personalEvent,
+                            groupBy: (element) => element.startDate!.toIso8601String(),
+                            itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                            groupComparator: (value1, value2) => value2.compareTo(value1),
+                            order: GroupedListOrder.DESC,
+                            useStickyGroupSeparators: false,
+                            groupSeparatorBuilder: (value) {
+                              return 16.height;
+                            },
+                            itemBuilder: (context, EventFull element) {
+                              return ClickWidget(
+                                onTap: () {
+                                  BaseNavigator.pushNamed(
+                                    PreCommentEventDetails.routeName,
+                                    args: element.id,
+                                  );
+                                },
+                                child: EventCard(
+                                  eventFull: element,
+                                ),
+                              );
+                              // return TimelineCard(
+                              //   onTap: () {
+                              //     BaseNavigator.pushNamed(
+                              //       PreCommentEventDetails.routeName,
+                              //       args: element.id,
+                              //     );
+                              //   },
+                              //   moreButtonFunction: () {},
+                              //   event: element,
+                              // );
+                            },
+                          );
+                        }),
+                        Builder(builder: (context) {
                           if (events.timelineState == AppState.loading) {
                             return const Padding(
                               padding: EdgeInsets.only(top: 26),
                               child: TimelineShimmer(),
+                            );
+                          }
+
+                          if (events.events.isEmpty) {
+                            return Column(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.free_cancellation_rounded,
+                                        size: 80,
+                                        color: AppColors.designBlack1,
+                                      ),
+                                      const SizedBox(height: 24),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                                        child: Text(
+                                          "There are no events on your timeline and that of your friends.",
+                                          textAlign: TextAlign.center,
+                                          style: context.body1.copyWith(
+                                            color: AppColors.designBlack1,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             );
                           }
 
@@ -138,7 +250,6 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
                             },
                           );
                         }),
-                        Container(),
                       ],
                     ),
                   )
