@@ -9,8 +9,7 @@ import 'package:hurricane_events/data/models/message_response.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository_interface.dart';
 import 'package:tuple/tuple.dart';
 
-class EventRepository extends ApiImplementation
-    implements EventRepositoryInterface {
+class EventRepository extends ApiImplementation implements EventRepositoryInterface {
   EventRepository._();
   static final EventRepository instance = EventRepository._();
 
@@ -108,8 +107,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<MessageResponse?, String?>> expressInterest(
-      String id, String eventId) async {
+  Future<Tuple2<MessageResponse?, String?>> expressInterest(String id, String eventId) async {
     try {
       final result = await eventService().expressInterestInEvent(id, eventId);
       //if (result != null) {
@@ -138,8 +136,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<EventInterestResponse?, String?>> getUserEvents(
-      String userId) async {
+  Future<Tuple2<EventInterestResponse?, String?>> getUserEvents(String userId) async {
     try {
       final result = await eventService().getUserEvents(userId);
       if (result != null) {
@@ -168,8 +165,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<MessageResponse?, String?>> deleteInterest(
-      String id, String eventId) async {
+  Future<Tuple2<MessageResponse?, String?>> deleteInterest(String id, String eventId) async {
     try {
       final result = await eventService().deleteInterestInEvent(id, eventId);
       //if (result != null) {
@@ -201,7 +197,7 @@ class EventRepository extends ApiImplementation
   Future<Tuple2<bool?, String?>> deleteEvent(String id) async {
     try {
       final result = await eventService().deleteEventsDetails(id);
-      if (result != null) {
+      if (result.message != null) {
         if (result.message?.toLowerCase() == "success") {
           return const Tuple2(true, null);
         }

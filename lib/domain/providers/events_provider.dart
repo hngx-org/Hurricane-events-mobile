@@ -91,27 +91,19 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  deleteEvent({required String eventId}) async {
+  Future<bool> deleteEvent({required String eventId}) async {
     try {
-      _state = AppState.loading;
-      notifyListeners();
-
       final s = await _event.deleteEvent(eventId);
       if (s.item1 != null) {
         if (s.item1 == true) {
-          await Future.delayed(const Duration(milliseconds: 200));
-          _state = AppState.success;
-          notifyListeners();
+          return true;
         }
       }
 
-      _state = AppState.error;
-      notifyListeners();
+      return false;
     } catch (e) {
-      _state = AppState.error;
-      notifyListeners();
+      return false;
     }
-    notifyListeners();
   }
 
   getEventId({required String id}) async {
@@ -241,9 +233,7 @@ class EventProvider extends ChangeNotifier {
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
           return GlobalProvider.instance.getUserEvents(id).then((_) {
-            final isAvailable = GlobalProvider.instance.userEvents
-                .where((element) => element!.id == eventId)
-                .isNotEmpty;
+            final isAvailable = GlobalProvider.instance.userEvents.where((element) => element!.id == eventId).isNotEmpty;
             return isAvailable;
           });
         } else {
@@ -265,9 +255,7 @@ class EventProvider extends ChangeNotifier {
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
           return GlobalProvider.instance.getUserEvents(id).then((_) {
-            final isNotAvailable = GlobalProvider.instance.userEvents
-                .where((element) => element!.id == eventId)
-                .isEmpty;
+            final isNotAvailable = GlobalProvider.instance.userEvents.where((element) => element!.id == eventId).isEmpty;
             return isNotAvailable;
           });
         } else {

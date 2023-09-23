@@ -21,8 +21,7 @@ class CalendarSection extends StatefulWidget {
 }
 
 class _CalendarState extends State<CalendarSection> {
-  DateTime _selectedDate = DateTime.parse(
-      "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String()}Z");
+  DateTime _selectedDate = DateTime.parse("${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String()}Z");
 
   @override
   void initState() {
@@ -183,8 +182,8 @@ class _CalendarState extends State<CalendarSection> {
                               "${_getEventsForDay(_selectedDate).length} Events remaining",
                               textAlign: TextAlign.left,
                               style: context.body1.copyWith(
-                                color: Colors.orange,
-                                fontSize: 12,
+                                color: Colors.deepOrange,
+                                fontSize: 13,
                               ),
                             ),
                           ),
@@ -211,8 +210,7 @@ class _CalendarState extends State<CalendarSection> {
                                 ),
                                 const SizedBox(height: 24),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24),
+                                  padding: const EdgeInsets.symmetric(horizontal: 24),
                                   child: Text(
                                     "There are no events for this selected date",
                                     textAlign: TextAlign.center,
@@ -232,12 +230,9 @@ class _CalendarState extends State<CalendarSection> {
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       elements: _getEventsForDay(_selectedDate),
-                      groupBy: (element) =>
-                          element.startDate!.toIso8601String(),
-                      itemComparator: (item1, item2) =>
-                          item2.startDate!.compareTo(item1.startDate!),
-                      groupComparator: (value1, value2) =>
-                          value2.compareTo(value1),
+                      groupBy: (element) => element.startDate!.toIso8601String(),
+                      itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                      groupComparator: (value1, value2) => value2.compareTo(value1),
                       order: GroupedListOrder.DESC,
                       useStickyGroupSeparators: false,
                       groupSeparatorBuilder: (value) {
@@ -245,10 +240,7 @@ class _CalendarState extends State<CalendarSection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Builder(builder: (context) {
-                              if (DateTime.parse(value).month ==
-                                      DateTime.now().month &&
-                                  DateTime.parse(value).day ==
-                                      DateTime.now().day) {
+                              if (DateTime.parse(value).month == DateTime.now().month && DateTime.parse(value).day == DateTime.now().day) {
                                 return Text(
                                   "Today",
                                   style: context.body2.copyWith(
@@ -258,8 +250,7 @@ class _CalendarState extends State<CalendarSection> {
                                 );
                               }
                               return Text(
-                                DateFormat("EEEE dd, MMM")
-                                    .format(DateTime.parse(value)),
+                                DateFormat("EEEE dd, MMM").format(DateTime.parse(value)),
                                 style: context.body2.copyWith(
                                   fontSize: 12,
                                   color: AppColors.designBlack3,
