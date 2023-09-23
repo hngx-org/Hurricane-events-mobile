@@ -17,7 +17,7 @@ class EventShimmer extends StatelessWidget {
               highlightColor: Colors.grey.withOpacity(0.1),
               enabled: true,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24),
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
                 child: Column(
                   children: [
                     Row(

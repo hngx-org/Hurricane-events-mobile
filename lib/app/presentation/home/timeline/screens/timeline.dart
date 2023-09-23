@@ -7,7 +7,7 @@ import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/component/widgets/timeline_shimmer.dart';
+import 'package:hurricane_events/component/widgets/shimmer/timeline_shimmer.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:provider/provider.dart';
@@ -87,11 +87,15 @@ class _TimelineScreenState extends State<TimelineScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            await BaseNavigator.pushNamed(AddEvent.routeName);
+            final s = await BaseNavigator.pushNamed(AddEvent.routeName);
 
             if (!mounted) return;
 
-            context.read<EventProvider>().refreshEvents();
+            context.read<EventProvider>().refreshEvents(
+                  eventTitle: s[0],
+                  location: s[1],
+                  groupId: s[2],
+                );
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),

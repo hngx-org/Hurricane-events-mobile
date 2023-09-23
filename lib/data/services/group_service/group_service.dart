@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/add_user.dart';
 import 'package:hurricane_events/data/models/groups/create_group.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
@@ -27,8 +28,28 @@ abstract class GroupService {
     @Path("group_id") required String groupId,
   });
 
-  @GET("/groups")
+  @GET("/groups/users/{id}")
   Future<List<GroupDetails>> getGroupsList(
-    // @Path() String userId,
+    @Path("id") String userId,
+  );
+
+  @GET("/groups")
+  Future<List<GroupDetails>> getAllGroups();
+
+  @POST("/groups/{group_id}/events/{event_id}")
+  Future<AddUser> addEventToGroup({
+    @Path("group_id") required String groupId,
+    @Path("event_id") required String eventId,
+  });
+
+  @DELETE("/groups/{group_id}/events/{event_id}")
+  Future<AddUser> deleteEventFromGroup({
+    @Path("group_id") required String userId,
+    @Path("event_id") required String groupId,
+  });
+
+  @GET("/groups/{id}/events")
+  Future<List<EventFull?>?> getAllGroupEvents(
+    @Path("id") String groupId,
   );
 }

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
-import 'package:hurricane_events/component/constants/app_strings.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
@@ -11,8 +10,10 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
+import 'package:hurricane_events/component/widgets/shimmer/add_ebent_group_shimmer.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
+import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,14 +31,7 @@ class AddEvent extends StatefulWidget {
 ///navigation not done.
 ///
 class _AddEventState extends State<AddEvent> {
-  List<String> userGroups = [
-    AppStrings.test,
-    'lorem ipsum',
-    'lorem ipsum',
-    'lorem ipsum',
-    AppStrings.test,
-  ];
-
+  GroupDetails? selectedGroup;
   final _formKey = GlobalKey<FormState>();
 
   String? nameError;
@@ -84,6 +78,14 @@ class _AddEventState extends State<AddEvent> {
   void removeImage() {
     setState(() {
       _customEventIcon = null;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<EventProvider>(context, listen: false).getGroups();
     });
   }
 
@@ -155,32 +157,70 @@ class _AddEventState extends State<AddEvent> {
                     },
                   ),
                   24.height,
-                  Text(
-                    'Select a group',
-                    textAlign: TextAlign.left,
-                    style: context.body2.copyWith(
-                      fontSize: 12,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Select a group',
+                        textAlign: TextAlign.left,
+                        style: context.body2.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                      Builder(builder: (_) {
+                        if (eventsProvider.getGroupState == AppState.loading) {
+                          return const SizedBox(
+                            height: 12,
+                            width: 12,
+                            child: CircularProgressIndicator(
+                              color: AppColors.darkBlue1,
+                              strokeWidth: 2,
+                            ),
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      }),
+                    ],
                   ),
                   8.height,
 
                   ///user group horizontal scroll
                   ///I think it should have radio function to enable selecting just one at a time.
                   ///no function implemented yet
-                  SizedBox(
-                    height: 40.0,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: userGroups.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                          child: RoundedTile(groupName: userGroups[index]),
-                        );
-                      },
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    if (eventsProvider.getGroupState == AppState.loading) {
+                      return const SizedBox(
+                        height: 40,
+                        child: AddEventGroupShimmer(),
+                      );
+                    }
+
+                    if (eventsProvider.allGroups.isEmpty) {}
+                    return SizedBox(
+                      height: 40.0,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: eventsProvider.allGroups.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                            child: ClickWidget(
+                              onTap: () {
+                                selectedGroup = eventsProvider.allGroups[index];
+                                setState(() {});
+                              },
+                              child: RoundedTile(
+                                group: eventsProvider.allGroups[index]!,
+                                isSelected: selectedGroup?.id == eventsProvider.allGroups[index]?.id,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
                   24.height,
 
                   Text(
@@ -860,10 +900,26 @@ class _AddEventState extends State<AddEvent> {
                       backgroundColor: AppColors.darkBlue1,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          if (selectedGroup == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: AppColors.lightBlue1,
+                                content: Text(
+                                  "You must select a group to continue",
+                                  style: context.body1.copyWith(
+                                    fontSize: 12,
+                                    color: AppColors.designBlack1,
+                                  ),
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
                           if (_startDateController != null) {
                             AddEventsRequest request = AddEventsRequest(
                               title: _name.text,
-                              description: "",
+                              description: selectedGroup?.title,
                               location: _location.text,
                               startDate: _startDateController,
                               endDate: _endDateController ?? _startDateController,
@@ -893,7 +949,10 @@ class _AddEventState extends State<AddEvent> {
                                     ),
                             );
 
-                            await eventsProvider.createEvent(body: request);
+                            await eventsProvider.createEvent(
+                              body: request,
+                              group: selectedGroup!,
+                            );
                           }
                         }
                       },

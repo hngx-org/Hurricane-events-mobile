@@ -11,7 +11,7 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
-import 'package:hurricane_events/component/widgets/event_shimmer.dart';
+import 'package:hurricane_events/component/widgets/shimmer/event_shimmer.dart';
 import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
