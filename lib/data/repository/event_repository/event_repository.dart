@@ -196,4 +196,35 @@ class EventRepository extends ApiImplementation
       return const Tuple2(null, defaultError);
     }
   }
+
+  @override
+  Future<Tuple2<bool?, String?>> deleteEvent(String id) async {
+    try {
+      final result = await eventService().deleteEventsDetails(id);
+      if (result != null) {
+        if (result.message?.toLowerCase() == "success") {
+          return const Tuple2(true, null);
+        }
+      }
+
+      return const Tuple2(null, defaultError);
+    } on DioException catch (dio) {
+      switch (dio.type) {
+        case DioExceptionType.connectionTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.sendTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.receiveTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.connectionError:
+          return const Tuple2(null, socketError);
+        case DioExceptionType.cancel:
+          return const Tuple2(null, null);
+        default:
+          return const Tuple2(null, defaultError);
+      }
+    } catch (e) {
+      return const Tuple2(null, defaultError);
+    }
+  }
 }

@@ -1,22 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
-import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/shimmer/add_ebent_group_shimmer.dart';
-import 'package:hurricane_events/component/widgets/svg_picture.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddEvent extends StatefulWidget {
@@ -63,26 +58,26 @@ class _AddEventState extends State<AddEvent> {
   TimeOfDay startDateEndTime = TimeOfDay.now();
   TimeOfDay endDateEndTime = TimeOfDay.now();
 
-  File? _customEventIcon;
+  // File? _customEventIcon;
 
-  Future<void> _getImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _getImageFromGallery() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      // Create a new Image widget for the selected image
-      final image = File(pickedFile.path);
-      setState(() {
-        _customEventIcon = image;
-      });
-    }
-  }
+  //   if (pickedFile != null) {
+  //     // Create a new Image widget for the selected image
+  //     final image = File(pickedFile.path);
+  //     setState(() {
+  //       _customEventIcon = image;
+  //     });
+  //   }
+  // }
 
-  void removeImage() {
-    setState(() {
-      _customEventIcon = null;
-    });
-  }
+  // void removeImage() {
+  //   setState(() {
+  //     _customEventIcon = null;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -91,6 +86,15 @@ class _AddEventState extends State<AddEvent> {
       Provider.of<EventProvider>(context, listen: false).getGroups();
     });
   }
+
+  List<String> onlineIcons = [
+    'https://img.icons8.com/?size=160&id=j2lPVrxHLuGq&format=png',
+    'https://img.icons8.com/?size=160&id=uOgV6ugNgk6m&format=png',
+    'https://img.icons8.com/?size=96&id=l3jcLOr5VOxm&format=png'
+  ];
+
+  int selectedIconIndex = -1;
+  String selectedIconUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +212,8 @@ class _AddEventState extends State<AddEvent> {
                         itemCount: eventsProvider.allGroups.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                            padding:
+                                const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
                             child: ClickWidget(
                               onTap: () {
                                 selectedGroup = eventsProvider.allGroups[index];
@@ -216,7 +221,8 @@ class _AddEventState extends State<AddEvent> {
                               },
                               child: RoundedTile(
                                 group: eventsProvider.allGroups[index]!,
-                                isSelected: selectedGroup?.id == eventsProvider.allGroups[index]?.id,
+                                isSelected: selectedGroup?.id ==
+                                    eventsProvider.allGroups[index]?.id,
                               ),
                             ),
                           );
@@ -304,7 +310,9 @@ class _AddEventState extends State<AddEvent> {
                                         builder: (_) {
                                           // print(_startDateController);
                                           if (_startDateController != null) {
-                                            final text = "${_startDateController!.toLocal()}".split(' ')[0];
+                                            final text =
+                                                "${_startDateController!.toLocal()}"
+                                                    .split(' ')[0];
 
                                             return Text(
                                               text,
@@ -342,7 +350,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: startDateStartTime,
                                 );
@@ -381,8 +390,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_startDateStartTimeController != null) {
-                                            final text = _startDateStartTimeController!.format(context);
+                                          if (_startDateStartTimeController !=
+                                              null) {
+                                            final text =
+                                                _startDateStartTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -420,7 +432,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: startDateEndTime,
                                 );
@@ -459,8 +472,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_startDateEndTimeController != null) {
-                                            final text = _startDateEndTimeController!.format(context);
+                                          if (_startDateEndTimeController !=
+                                              null) {
+                                            final text =
+                                                _startDateEndTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -558,7 +574,9 @@ class _AddEventState extends State<AddEvent> {
                                       child: Builder(
                                         builder: (_) {
                                           if (_endDateController != null) {
-                                            final text = "${_endDateController!.toLocal()}".split(' ')[0];
+                                            final text =
+                                                "${_endDateController!.toLocal()}"
+                                                    .split(' ')[0];
 
                                             return Text(
                                               text,
@@ -596,7 +614,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: endDateStartTime,
                                 );
@@ -635,8 +654,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_endDateStartTimeController != null) {
-                                            final text = _endDateStartTimeController!.format(context);
+                                          if (_endDateStartTimeController !=
+                                              null) {
+                                            final text =
+                                                _endDateStartTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -674,7 +696,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: endDateEndTime,
                                 );
@@ -713,8 +736,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_endDateEndTimeController != null) {
-                                            final text = _endDateEndTimeController!.format(context);
+                                          if (_endDateEndTimeController !=
+                                              null) {
+                                            final text =
+                                                _endDateEndTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -802,88 +828,132 @@ class _AddEventState extends State<AddEvent> {
 
                   // ///Event Icon Row
                   // ///having issues inserting the required images
-                  Row(children: [
-                    Container(
-                      height: 76.0,
-                      width: 76.0,
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        color: AppColors.darkGrey2,
-                      ),
-                      child: const Svg(
-                        image: AppImages.techiesIcon,
-                      ),
-                    ),
-                    const SizedBox(width: 12.0),
-                    Container(
-                      height: 76.0,
-                      width: 76.0,
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        color: AppColors.darkGrey2,
-                      ),
-                      child: const Svg(
-                        image: AppImages.techiesIcon,
-                      ),
-                    ),
-                    12.width,
-                    Visibility(
-                      visible: _customEventIcon != null,
-                      child: Container(
-                        height: 76.0,
-                        width: 76.0,
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24.0),
-                          color: AppColors.darkGrey2,
-                        ),
-                        child: _customEventIcon != null
-                            ? ClipRRect(
-                                child: Image.file(
-                                  _customEventIcon!,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : const Placeholder(),
-                      ),
-                    ),
-                    12.width,
-                    Visibility(
-                      visible: _customEventIcon == null,
-                      child: ClickWidget(
-                        onTap: _getImageFromGallery,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.add,
-                              color: AppColors.designOrange,
+                  Row(
+                    children: List.generate(
+                      onlineIcons.length,
+                      (index) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            // Check if the tapped icon is already selected
+                            if (selectedIconIndex == index) {
+                              // If it's the same icon, deselect it
+                              selectedIconUrl = '';
+                              selectedIconIndex = -1;
+                            } else {
+                              // If a different icon is tapped, select it
+                              selectedIconUrl = onlineIcons[index];
+                              selectedIconIndex = index;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 76.0,
+                          width: 76.0,
+                          margin: const EdgeInsets.only(right: 14),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24.0),
+                            color: selectedIconIndex == index
+                                ? AppColors.darkBlue1
+                                : AppColors.darkGrey2,
+                            border: Border.all(
+                              color: selectedIconIndex == index
+                                  ? AppColors.darkBlue1
+                                  : Colors.transparent,
+                              width: 2.0, // Adjust the border width as needed
                             ),
-                            7.width,
-                            Text(
-                              "Add from\nGallery",
-                              style: context.body1.copyWith(
-                                fontSize: 12,
-                                color: AppColors.designOrange,
-                              ),
-                            ),
-                          ],
+                          ),
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(24.0),
+                          //   color: AppColors.darkGrey2,
+                          // ),
+                          child: Image.network(onlineIcons[index]),
                         ),
                       ),
                     ),
-                    12.width,
-                    Visibility(
-                      visible: _customEventIcon != null,
-                      child: ClickWidget(
-                        onTap: removeImage,
-                        child: const Icon(
-                          Icons.close,
-                          color: AppColors.designOrange,
-                        ),
-                      ),
-                    ),
-                  ]),
+                    // children: [
+                    // Container(
+                    //   height: 76.0,
+                    //   width: 76.0,
+                    //   padding: const EdgeInsets.all(14),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(24.0),
+                    //     color: AppColors.darkGrey2,
+                    //   ),
+                    //   child: const Svg(
+                    //     image: AppImages.techiesIcon,
+                    //   ),
+                    // ),
+                    // const SizedBox(width: 12.0),
+                    // Container(
+                    //   height: 76.0,
+                    //   width: 76.0,
+                    //   padding: const EdgeInsets.all(14),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(24.0),
+                    //     color: AppColors.darkGrey2,
+                    //   ),
+                    //   child: const Svg(
+                    //     image: AppImages.techiesIcon,
+                    //   ),
+                    // ),
+                    // 12.width,
+                    // Visibility(
+                    //   visible: _customEventIcon != null,
+                    //   child: Container(
+                    //     height: 76.0,
+                    //     width: 76.0,
+                    //     padding: const EdgeInsets.all(14),
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(24.0),
+                    //       color: AppColors.darkGrey2,
+                    //     ),
+                    //     child: _customEventIcon != null
+                    //         ? ClipRRect(
+                    //             child: Image.file(
+                    //               _customEventIcon!,
+                    //               fit: BoxFit.cover,
+                    //             ),
+                    //           )
+                    //         : const Placeholder(),
+                    //   ),
+                    // ),
+                    // 12.width,
+                    // Visibility(
+                    //   visible: _customEventIcon == null,
+                    //   child: ClickWidget(
+                    //     onTap: _getImageFromGallery,
+                    //     child: Row(
+                    //       children: [
+                    //         const Icon(
+                    //           Icons.add,
+                    //           color: AppColors.designOrange,
+                    //         ),
+                    //         7.width,
+                    //         Text(
+                    //           "Add from\nGallery",
+                    //           style: context.body1.copyWith(
+                    //             fontSize: 12,
+                    //             color: AppColors.designOrange,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // 12.width,
+                    // Visibility(
+                    //   visible: _customEventIcon != null,
+                    //   child: ClickWidget(
+                    //     onTap: removeImage,
+                    //     child: const Icon(
+                    //       Icons.close,
+                    //       color: AppColors.designOrange,
+                    //     ),
+                    //   ),
+                    // ),
+                    // ]
+                  ),
                   20.height,
                   Builder(builder: (context) {
                     if (eventsProvider.state == AppState.loading) {
@@ -942,9 +1012,10 @@ class _AddEventState extends State<AddEvent> {
                               description: selectedGroup?.title,
                               location: _location.text,
                               startDate: _startDateController,
-                              endDate: _endDateController ?? _startDateController,
+                              endDate:
+                                  _endDateController ?? _startDateController,
                               creatorId: context.read<UserProvider>().user?.id,
-                              thumbnail: "",
+                              thumbnail: selectedIconUrl,
                               startTime: DateTime(
                                 _startDateController!.year,
                                 _startDateController!.month,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_group/providers/add_group_provider.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/app/presentation/home/settings/provider/settings_provider.dart';
-import 'package:hurricane_events/app/presentation/splash/screens/splash.dart';
 import 'package:hurricane_events/app/router/app_router.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/theme/events_text_theme.dart';
@@ -16,6 +15,8 @@ import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:hurricane_events/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+
+import 'app/presentation/splash/screens/splash.dart';
 
 Future<void> main() async {
   //This is the main entry point of the app. This is where services are initialized

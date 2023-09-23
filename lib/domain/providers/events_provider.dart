@@ -91,6 +91,29 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  deleteEvent({required String eventId}) async {
+    try {
+      _state = AppState.loading;
+      notifyListeners();
+
+      final s = await _event.deleteEvent(eventId);
+      if (s.item1 != null) {
+        if (s.item1 == true) {
+          await Future.delayed(const Duration(milliseconds: 200));
+          _state = AppState.success;
+          notifyListeners();
+        }
+      }
+
+      _state = AppState.error;
+      notifyListeners();
+    } catch (e) {
+      _state = AppState.error;
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
   getEventId({required String id}) async {
     try {
       _eventState = AppState.loading;
@@ -142,6 +165,7 @@ class EventProvider extends ChangeNotifier {
 
       final s = await _event.getEvents();
       if (s.item1 != null) {
+        _events.clear();
         _events.addAll(s.item1 ?? []);
         for (var i = 0; i < s.item1!.length; i++) {
           final data = s.item1![i];
@@ -170,7 +194,9 @@ class EventProvider extends ChangeNotifier {
         _comments.addAll(s.item1 ?? []);
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   refreshComments(String id) async {
@@ -181,7 +207,9 @@ class EventProvider extends ChangeNotifier {
         _comments.addAll(s.item1 ?? []);
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   createComment(
@@ -212,7 +240,7 @@ class EventProvider extends ChangeNotifier {
       final s = await _event.expressInterest(id, eventId);
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
-         return GlobalProvider.instance.getUserEvents(id).then((_) {
+          return GlobalProvider.instance.getUserEvents(id).then((_) {
             final isAvailable = GlobalProvider.instance.userEvents
                 .where((element) => element!.id == eventId)
                 .isNotEmpty;
@@ -230,13 +258,13 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-   Future<bool> deleteInterest(String id, String eventId) async {
+  Future<bool> deleteInterest(String id, String eventId) async {
     try {
       // bool interested = false;
       final s = await _event.deleteInterest(id, eventId);
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
-         return GlobalProvider.instance.getUserEvents(id).then((_) {
+          return GlobalProvider.instance.getUserEvents(id).then((_) {
             final isNotAvailable = GlobalProvider.instance.userEvents
                 .where((element) => element!.id == eventId)
                 .isEmpty;

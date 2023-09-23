@@ -4,6 +4,7 @@ class EventNorm {
   String? id;
   DateTime? startDate;
   String? title;
+  String? eventIcon;
 
   EventNorm({
     this.creatorId,
@@ -11,6 +12,7 @@ class EventNorm {
     this.id,
     this.startDate,
     this.title,
+    this.eventIcon,
   });
 
   factory EventNorm.fromJson(Map<String, dynamic> json) => EventNorm(
