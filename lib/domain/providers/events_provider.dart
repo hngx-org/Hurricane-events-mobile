@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
@@ -164,7 +166,9 @@ class EventProvider extends ChangeNotifier {
         _comments.addAll(s.item1 ?? []);
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   refreshComments(String id) async {
@@ -175,7 +179,9 @@ class EventProvider extends ChangeNotifier {
         _comments.addAll(s.item1 ?? []);
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+        log(e.toString());
+    }
   }
 
   createComment(

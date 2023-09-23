@@ -1,11 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
-import 'package:hurricane_events/domain/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 class MyGroupProvider extends ChangeNotifier {
   MyGroupProvider._();
