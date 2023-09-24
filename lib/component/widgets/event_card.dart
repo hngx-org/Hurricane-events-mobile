@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/stacked_images.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -64,11 +65,35 @@ class _EventCardState extends State<EventCard> {
                     color: AppColors.lightBlue1,
                     borderRadius: BorderRadius.circular(24),
                   ),
-                  padding: const EdgeInsets.all(14),
-                  child: const Svg(
-                    image: AppImages.hangoutIcon,
-                    color: AppColors.darkBlue1,
-                  ),
+                  padding: () {
+                    if (widget.eventFull!.thumbnail != null && widget.eventFull!.thumbnail!.isNotEmpty) {
+                      return const EdgeInsets.all(5);
+                    } else {
+                      return const EdgeInsets.all(14);
+                    }
+                  }(),
+                  child: Builder(builder: (context) {
+                    if (widget.eventFull!.thumbnail != null && widget.eventFull!.thumbnail!.isNotEmpty) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.eventFull!.thumbnail ?? "",
+                          height: 76,
+                          width: 76,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) {
+                            return const Svg(
+                              image: AppImages.techiesIcon,
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Svg(
+                      image: AppImages.hangoutIcon,
+                      color: AppColors.darkBlue1,
+                    );
+                  }),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -168,13 +193,19 @@ class _EventCardState extends State<EventCard> {
                     ],
                   ),
                 ),
-                ClickWidget(
-                  onTap: widget.onTap,
-                  child: const Icon(
-                    Icons.more_vert,
-                    size: 20,
-                  ),
-                )
+                Builder(builder: (context) {
+                  if (widget.eventFull?.creatorId != context.read<UserProvider>().user?.id) {
+                    return const SizedBox.shrink();
+                  }
+                  return ClickWidget(
+                    onTap: widget.onTap,
+                    child: const Icon(
+                      Icons.delete,
+                      color: AppColors.designRed,
+                      size: 20,
+                    ),
+                  );
+                })
               ],
             ),
           ),

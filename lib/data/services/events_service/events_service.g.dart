@@ -47,13 +47,13 @@ class _EventsService implements EventsService {
   }
 
   @override
-  Future<List<EventNorm>?> listEvents() async {
+  Future<List<EventFull>?> listEvents() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<EventNorm>>(Options(
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<EventFull>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -70,7 +70,7 @@ class _EventsService implements EventsService {
               baseUrl,
             ))));
     var value = _result.data
-        ?.map((dynamic i) => EventNorm.fromJson(i as Map<String, dynamic>))
+        ?.map((dynamic i) => EventFull.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

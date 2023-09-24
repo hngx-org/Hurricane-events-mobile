@@ -29,6 +29,11 @@ abstract class GroupService {
     @Path("group_id") required String groupId,
   });
 
+  @DELETE("/groups/{group_id}")
+  Future<AddUser> deleteGroup({
+    @Path("group_id") required String groupId,
+  });
+
   @GET("/groups/users/{id}")
   Future<List<GroupDetails>> getGroupsList(
     @Path("id") String userId,

@@ -35,14 +35,14 @@ class EventProvider extends ChangeNotifier {
 
   List<GroupDetails?> _allGroups = [];
 
-  final List<EventNorm> _events = [];
+  final List<EventFull> _events = [];
   final List<EventFull> _userAndFriendevents = [];
 
   final List<Comment> _comments = [];
 
   bool expressedInterest = false;
 
-  final Map<DateTime, List<EventNorm>> _eventsCalendar = {};
+  final Map<DateTime, List<EventFull>> _eventsCalendar = {};
   final Map<DateTime, List<EventFull>> _userEventsCalendar = {};
 
   getGroups() async {
@@ -348,9 +348,9 @@ class EventProvider extends ChangeNotifier {
   AppState get getGroupState => _getGroupState;
   List<GroupDetails?> get allGroups => _allGroups;
   EventFull? get event => _ev;
-  Map<DateTime, List<EventNorm>> get eventsCalendar => _eventsCalendar;
+  Map<DateTime, List<EventFull>> get eventsCalendar => _eventsCalendar;
   Map<DateTime, List<EventFull>> get userEventsCalendar => _userEventsCalendar;
-  List<EventNorm> get events => _events;
+  List<EventFull> get events => _events;
   List<EventFull> get personalEvent => _userAndFriendevents;
   List<Comment> get comments => _comments;
   AppState get timelineFriend => _timelineFriendsState;

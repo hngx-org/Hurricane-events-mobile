@@ -9,6 +9,7 @@ abstract class GroupRepositoryInterface {
   Future<Tuple2<CreateGroup?, String?>> createGroup({
     required String title,
     required String id,
+    String? avatar,
   });
   Future<Tuple2<AddUser?, String?>> addUser({
     required String userId,
@@ -16,6 +17,10 @@ abstract class GroupRepositoryInterface {
   });
   Future<Tuple2<AddUser?, String?>> removeUser({
     required String userId,
+    required String groupId,
+  });
+
+  Future<Tuple2<AddUser?, String?>> deleteGroup({
     required String groupId,
   });
 

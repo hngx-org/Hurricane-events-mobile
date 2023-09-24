@@ -54,7 +54,7 @@ class _CalendarState extends State<CalendarSection> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 24),
                 Container(
                   padding: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
