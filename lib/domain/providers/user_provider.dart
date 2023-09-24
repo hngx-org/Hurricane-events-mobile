@@ -17,9 +17,9 @@ class UserProvider extends ChangeNotifier {
   final _local = AppStorage.instance;
   final _auth = AuthRepository.instance;
 
-  final _event = EventProvider.instance;
-  final _group = MyGroupProvider.instance;
-  final _global = GlobalProvider.instance;
+  // final _event = EventProvider.instance;
+  // final _group = MyGroupProvider.instance;
+  // final _global = GlobalProvider.instance;
 
   AppState _state = AppState.init;
 
@@ -55,9 +55,9 @@ class UserProvider extends ChangeNotifier {
         _local
           ..clearUser()
           ..clearId();
-        _global.logOut();
-        _event.logOut();
-        _group.logOut();
+        // _global.logOut();
+        // _event.logOut();
+        // _group.logOut();
         _state = AppState.success;
         notifyListeners();
 

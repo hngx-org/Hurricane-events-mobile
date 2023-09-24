@@ -13,7 +13,7 @@ class _UserService implements UserService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://hurricane-event.onrender.com/api';
+    baseUrl ??= 'https://hurricane-event-dev.onrender.com/';
   }
 
   final Dio _dio;

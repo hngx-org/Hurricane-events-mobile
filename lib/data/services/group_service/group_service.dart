@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/add_user.dart';
 import 'package:hurricane_events/data/models/groups/create_group.dart';
@@ -8,7 +9,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'group_service.g.dart';
 
-@RestApi(baseUrl: "https://hurricane-event.onrender.com/api")
+@RestApi(baseUrl: kDebugMode ? "https://hurricane-event-dev.onrender.com/" : "https://hurricane-event.onrender.com/")
 abstract class GroupService {
   factory GroupService(Dio dio, {String baseUrl}) = _GroupService;
 
