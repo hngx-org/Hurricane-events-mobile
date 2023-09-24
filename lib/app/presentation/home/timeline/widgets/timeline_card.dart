@@ -1,7 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/overlays/delete_event.dart';
@@ -55,13 +53,36 @@ class _TimelineCardState extends State<TimelineCard> {
                     Container(
                       decoration: ShapeDecoration(
                         color: AppColors.lightBlue1,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       padding: const EdgeInsets.all(4),
-                      child: SvgPicture.asset(
-                        AppImages.hangoutIcon,
-                        height: 56,
-                        color: AppColors.darkBlue2,
+                      child: Image.network(
+                        widget.event.eventIcon == null ||
+                                widget.event.eventIcon!.isEmpty
+                            ? 'https://img.icons8.com/?size=128&id=48439&format=png'
+                            : widget.event.eventIcon!,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.network(
+                          'https://img.icons8.com/?size=128&id=48439&format=png',
+                          width: 50,
+                        ),
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.darkBlue1,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        width: 50,
                       ),
                     ),
                     16.width,
@@ -120,7 +141,10 @@ class _TimelineCardState extends State<TimelineCard> {
                                 )[0],
                                 style: context.body1.copyWith(
                                   fontSize: 12,
-                                  color: calculateTimeStatus(widget.event.startDate!)[1] ? AppColors.darkBlue2 : AppColors.designBlack3,
+                                  color: calculateTimeStatus(
+                                          widget.event.startDate!)[1]
+                                      ? AppColors.darkBlue2
+                                      : AppColors.designBlack3,
                                 ),
                               ),
                             ],
@@ -145,7 +169,8 @@ class _TimelineCardState extends State<TimelineCard> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate ?? DateTime.now())}",
+                                  text:
+                                      " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate ?? DateTime.now())}",
                                   style: context.body2.copyWith(
                                     fontSize: 11,
                                     color: AppColors.designBlack1,
@@ -158,7 +183,8 @@ class _TimelineCardState extends State<TimelineCard> {
                       ),
                     ),
                     Builder(builder: (context) {
-                      if (widget.event.creatorId != context.read<UserProvider>().user?.id) {
+                      if (widget.event.creatorId !=
+                          context.read<UserProvider>().user?.id) {
                         return const SizedBox.shrink();
                       }
                       return SizedBox(
@@ -199,13 +225,17 @@ class _TimelineCardState extends State<TimelineCard> {
                                           horizontal: 16,
                                         ),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             InkWell(
                                               onTap: () async {
-                                                showOptions.value = !showOptions.value;
-                                                final s = await AppOverlays.showDeleteDialog(
+                                                showOptions.value =
+                                                    !showOptions.value;
+                                                final s = await AppOverlays
+                                                    .showDeleteDialog(
                                                   context,
                                                   widget.event,
                                                 );
@@ -213,7 +243,9 @@ class _TimelineCardState extends State<TimelineCard> {
                                                 if (!mounted) return;
 
                                                 if (s != null && s == true) {
-                                                  context.read<EventProvider>().refreshEvents();
+                                                  context
+                                                      .read<EventProvider>()
+                                                      .refreshEvents();
                                                 }
                                               },
                                               child: Text(

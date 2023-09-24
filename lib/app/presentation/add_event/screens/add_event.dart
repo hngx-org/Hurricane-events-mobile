@@ -71,7 +71,8 @@ class _AddEventState extends State<AddEvent> {
   List<String> onlineIcons = [
     'https://img.icons8.com/?size=160&id=j2lPVrxHLuGq&format=png',
     'https://img.icons8.com/?size=160&id=uOgV6ugNgk6m&format=png',
-    'https://img.icons8.com/?size=96&id=l3jcLOr5VOxm&format=png'
+    'https://img.icons8.com/?size=96&id=l3jcLOr5VOxm&format=png',
+    'https://img.icons8.com/?size=160&id=tHVAuNrS2dx2&format=png'
   ];
 
   int selectedIconIndex = -1;
@@ -198,7 +199,9 @@ class _AddEventState extends State<AddEvent> {
 
                                 if (!mounted) return;
 
-                                context.read<MyGroupProvider>().refreshUserGroups(
+                                context
+                                    .read<MyGroupProvider>()
+                                    .refreshUserGroups(
                                       context.read<UserProvider>().user!.id!,
                                     );
                               },
@@ -232,7 +235,8 @@ class _AddEventState extends State<AddEvent> {
                                     itemCount: group.allGroups.length,
                                     itemBuilder: (context, i) {
                                       return Padding(
-                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0.0, 0.0, 10.0, 0.0),
                                         child: ClickWidget(
                                           onTap: () {
                                             selectedGroup = group.allGroups[i];
@@ -240,7 +244,8 @@ class _AddEventState extends State<AddEvent> {
                                           },
                                           child: RoundedTile(
                                             group: group.allGroups[i]!,
-                                            isSelected: selectedGroup?.id == group.allGroups[i]?.id,
+                                            isSelected: selectedGroup?.id ==
+                                                group.allGroups[i]?.id,
                                           ),
                                         ),
                                       );
@@ -334,7 +339,9 @@ class _AddEventState extends State<AddEvent> {
                                         builder: (_) {
                                           // print(_startDateController);
                                           if (_startDateController != null) {
-                                            final text = "${_startDateController!.toLocal()}".split(' ')[0];
+                                            final text =
+                                                "${_startDateController!.toLocal()}"
+                                                    .split(' ')[0];
 
                                             return Text(
                                               text,
@@ -372,7 +379,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: startDateStartTime,
                                 );
@@ -411,8 +419,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_startDateStartTimeController != null) {
-                                            final text = _startDateStartTimeController!.format(context);
+                                          if (_startDateStartTimeController !=
+                                              null) {
+                                            final text =
+                                                _startDateStartTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -450,7 +461,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: startDateEndTime,
                                 );
@@ -489,8 +501,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_startDateEndTimeController != null) {
-                                            final text = _startDateEndTimeController!.format(context);
+                                          if (_startDateEndTimeController !=
+                                              null) {
+                                            final text =
+                                                _startDateEndTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -588,7 +603,9 @@ class _AddEventState extends State<AddEvent> {
                                       child: Builder(
                                         builder: (_) {
                                           if (_endDateController != null) {
-                                            final text = "${_endDateController!.toLocal()}".split(' ')[0];
+                                            final text =
+                                                "${_endDateController!.toLocal()}"
+                                                    .split(' ')[0];
 
                                             return Text(
                                               text,
@@ -626,7 +643,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: endDateStartTime,
                                 );
@@ -665,8 +683,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_endDateStartTimeController != null) {
-                                            final text = _endDateStartTimeController!.format(context);
+                                          if (_endDateStartTimeController !=
+                                              null) {
+                                            final text =
+                                                _endDateStartTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -704,7 +725,8 @@ class _AddEventState extends State<AddEvent> {
                                 if (eventsProvider.state == AppState.loading) {
                                   return;
                                 }
-                                final TimeOfDay? pickedTime = await showTimePicker(
+                                final TimeOfDay? pickedTime =
+                                    await showTimePicker(
                                   context: context,
                                   initialTime: endDateEndTime,
                                 );
@@ -743,8 +765,11 @@ class _AddEventState extends State<AddEvent> {
                                     Expanded(
                                       child: Builder(
                                         builder: (_) {
-                                          if (_endDateEndTimeController != null) {
-                                            final text = _endDateEndTimeController!.format(context);
+                                          if (_endDateEndTimeController !=
+                                              null) {
+                                            final text =
+                                                _endDateEndTimeController!
+                                                    .format(context);
 
                                             return Text(
                                               text,
@@ -857,9 +882,13 @@ class _AddEventState extends State<AddEvent> {
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24.0),
-                            color: selectedIconIndex == index ? AppColors.darkBlue1 : AppColors.darkGrey2,
+                            color: selectedIconIndex == index
+                                ? AppColors.darkBlue1
+                                : AppColors.darkGrey2,
                             border: Border.all(
-                              color: selectedIconIndex == index ? AppColors.darkBlue1 : Colors.transparent,
+                              color: selectedIconIndex == index
+                                  ? AppColors.darkBlue1
+                                  : Colors.transparent,
                               width: 2.0, // Adjust the border width as needed
                             ),
                           ),
@@ -867,7 +896,26 @@ class _AddEventState extends State<AddEvent> {
                           //   borderRadius: BorderRadius.circular(24.0),
                           //   color: AppColors.darkGrey2,
                           // ),
-                          child: Image.network(onlineIcons[index]),
+                          child: Image.network(
+                            onlineIcons[index],
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.darkBlue1,
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -989,7 +1037,8 @@ class _AddEventState extends State<AddEvent> {
                             return;
                           }
 
-                          if (_startDateStartTimeController == null || _startDateEndTimeController == null) {
+                          if (_startDateStartTimeController == null ||
+                              _startDateEndTimeController == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: AppColors.lightBlue1,
@@ -1011,7 +1060,8 @@ class _AddEventState extends State<AddEvent> {
                               description: selectedGroup?.title,
                               location: _location.text,
                               startDate: _startDateController,
-                              endDate: _endDateController ?? _startDateController,
+                              endDate:
+                                  _endDateController ?? _startDateController,
                               creatorId: context.read<UserProvider>().user?.id,
                               thumbnail: selectedIconUrl,
                               startTime: DateTime(
