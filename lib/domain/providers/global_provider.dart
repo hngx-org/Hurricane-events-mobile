@@ -19,5 +19,10 @@ class GlobalProvider extends ChangeNotifier {
     }
   }
 
+  logOut() {
+    _userEvents.clear();
+    notifyListeners();
+  }
+
   List<EventFull?> get userEvents => _userEvents;
 }

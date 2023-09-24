@@ -64,5 +64,10 @@ class MyGroupProvider extends ChangeNotifier {
   AppState get state => _state;
   AppState get groupEventState => _groupState;
 
+  logOut() {
+    _allEventsOnGroup.clear();
+    notifyListeners();
+  }
+
   List<EventFull?> get allEvents => _allEventsOnGroup;
 }
