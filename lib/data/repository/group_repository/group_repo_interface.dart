@@ -21,6 +21,8 @@ abstract class GroupRepositoryInterface {
 
   Future<Tuple2<List<GroupDetails?>?, String?>> getGroupsList(String id);
   Future<Tuple2<List<GroupDetails?>?, String?>> getAllGroups();
+  Future<Tuple2<List<GroupDetails?>?, String?>> getUserGroups(String id);
+
   Future<Tuple2<List<EventFull?>?, String?>> getAllGroupEvents(String id);
   Future<Tuple2<InviteUsers?, String?>> inviteUsersToGroup(
     String userId,

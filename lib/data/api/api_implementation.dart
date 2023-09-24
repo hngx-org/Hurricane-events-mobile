@@ -42,22 +42,16 @@ abstract class ApiImplementation {
   }
 
   UserService userService() {
-    return UserService(
-        _getDioWith(
-          interceptors: [ApiInterceptor()],
-        ),
+    return UserService(_getDioWith(interceptors: [ApiInterceptor()]),
         baseUrl:
-            //  kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
+            kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
             "https://hurricane-event.onrender.com/api");
   }
 
   GroupService groupService() {
-    return GroupService(
-        _getDioWith(
-          interceptors: [ApiInterceptor()],
-        ),
+    return GroupService(_getDioWith(interceptors: [ApiInterceptor()]),
         baseUrl:
-            //  kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
+             kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
             "https://hurricane-event.onrender.com/api");
   }
 
@@ -65,7 +59,7 @@ abstract class ApiImplementation {
     return EventsService(
       _getDioWith(interceptors: [ApiInterceptor()]),
       baseUrl:
-          // kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
+          kDebugMode ? "https://hurricane-event-dev.onrender.com/api" :
           "https://hurricane-event.onrender.com/api",
     );
   }

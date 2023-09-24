@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 class Dummy extends Interceptor {}
 
 class ApiInterceptor extends Interceptor {
-
   @override
   void onError(
     DioException err,
@@ -17,6 +16,18 @@ class ApiInterceptor extends Interceptor {
       handler.reject(err);
     } else if (err.response?.statusCode == 500 || (err.response?.statusCode ?? 501) > 500) {
       // Server error
+      handler.resolve(
+        Response<dynamic>(
+          requestOptions: err.requestOptions,
+          data: err.response?.data == null
+              ? <String, dynamic>{}
+              : (err.response?.data).runtimeType == String
+                  ? <String, dynamic>{}
+                  : err.response?.data,
+          statusCode: err.response?.statusCode,
+          statusMessage: err.response?.statusMessage,
+        ),
+      );
     } else if (err.response?.statusCode == 401) {
       // Expired Token
     } else if (err.response?.statusCode == 406) {

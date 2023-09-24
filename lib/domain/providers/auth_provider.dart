@@ -50,6 +50,7 @@ class AuthProvider extends ChangeNotifier {
               ).toJson(),
             );
             _localStorage.saveId(s.item1!.userId!);
+            _localStorage.saveJwtToken(s.item1!.authorizationToken!);
             _state = AppState.success;
             notifyListeners();
             return BaseNavigator.pushNamed(HomeScreen.routeName);

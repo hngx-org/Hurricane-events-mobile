@@ -37,6 +37,11 @@ abstract class GroupService {
   @GET("/groups")
   Future<List<GroupDetails>> getAllGroups();
 
+  @GET("/groups/users/{id}")
+  Future<List<GroupDetails>> getuserGroups(
+    @Path("id") String id,
+  );
+
   @POST("/groups/{group_id}/events/{event_id}")
   Future<AddUser> addEventToGroup({
     @Path("group_id") required String groupId,
