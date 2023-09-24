@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/events/event_interest.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/events_create.dart';
 import 'package:hurricane_events/data/models/message_response.dart';
@@ -19,7 +18,7 @@ abstract class EventsService {
   );
 
   @GET("/events")
-  Future<List<EventNorm>?> listEvents();
+  Future<List<EventFull>?> listEvents();
 
   @GET("/events/{id}")
   Future<EventFull?> getEventsDetails(@Path("id") String id);

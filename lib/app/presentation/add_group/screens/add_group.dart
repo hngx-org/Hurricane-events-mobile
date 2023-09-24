@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/add_group/providers/add_group_provider.dart';
@@ -14,6 +17,8 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/svg_picture.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddGroupScreen extends StatefulWidget {
@@ -27,6 +32,11 @@ class AddGroupScreen extends StatefulWidget {
 class _AddGroupScreenState extends State<AddGroupScreen> {
   final TextEditingController _nameOfGroupController = TextEditingController();
   ValueNotifier addPeoplePressed = ValueNotifier(false);
+
+  XFile? image;
+  late ImagePicker _picker;
+
+  bool isUploading = false;
 
   String? nameError;
   String? emailError;
@@ -42,6 +52,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   @override
   void initState() {
     super.initState();
+    _picker = ImagePicker();
 
     nameFocus.addListener(() {
       setState(() {});
@@ -138,20 +149,49 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   8.height,
 
                   Row(children: [
-                    Container(
-                      height: 76.0,
-                      width: 76.0,
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        color: AppColors.darkGrey2,
-                      ),
-                      child: const Svg(
-                        image: AppImages.techiesIcon,
-                      ),
-                    ),
+                    Builder(builder: (context) {
+                      if (image != null) {
+                        return Container(
+                          height: 76.0,
+                          width: 76.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24.0),
+                            color: AppColors.darkGrey2,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24.0),
+                            child: Image.file(
+                              File(image?.path ?? ""),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }
+                      return Container(
+                        height: 76.0,
+                        width: 76.0,
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24.0),
+                          color: AppColors.darkGrey2,
+                        ),
+                        child: const Svg(
+                          image: AppImages.techiesIcon,
+                        ),
+                      );
+                    }),
                     12.width,
                     ClickWidget(
+                      onTap: () async {
+                        await _picker.pickImage(source: ImageSource.gallery).then(
+                          (value) async {
+                            if (value != null) {
+                              image = value;
+                              setState(() {});
+                            }
+                          },
+                        );
+                      },
                       child: Row(
                         children: [
                           const Icon(
@@ -285,11 +325,44 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                       radius: 32,
                       backgroundColor: AppColors.darkBlue1,
                       onPressed: () async {
+                        if (isUploading) {
+                          return;
+                        }
                         if (_formKey.currentState!.validate()) {
-                          await provider.createGroup(
-                            groupTitle: _nameOfGroupController.text,
-                            listOfFriends: friendsEmailAddress,
-                          );
+                          if (image != null) {
+                            isUploading = true;
+                            setState(() {});
+
+                            TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+                                .ref()
+                                .child('thumbnails')
+                                .child("hng/${image?.name}/${DateTime.now().toIso8601String()}")
+                                .child(context.read<UserProvider>().user?.id ?? "")
+                                .putFile(File(image?.path ?? ""));
+                            String url = await taskSnapshot.ref.getDownloadURL();
+                            isUploading = false;
+                            setState(() {});
+
+                            if (url.isNotEmpty) {
+                              await provider.createGroup(
+                                groupTitle: _nameOfGroupController.text,
+                                listOfFriends: friendsEmailAddress,
+                                avatar: url,
+                              );
+                            } else {
+                              await provider.createGroup(
+                                groupTitle: _nameOfGroupController.text,
+                                listOfFriends: friendsEmailAddress,
+                                avatar: "",
+                              );
+                            }
+                          } else {
+                            await provider.createGroup(
+                              groupTitle: _nameOfGroupController.text,
+                              listOfFriends: friendsEmailAddress,
+                              avatar: "",
+                            );
+                          }
                         }
                       },
                       buttonWidget: Row(

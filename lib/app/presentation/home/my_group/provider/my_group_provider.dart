@@ -37,6 +37,25 @@ class MyGroupProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> deleteGroup({
+    required String groupId,
+  }) async {
+    try {
+      final s = await _group.deleteGroup(
+        groupId: groupId,
+      );
+      if (s.item1 != null) {
+        if (s.item1?.message?.toLowerCase() == "success") {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   refreshUserGroups(String id) async {
     try {
       final res = await _group.getUserGroups(id);
@@ -53,7 +72,6 @@ class MyGroupProvider extends ChangeNotifier {
       _state = AppState.loading;
       notifyListeners();
 
-      // BaseNavigator.currentContext.read<UserProvider>().user!.id!
       final res = await _group.getAllGroups();
       if (res.item1 != null) {
         _allGroups = res.item1!;

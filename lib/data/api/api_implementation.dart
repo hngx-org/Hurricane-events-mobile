@@ -24,8 +24,8 @@ abstract class ApiImplementation {
                   printResponseData: true,
                   printRequestData: true,
                   printResponseMessage: true,
-                  printRequestHeaders: false,
-                  printResponseHeaders: false,
+                  printRequestHeaders: true,
+                  printResponseHeaders: true,
                 ),
               )
             : Dummy(),

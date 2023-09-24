@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/screens/group_detail_screen.dart';
@@ -42,13 +43,33 @@ class MyGroupCard extends StatelessWidget {
             Container(
               decoration: ShapeDecoration(
                 color: AppColors.lightBlue1,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               padding: const EdgeInsets.all(4),
-              child: SvgPicture.asset(
-                AppImages.techiesIcon,
-                height: 56,
+              child: Builder(
+                builder: (context) {
+                  if (groupDetail.image!.isNotEmpty) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: CachedNetworkImage(
+                        imageUrl: groupDetail.image ?? "",
+                        height: 56,
+                        width: 56,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return SvgPicture.asset(
+                            AppImages.techiesIcon,
+                            height: 56,
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return SvgPicture.asset(
+                    AppImages.techiesIcon,
+                    height: 56,
+                  );
+                },
               ),
             ),
             16.width,
@@ -62,18 +83,6 @@ class MyGroupCard extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                // 12.height,
-                // Row(
-                //   children: [
-                //     MyGroupChip(
-                //       title: "$numberOfPeople people",
-                //     ),
-                //     12.width,
-                //     MyGroupChip(
-                //       title: "$numberOfEvent Upcoming events",
-                //     ),
-                //   ],
-                // )
               ],
             )
           ],
