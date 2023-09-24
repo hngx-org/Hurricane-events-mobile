@@ -192,7 +192,7 @@ class _GroupService implements GroupService {
   }
 
   @override
-  Future<List<GroupDetails>> getuserGroups(String id) async {
+  Future<List<GroupDetails?>?> getuserGroups(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -214,8 +214,9 @@ class _GroupService implements GroupService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => GroupDetails.fromJson(i as Map<String, dynamic>))
+    var value = _result.data
+        ?.map((dynamic i) =>
+            i == null ? null : GroupDetails.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

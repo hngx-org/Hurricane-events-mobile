@@ -23,6 +23,11 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      BaseNavigator.currentContext.read<MyGroupProvider>().refreshUserGroups(
+            context.read<UserProvider>().user?.id ?? "",
+          );
+    });
   }
 
   @override

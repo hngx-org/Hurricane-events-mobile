@@ -60,7 +60,9 @@ class MyGroupProvider extends ChangeNotifier {
     try {
       final res = await _group.getUserGroups(id);
       if (res.item1 != null) {
+        print("s: ${res.item1}");
         _allGroups.clear();
+        print(res.item1);
         _allGroups = res.item1!;
         notifyListeners();
       }

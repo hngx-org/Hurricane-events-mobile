@@ -13,29 +13,31 @@ class AuthRepository extends ApiImplementation implements AuthRepositoryInterfac
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-  Future<Tuple2<User?, String?>> googleAuth() async {
+  Future<Tuple3<User?, String?, String?>> googleAuth() async {
     try {
       User? user;
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
         await _auth.signInWithCredential(credential);
         user = _auth.currentUser;
+
+        if (user != null) {
+          /// i'm returning the firebase user for now, there'll be an additional call that'll return the user id.
+          /// Which we'll store and use for subsequent calls
+          return Tuple3(user, "success", googleSignInAuthentication.accessToken);
+        }
+        return const Tuple3(null, defaultError, null);
       }
 
-      if (user != null) {
-        /// i'm returning the firebase user for now, there'll be an additional call that'll return the user id.
-        /// Which we'll store and use for subsequent calls
-        return Tuple2(user, "success");
-      }
-
-      return const Tuple2(null, defaultError);
+      return const Tuple3(null, defaultError, null);
     } catch (e) {
-      return const Tuple2(null, defaultError);
+      return const Tuple3(null, defaultError, null);
     }
   }
 
