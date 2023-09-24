@@ -3,7 +3,6 @@ import 'package:hurricane_events/component/constants/error_text_default.dart';
 import 'package:hurricane_events/data/api/api_implementation.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
 import 'package:hurricane_events/data/models/events/event_interest.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/events_create.dart';
 import 'package:hurricane_events/data/models/message_response.dart';
