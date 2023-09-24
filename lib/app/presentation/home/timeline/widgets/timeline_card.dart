@@ -56,7 +56,8 @@ class _TimelineCardState extends State<TimelineCard> {
                     Container(
                       decoration: ShapeDecoration(
                         color: AppColors.lightBlue1,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       padding: const EdgeInsets.all(4),
                       child: Builder(
@@ -142,7 +143,10 @@ class _TimelineCardState extends State<TimelineCard> {
                                 )[0],
                                 style: context.body1.copyWith(
                                   fontSize: 12,
-                                  color: calculateTimeStatus(widget.event.startDate!)[1] ? AppColors.darkBlue2 : AppColors.designBlack3,
+                                  color: calculateTimeStatus(
+                                          widget.event.startDate!)[1]
+                                      ? AppColors.darkBlue2
+                                      : AppColors.designBlack3,
                                 ),
                               ),
                             ],
@@ -167,7 +171,8 @@ class _TimelineCardState extends State<TimelineCard> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate ?? DateTime.now())}",
+                                  text:
+                                      " ${DateFormat("EEEE dd, MMM").format(widget.event.startDate ?? DateTime.now())}",
                                   style: context.body2.copyWith(
                                     fontSize: 11,
                                     color: AppColors.designBlack1,
@@ -180,7 +185,8 @@ class _TimelineCardState extends State<TimelineCard> {
                       ),
                     ),
                     Builder(builder: (context) {
-                      if (widget.event.creatorId != context.read<UserProvider>().user?.id) {
+                      if (widget.event.creatorId !=
+                          context.read<UserProvider>().user?.id) {
                         return const SizedBox.shrink();
                       }
                       return SizedBox(
@@ -221,13 +227,17 @@ class _TimelineCardState extends State<TimelineCard> {
                                           horizontal: 16,
                                         ),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             InkWell(
                                               onTap: () async {
-                                                showOptions.value = !showOptions.value;
-                                                final s = await AppOverlays.showDeleteDialog(
+                                                showOptions.value =
+                                                    !showOptions.value;
+                                                final s = await AppOverlays
+                                                    .showDeleteDialog(
                                                   context,
                                                   widget.event.id ?? "",
                                                   widget.event.title ?? "",
@@ -236,7 +246,9 @@ class _TimelineCardState extends State<TimelineCard> {
                                                 if (!mounted) return;
 
                                                 if (s != null && s == true) {
-                                                  context.read<EventProvider>().refreshEvents();
+                                                  context
+                                                      .read<EventProvider>()
+                                                      .refreshEvents();
                                                 }
                                               },
                                               child: Text(
