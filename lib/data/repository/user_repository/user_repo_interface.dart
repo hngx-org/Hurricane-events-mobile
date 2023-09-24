@@ -7,6 +7,7 @@ abstract class UserRepositoryInterface {
     required String email,
     required String name,
     required String avatar,
+    required String token,
   });
 
   Future<Tuple2<AppUser?, String?>> getUserDetails(String id);

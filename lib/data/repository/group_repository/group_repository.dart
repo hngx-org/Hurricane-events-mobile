@@ -5,6 +5,7 @@ import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/models/groups/add_user.dart';
 import 'package:hurricane_events/data/models/groups/create_group.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
+import 'package:hurricane_events/data/models/groups/invite_users.dart';
 import 'package:hurricane_events/data/repository/group_repository/group_repo_interface.dart';
 import 'package:tuple/tuple.dart';
 
@@ -13,10 +14,16 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
   static final GroupRepository instance = GroupRepository._();
 
   @override
-  Future<Tuple2<CreateGroup?, String?>> createGroup({required String title}) async {
+  Future<Tuple2<CreateGroup?, String?>> createGroup({
+    required String title,
+    required String id,
+  }) async {
     try {
       final result = await groupService().createGroup(
-        body: {"title": title},
+        body: {
+          "title": title,
+          "user_id": id,
+        },
       );
 
       if (result.id != null) {
@@ -202,6 +209,74 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
       );
 
       if (result.message != null) {
+        return Tuple2(result, null);
+      }
+
+      return const Tuple2(null, defaultError);
+    } on DioException catch (dio) {
+      switch (dio.type) {
+        case DioExceptionType.connectionTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.sendTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.receiveTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.connectionError:
+          return const Tuple2(null, socketError);
+        case DioExceptionType.cancel:
+          return const Tuple2(null, null);
+        default:
+          return const Tuple2(null, defaultError);
+      }
+    } catch (e) {
+      return const Tuple2(null, defaultError);
+    }
+  }
+
+  @override
+  Future<Tuple2<InviteUsers?, String?>> inviteUsersToGroup(
+    String userId,
+    String groupId,
+    List<String> body,
+  ) async {
+    try {
+      final result = await groupService().inviteUsersToGroups(
+        userId: userId,
+        groupId: groupId,
+        body: {"users": body},
+      );
+
+      if (result.addedUsers != null && result.addedUsers!.isNotEmpty) {
+        return Tuple2(result, null);
+      }
+
+      return const Tuple2(null, defaultError);
+    } on DioException catch (dio) {
+      switch (dio.type) {
+        case DioExceptionType.connectionTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.sendTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.receiveTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.connectionError:
+          return const Tuple2(null, socketError);
+        case DioExceptionType.cancel:
+          return const Tuple2(null, null);
+        default:
+          return const Tuple2(null, defaultError);
+      }
+    } catch (e) {
+      return const Tuple2(null, defaultError);
+    }
+  }
+
+  @override
+  Future<Tuple2<List<GroupDetails?>?, String?>> getUserGroups(String id) async {
+    try {
+      final result = await groupService().getuserGroups(id);
+
+      if (result.isNotEmpty) {
         return Tuple2(result, null);
       }
 

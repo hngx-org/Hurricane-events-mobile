@@ -16,12 +16,42 @@ class MyGroupProvider extends ChangeNotifier {
   List<GroupDetails?> allGroups = [];
   final List<EventFull?> _allEventsOnGroup = [];
 
+  getUserGroups(String id) async {
+    try {
+      _state = AppState.loading;
+      notifyListeners();
+
+      // BaseNavigator.currentContext.read<UserProvider>().user!.id!
+      final res = await _group.getUserGroups(id);
+      if (res.item1 != null) {
+        allGroups = res.item1!;
+        _state = AppState.success;
+        notifyListeners();
+      }
+
+      _state = AppState.error;
+      notifyListeners();
+    } catch (e) {
+      _state = AppState.error;
+      notifyListeners();
+    }
+  }
+
+  refreshUserGroups(String id) async {
+    try {
+      final res = await _group.getUserGroups(id);
+      if (res.item1 != null) {
+        allGroups.clear();
+        allGroups = res.item1!;
+        notifyListeners();
+      }
+    } catch (_) {}
+  }
+
   getGroups() async {
     try {
       _state = AppState.loading;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      notifyListeners();
 
       // BaseNavigator.currentContext.read<UserProvider>().user!.id!
       final res = await _group.getAllGroups();
@@ -63,6 +93,11 @@ class MyGroupProvider extends ChangeNotifier {
 
   AppState get state => _state;
   AppState get groupEventState => _groupState;
+
+  logOut() {
+    _allEventsOnGroup.clear();
+    notifyListeners();
+  }
 
   List<EventFull?> get allEvents => _allEventsOnGroup;
 }

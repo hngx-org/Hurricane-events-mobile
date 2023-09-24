@@ -109,6 +109,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   width: 0.0,
                 ),
               ),
+              suffixIcon: widget.suffixIcon,
               focusedBorder: widget.errorText != null
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

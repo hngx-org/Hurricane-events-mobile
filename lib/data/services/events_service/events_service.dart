@@ -8,7 +8,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'events_service.g.dart';
 
-@RestApi(baseUrl: "https://hurricane-event.onrender.com/api")
+@RestApi()
 abstract class EventsService {
   factory EventsService(Dio dio, {String baseUrl}) = _EventsService;
 
@@ -27,7 +27,7 @@ abstract class EventsService {
   Future updateEventsDetails(@Path("id") String id);
 
   @DELETE("/events/{id}")
-  Future deleteEventsDetails(@Path("id") String id);
+  Future<MessageResponse> deleteEventsDetails(@Path("id") String id);
 
   @POST("/events/{id}/comments")
   Future<MessageResponse> createComment(
@@ -48,12 +48,10 @@ abstract class EventsService {
   Future getImagesForComments(@Path("id") String id);
 
   @POST("/users/{user_id}/interests/{event_id}")
-  Future<MessageResponse> expressInterestInEvent(
-      @Path("user_id") String id, @Path("event_id") String eventId);
+  Future<MessageResponse> expressInterestInEvent(@Path("user_id") String id, @Path("event_id") String eventId);
 
   @DELETE("/users/{user_id}/interests/{event_id}")
-  Future<MessageResponse> deleteInterestInEvent(
-      @Path("user_id") String id, @Path("event_id") String eventId);
+  Future<MessageResponse> deleteInterestInEvent(@Path("user_id") String id, @Path("event_id") String eventId);
 
   @GET("/events/{user_id}/events")
   Future<EventInterestResponse?> getUserEvents(@Path('user_id') String id);

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
-import 'package:hurricane_events/app/presentation/home/timeline/widgets/timeline_card.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
+import 'package:hurricane_events/component/widgets/event_card.dart';
+import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -21,16 +22,15 @@ class CalendarSection extends StatefulWidget {
 }
 
 class _CalendarState extends State<CalendarSection> {
-  DateTime _selectedDate = DateTime.parse(
-      "${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String()}Z");
+  DateTime _selectedDate = DateTime.parse("${DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toIso8601String()}Z");
 
   @override
   void initState() {
     super.initState();
   }
 
-  List<EventNorm> _getEventsForDay(DateTime day) {
-    final s = context.read<EventProvider>().eventsCalendar[day] ?? [];
+  List<EventFull> _getEventsForDay(DateTime day) {
+    final s = context.read<EventProvider>().userEventsCalendar[day] ?? [];
     return s;
   }
 
@@ -183,8 +183,8 @@ class _CalendarState extends State<CalendarSection> {
                               "${_getEventsForDay(_selectedDate).length} Events remaining",
                               textAlign: TextAlign.left,
                               style: context.body1.copyWith(
-                                color: Colors.orange,
-                                fontSize: 12,
+                                color: Colors.deepOrange,
+                                fontSize: 13,
                               ),
                             ),
                           ),
@@ -211,8 +211,7 @@ class _CalendarState extends State<CalendarSection> {
                                 ),
                                 const SizedBox(height: 24),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24),
+                                  padding: const EdgeInsets.symmetric(horizontal: 24),
                                   child: Text(
                                     "There are no events for this selected date",
                                     textAlign: TextAlign.center,
@@ -228,16 +227,13 @@ class _CalendarState extends State<CalendarSection> {
                         ],
                       );
                     }
-                    return GroupedListView<EventNorm, String>(
+                    return GroupedListView<EventFull, String>(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       elements: _getEventsForDay(_selectedDate),
-                      groupBy: (element) =>
-                          element.startDate!.toIso8601String(),
-                      itemComparator: (item1, item2) =>
-                          item2.startDate!.compareTo(item1.startDate!),
-                      groupComparator: (value1, value2) =>
-                          value2.compareTo(value1),
+                      groupBy: (element) => element.startDate!.toIso8601String(),
+                      itemComparator: (item1, item2) => item2.startDate!.compareTo(item1.startDate!),
+                      groupComparator: (value1, value2) => value2.compareTo(value1),
                       order: GroupedListOrder.DESC,
                       useStickyGroupSeparators: false,
                       groupSeparatorBuilder: (value) {
@@ -245,10 +241,7 @@ class _CalendarState extends State<CalendarSection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Builder(builder: (context) {
-                              if (DateTime.parse(value).month ==
-                                      DateTime.now().month &&
-                                  DateTime.parse(value).day ==
-                                      DateTime.now().day) {
+                              if (DateTime.parse(value).month == DateTime.now().month && DateTime.parse(value).day == DateTime.now().day) {
                                 return Text(
                                   "Today",
                                   style: context.body2.copyWith(
@@ -258,8 +251,7 @@ class _CalendarState extends State<CalendarSection> {
                                 );
                               }
                               return Text(
-                                DateFormat("EEEE dd, MMM")
-                                    .format(DateTime.parse(value)),
+                                DateFormat("EEEE dd, MMM").format(DateTime.parse(value)),
                                 style: context.body2.copyWith(
                                   fontSize: 12,
                                   color: AppColors.designBlack3,
@@ -270,17 +262,28 @@ class _CalendarState extends State<CalendarSection> {
                           ],
                         );
                       },
-                      itemBuilder: (context, EventNorm element) {
-                        return TimelineCard(
+                      itemBuilder: (context, EventFull element) {
+                        return ClickWidget(
                           onTap: () {
                             BaseNavigator.pushNamed(
                               PreCommentEventDetails.routeName,
                               args: element.id,
                             );
                           },
-                          moreButtonFunction: () {},
-                          event: element,
+                          child: EventCard(
+                            eventFull: element,
+                          ),
                         );
+                        // return TimelineCard(
+                        //   onTap: () {
+                        //     BaseNavigator.pushNamed(
+                        //       PreCommentEventDetails.routeName,
+                        //       args: element.id,
+                        //     );
+                        //   },
+                        //   moreButtonFunction: () {},
+                        //   event: element,
+                        // );
                       },
                     );
                   }),

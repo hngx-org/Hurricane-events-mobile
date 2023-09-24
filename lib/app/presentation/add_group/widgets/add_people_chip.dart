@@ -1,9 +1,13 @@
-
 import 'package:flutter/material.dart';
+import 'package:hurricane_events/component/utils/extensions.dart';
 
 class AddPeopleChip extends StatelessWidget {
+  final String text;
+  final Function() onTap;
   const AddPeopleChip({
     super.key,
+    required this.text,
+    required this.onTap,
   });
 
   @override
@@ -14,24 +18,24 @@ class AddPeopleChip extends StatelessWidget {
         color: const Color(0xFFE5F2FF),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '@Just_Igboji',
-            style: TextStyle(
-              color: Color(0xFF252525),
+            text,
+            style: context.body2.copyWith(
               fontSize: 12,
-              fontFamily: 'Work Sans',
-              fontWeight: FontWeight.w400,
-              height: 0,
+              color: const Color(0xFF252525),
             ),
           ),
-          SizedBox(width: 8),
-          Icon(
-            Icons.close,
-            size: 12,
-          ),
+          const SizedBox(width: 8),
+          InkWell(
+            onTap: onTap,
+            child: const Icon(
+              Icons.close,
+              size: 12,
+            ),
+          )
         ],
       ),
     );

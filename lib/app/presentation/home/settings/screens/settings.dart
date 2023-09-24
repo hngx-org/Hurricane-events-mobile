@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -111,6 +114,9 @@ class SettingsScreen extends StatelessWidget {
                   const Gap(64),
                   MaterialButton(
                     onPressed: () async {
+                      context.read<GlobalProvider>().logOut();
+                      context.read<EventProvider>().logOut();
+                      context.read<MyGroupProvider>().logOut();
                       await userProvider.logOut();
                     },
                     color: AppColors.white,

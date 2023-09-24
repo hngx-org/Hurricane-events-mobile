@@ -30,11 +30,13 @@ class AuthProvider extends ChangeNotifier {
         assert(data!.email != null);
         assert(data!.displayName != null);
         assert(data!.photoURL != null);
+        assert(data!.refreshToken != null);
 
         final s = await _userRepo.createUser(
           email: data!.email!,
           name: data.displayName!,
           avatar: data.photoURL!,
+          token: data.refreshToken ?? "",
         );
 
         if (s.item1 != null) {
@@ -48,6 +50,7 @@ class AuthProvider extends ChangeNotifier {
               ).toJson(),
             );
             _localStorage.saveId(s.item1!.userId!);
+            _localStorage.saveJwtToken(s.item1!.authorizationToken!);
             _state = AppState.success;
             notifyListeners();
             return BaseNavigator.pushNamed(HomeScreen.routeName);

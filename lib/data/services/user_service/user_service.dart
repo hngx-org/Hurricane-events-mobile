@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hurricane_events/data/models/user/user.dart';
 import 'package:hurricane_events/data/models/user/user_id.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'user_service.g.dart';
 
-@RestApi(baseUrl: "https://hurricane-event.onrender.com/api")
+@RestApi(baseUrl: kDebugMode ? "https://hurricane-event-dev.onrender.com/api" : "https://hurricane-event.onrender.com/api")
 abstract class UserService {
   factory UserService(Dio dio, {String baseUrl}) = _UserService;
 

@@ -13,7 +13,7 @@ class _UserService implements UserService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://hurricane-event.onrender.com/api';
+    baseUrl ??= 'https://hurricane-event-dev.onrender.com/api';
   }
 
   final Dio _dio;
@@ -53,7 +53,7 @@ class _UserService implements UserService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<AppUser>(Options(
       method: 'GET',

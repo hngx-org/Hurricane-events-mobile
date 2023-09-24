@@ -1,3 +1,5 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hurricane_events/app/presentation/add_group/providers/add_group_provider.dart';
@@ -24,12 +26,18 @@ class AddGroupScreen extends StatefulWidget {
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
   final TextEditingController _nameOfGroupController = TextEditingController();
+  ValueNotifier addPeoplePressed = ValueNotifier(false);
 
   String? nameError;
+  String? emailError;
 
   final nameFocus = FocusNode();
+  final emailFocus = FocusNode();
+
+  List<String> friendsEmailAddress = [];
 
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _email = TextEditingController();
 
   @override
   void initState() {
@@ -38,11 +46,17 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
     nameFocus.addListener(() {
       setState(() {});
     });
+    emailFocus.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
     nameFocus.dispose();
+    _email.dispose();
+    emailFocus.dispose();
+    _nameOfGroupController.dispose();
     super.dispose();
   }
 
@@ -136,19 +150,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                         image: AppImages.techiesIcon,
                       ),
                     ),
-                    const SizedBox(width: 12.0),
-                    Container(
-                      height: 76.0,
-                      width: 76.0,
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        color: AppColors.darkGrey2,
-                      ),
-                      child: const Svg(
-                        image: AppImages.techiesIcon,
-                      ),
-                    ),
                     12.width,
                     ClickWidget(
                       child: Row(
@@ -178,25 +179,95 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   ),
                   8.height,
                   Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFFF2F2F2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                    padding: const EdgeInsets.all(12),
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF2F2F2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          ...List.generate(
-                            2,
-                            (index) => const AddPeopleChip(),
+                    ),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        ...friendsEmailAddress
+                            .map(
+                              (e) => AddPeopleChip(
+                                onTap: () {
+                                  friendsEmailAddress.remove(e);
+                                  setState(() {});
+                                },
+                                text: e,
+                              ),
+                            )
+                            .toList(),
+                        AddPeopleButton(
+                          function: () async {
+                            addPeoplePressed.value = !addPeoplePressed.value;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: addPeoplePressed,
+                    builder: (context, value, child) {
+                      if (value) {
+                        return FadeInDown(
+                          duration: const Duration(milliseconds: 100),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              10.height,
+                              CustomTextField(
+                                focus: emailFocus,
+                                filled: true,
+                                controller: _email,
+                                errorText: emailError,
+                                hintText: "Enter email of user",
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    if (_email.text.trim().isEmpty) {
+                                      return;
+                                    }
+
+                                    if (_formKey.currentState!.validate()) {
+                                      friendsEmailAddress.add(_email.text);
+                                      setState(() {});
+                                      _email.clear();
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    color: AppColors.darkBlue1,
+                                  ),
+                                ),
+                                validator: (p0) {
+                                  if (p0 == null || p0.trim().isEmpty) {
+                                    emailError = "Please enter a valid email";
+                                    setState(() {});
+                                    return emailError;
+                                  }
+
+                                  if (!EmailValidator.validate(p0)) {
+                                    emailError = "This email is not valid";
+                                    setState(() {});
+                                    return emailError;
+                                  }
+
+                                  emailError = null;
+                                  setState(() {});
+                                  return emailError;
+                                },
+                              ),
+                            ],
                           ),
-                          const AddPeopleButton(),
-                        ],
-                      )),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
                   const Spacer(),
                   Builder(builder: (context) {
                     if (provider.state == AppState.loading) {
@@ -217,6 +288,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                         if (_formKey.currentState!.validate()) {
                           await provider.createGroup(
                             groupTitle: _nameOfGroupController.text,
+                            listOfFriends: friendsEmailAddress,
                           );
                         }
                       },

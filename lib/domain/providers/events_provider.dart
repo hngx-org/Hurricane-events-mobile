@@ -12,6 +12,7 @@ import 'package:hurricane_events/data/repository/comment_repositpory/comments_re
 import 'package:hurricane_events/data/repository/event_repository/event_repository.dart';
 import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
 import 'package:hurricane_events/domain/providers/global_provider.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 
 import '../../data/models/groups/group_details.dart';
 
@@ -22,23 +23,27 @@ class EventProvider extends ChangeNotifier {
   final _event = EventRepository.instance;
   final _comm = CommentsRepository.instance;
   final _group = GroupRepository.instance;
+  final _user = UserProvider.instance;
 
   AppState _state = AppState.init;
   AppState _timelineState = AppState.init;
   AppState _eventState = AppState.init;
   AppState _getGroupState = AppState.init;
+  AppState _timelineFriendsState = AppState.init;
 
   EventFull? _ev;
 
   List<GroupDetails?> _allGroups = [];
 
   final List<EventNorm> _events = [];
+  final List<EventFull> _userAndFriendevents = [];
 
   final List<Comment> _comments = [];
 
   bool expressedInterest = false;
 
   final Map<DateTime, List<EventNorm>> _eventsCalendar = {};
+  final Map<DateTime, List<EventFull>> _userEventsCalendar = {};
 
   getGroups() async {
     try {
@@ -91,27 +96,19 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  deleteEvent({required String eventId}) async {
+  Future<bool> deleteEvent({required String eventId}) async {
     try {
-      _state = AppState.loading;
-      notifyListeners();
-
       final s = await _event.deleteEvent(eventId);
       if (s.item1 != null) {
         if (s.item1 == true) {
-          await Future.delayed(const Duration(milliseconds: 200));
-          _state = AppState.success;
-          notifyListeners();
+          return true;
         }
       }
 
-      _state = AppState.error;
-      notifyListeners();
+      return false;
     } catch (e) {
-      _state = AppState.error;
-      notifyListeners();
+      return false;
     }
-    notifyListeners();
   }
 
   getEventId({required String id}) async {
@@ -186,6 +183,54 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  getUserAndFriendsEvents() async {
+    try {
+      _timelineFriendsState = AppState.loading;
+      notifyListeners();
+
+      final s = await _event.getUserEvents(_user.user!.id!);
+      if (s.item1 != null) {
+        _userAndFriendevents.clear();
+        _userAndFriendevents.addAll(s.item1?.events ?? []);
+        for (var i = 0; i < s.item1!.events.length; i++) {
+          final data = s.item1!.events[i];
+          _userEventsCalendar.addAll({
+            DateTime.parse("${data.startDate!.toIso8601String()}Z"): [data]
+          });
+        }
+
+        _timelineFriendsState = AppState.success;
+        notifyListeners();
+      }
+
+      _timelineFriendsState = AppState.error;
+      notifyListeners();
+    } catch (e) {
+      _timelineFriendsState = AppState.error;
+      notifyListeners();
+    }
+  }
+
+  refreshUserAndFriendsEvents() async {
+    try {
+      final s = await _event.getUserEvents(_user.user!.id!);
+
+      if (s.item1 != null) {
+        _userAndFriendevents.clear();
+        _userAndFriendevents.addAll(s.item1?.events ?? []);
+        _userEventsCalendar.clear();
+        for (var i = 0; i < s.item1!.events.length; i++) {
+          final data = s.item1!.events[i];
+          _userEventsCalendar.addAll({
+            DateTime.parse("${data.startDate!.toIso8601String()}Z"): [data]
+          });
+        }
+
+        notifyListeners();
+      }
+    } catch (_) {}
+  }
+
   getComments(String id) async {
     try {
       final s = await _comm.getComments(id: id);
@@ -240,10 +285,9 @@ class EventProvider extends ChangeNotifier {
       final s = await _event.expressInterest(id, eventId);
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
+          EventProvider.instance.refreshUserAndFriendsEvents();
           return GlobalProvider.instance.getUserEvents(id).then((_) {
-            final isAvailable = GlobalProvider.instance.userEvents
-                .where((element) => element!.id == eventId)
-                .isNotEmpty;
+            final isAvailable = GlobalProvider.instance.userEvents.where((element) => element!.id == eventId).isNotEmpty;
             return isAvailable;
           });
         } else {
@@ -264,10 +308,9 @@ class EventProvider extends ChangeNotifier {
       final s = await _event.deleteInterest(id, eventId);
       if (s.item1 != null) {
         if (s.item1!.message == "success") {
+          EventProvider.instance.refreshUserAndFriendsEvents();
           return GlobalProvider.instance.getUserEvents(id).then((_) {
-            final isNotAvailable = GlobalProvider.instance.userEvents
-                .where((element) => element!.id == eventId)
-                .isEmpty;
+            final isNotAvailable = GlobalProvider.instance.userEvents.where((element) => element!.id == eventId).isEmpty;
             return isNotAvailable;
           });
         } else {
@@ -282,6 +325,17 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  logOut() {
+    _allGroups.clear();
+    _ev = null;
+    _eventsCalendar.clear();
+    _userEventsCalendar.clear();
+    _events.clear();
+    _userAndFriendevents.clear();
+    _comments.clear();
+    notifyListeners();
+  }
+
   AppState get state => _state;
   AppState get timelineState => _timelineState;
   AppState get eventState => _eventState;
@@ -289,6 +343,9 @@ class EventProvider extends ChangeNotifier {
   List<GroupDetails?> get allGroups => _allGroups;
   EventFull? get event => _ev;
   Map<DateTime, List<EventNorm>> get eventsCalendar => _eventsCalendar;
+  Map<DateTime, List<EventFull>> get userEventsCalendar => _userEventsCalendar;
   List<EventNorm> get events => _events;
+  List<EventFull> get personalEvent => _userAndFriendevents;
   List<Comment> get comments => _comments;
+  AppState get timelineFriend => _timelineFriendsState;
 }

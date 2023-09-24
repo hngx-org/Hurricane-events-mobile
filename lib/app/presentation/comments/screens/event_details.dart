@@ -32,8 +32,7 @@ class PreCommentEventDetails extends StatefulWidget {
 }
 
 class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
-  DateTime nowDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime nowDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   TextEditingController commentController = TextEditingController();
 
@@ -136,7 +135,10 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
         child: Consumer<EventProvider>(
           builder: (context, eventProvider, _) {
             if (eventProvider.eventState == AppState.loading) {
-              return const EventShimmer();
+              return const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: EventShimmer(),
+              );
             }
 
             if (eventProvider.event == null) {
@@ -382,8 +384,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                                   ),
                                   const SizedBox(height: 24),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24),
+                                    padding: const EdgeInsets.symmetric(horizontal: 24),
                                     child: Text(
                                       "There are no comments to view for this event timeline.",
                                       textAlign: TextAlign.center,
