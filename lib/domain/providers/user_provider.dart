@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/app/presentation/sign_up/screens/sign_up.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
@@ -7,8 +6,6 @@ import 'package:hurricane_events/data/models/user/user.dart';
 import 'package:hurricane_events/data/repository/auth_repository/auth_repository.dart';
 import 'package:hurricane_events/data/repository/user_repository/user_repository.dart';
 import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
-import 'package:hurricane_events/domain/providers/events_provider.dart';
-import 'package:hurricane_events/domain/providers/global_provider.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProvider._();
@@ -16,10 +13,6 @@ class UserProvider extends ChangeNotifier {
   final _user = UserRepository.instance;
   final _local = AppStorage.instance;
   final _auth = AuthRepository.instance;
-
-  // final _event = EventProvider.instance;
-  // final _group = MyGroupProvider.instance;
-  // final _global = GlobalProvider.instance;
 
   AppState _state = AppState.init;
 
@@ -55,9 +48,7 @@ class UserProvider extends ChangeNotifier {
         _local
           ..clearUser()
           ..clearId();
-        // _global.logOut();
-        // _event.logOut();
-        // _group.logOut();
+
         _state = AppState.success;
         notifyListeners();
 

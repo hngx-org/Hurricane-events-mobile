@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/events/event_interest.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
@@ -9,7 +8,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'events_service.g.dart';
 
-@RestApi(baseUrl: kDebugMode ? "https://hurricane-event-dev.onrender.com/" : "https://hurricane-event.onrender.com/")
+@RestApi()
 abstract class EventsService {
   factory EventsService(Dio dio, {String baseUrl}) = _EventsService;
 

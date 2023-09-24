@@ -12,9 +12,7 @@ class _EventsService implements EventsService {
   _EventsService(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://hurricane-event-dev.onrender.com/';
-  }
+  });
 
   final Dio _dio;
 

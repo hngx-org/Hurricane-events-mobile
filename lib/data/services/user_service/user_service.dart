@@ -6,7 +6,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'user_service.g.dart';
 
-@RestApi(baseUrl: kDebugMode ? "https://hurricane-event-dev.onrender.com/" : "https://hurricane-event.onrender.com/")
+@RestApi(baseUrl: kDebugMode ? "https://hurricane-event-dev.onrender.com/api" : "https://hurricane-event.onrender.com/api")
 abstract class UserService {
   factory UserService(Dio dio, {String baseUrl}) = _UserService;
 
