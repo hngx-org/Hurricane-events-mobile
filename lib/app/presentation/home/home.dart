@@ -30,8 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
       if (userId != null) {
         BaseNavigator.currentContext.read<UserProvider>().getUserDetails();
         BaseNavigator.currentContext.read<EventProvider>().getEvents();
+        BaseNavigator.currentContext.read<EventProvider>().getUserAndFriendsEvents();
+        BaseNavigator.currentContext.read<MyGroupProvider>().getUserGroups(userId);
         Provider.of<GlobalProvider>(context, listen: false).getUserEvents(userId);
-        Provider.of<MyGroupProvider>(context, listen: false).getGroups();
       }
     });
   }
@@ -51,6 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
+          BaseNavigator.currentContext.read<EventProvider>().refreshEvents();
+          BaseNavigator.currentContext.read<EventProvider>().refreshUserAndFriendsEvents();
           setState(() {
             currentIndex = index;
           });

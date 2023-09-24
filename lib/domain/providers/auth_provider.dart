@@ -27,14 +27,15 @@ class AuthProvider extends ChangeNotifier {
       final result = await _auth.googleAuth();
       if (result.item1 != null) {
         final data = result.item1;
+        print(data);
         assert(data!.email != null);
         assert(data!.displayName != null);
-        assert(data!.photoURL != null);
 
         final s = await _userRepo.createUser(
           email: data!.email!,
           name: data.displayName!,
           avatar: data.photoURL!,
+          token: data.refreshToken ?? "",
         );
 
         if (s.item1 != null) {
@@ -48,6 +49,7 @@ class AuthProvider extends ChangeNotifier {
               ).toJson(),
             );
             _localStorage.saveId(s.item1!.userId!);
+            _localStorage.saveJwtToken(s.item1!.authorizationToken!);
             _state = AppState.success;
             notifyListeners();
             return BaseNavigator.pushNamed(HomeScreen.routeName);

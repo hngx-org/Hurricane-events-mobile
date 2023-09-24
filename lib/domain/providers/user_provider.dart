@@ -47,7 +47,9 @@ class UserProvider extends ChangeNotifier {
       if (s.item1 == null && s.item2 == null) {
         _local
           ..clearUser()
-          ..clearId();
+          ..clearId()
+          ..clearToken();
+
         _state = AppState.success;
         notifyListeners();
 

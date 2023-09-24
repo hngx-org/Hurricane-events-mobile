@@ -12,23 +12,21 @@ class _EventsService implements EventsService {
   _EventsService(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://hurricane-event.onrender.com/api';
-  }
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<MessageResponse> createEvents(Map<String, dynamic> body) async {
+  Future<CreateEvent> createEvents(Map<String, dynamic> body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<CreateEvent>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -44,7 +42,7 @@ class _EventsService implements EventsService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = MessageResponse.fromJson(_result.data!);
+    final value = CreateEvent.fromJson(_result.data!);
     return value;
   }
 
@@ -53,7 +51,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<EventNorm>>(Options(
       method: 'GET',
@@ -82,7 +80,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>?>(_setStreamType<EventFull>(Options(
       method: 'GET',
@@ -110,7 +108,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'PUT',
       headers: _headers,
@@ -132,28 +130,29 @@ class _EventsService implements EventsService {
   }
 
   @override
-  Future<dynamic> deleteEventsDetails(String id) async {
+  Future<MessageResponse> deleteEventsDetails(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/events/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final value = _result.data;
+            .compose(
+              _dio.options,
+              '/events/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = MessageResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -193,7 +192,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<Comment>>(Options(
       method: 'GET',
@@ -248,11 +247,41 @@ class _EventsService implements EventsService {
   }
 
   @override
+  Future<MessageResponse> addEventsToGroup(
+    String groupId,
+    String eventId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/groups/${groupId}/events/${eventId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = MessageResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<dynamic> getImagesForComments(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'GET',
       headers: _headers,
@@ -281,7 +310,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
       method: 'POST',
@@ -311,7 +340,7 @@ class _EventsService implements EventsService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
       method: 'DELETE',
@@ -334,12 +363,12 @@ class _EventsService implements EventsService {
   }
 
   @override
-  Future<EventInterestResponse> getUserEvents(String id) async {
+  Future<EventInterestResponse?> getUserEvents(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<EventInterestResponse>(Options(
       method: 'GET',
       headers: _headers,
@@ -356,7 +385,9 @@ class _EventsService implements EventsService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = EventInterestResponse.fromJson(_result.data!);
+    final value = _result.data == null
+        ? null
+        : EventInterestResponse.fromJson(_result.data!);
     return value;
   }
 

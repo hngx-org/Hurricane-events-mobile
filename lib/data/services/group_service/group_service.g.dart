@@ -12,9 +12,7 @@ class _GroupService implements GroupService {
   _GroupService(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://hurricane-event.onrender.com/api';
-  }
+  });
 
   final Dio _dio;
 
@@ -56,7 +54,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
       method: 'POST',
@@ -86,7 +84,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
       method: 'DELETE',
@@ -113,7 +111,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<GroupDetails>>(Options(
       method: 'GET',
@@ -142,7 +140,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<GroupDetails>>(Options(
       method: 'GET',
@@ -167,6 +165,35 @@ class _GroupService implements GroupService {
   }
 
   @override
+  Future<List<GroupDetails>> getuserGroups(String id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<GroupDetails>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/groups/users/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => GroupDetails.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
   Future<AddUser> addEventToGroup({
     required String groupId,
     required String eventId,
@@ -174,7 +201,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
       method: 'POST',
@@ -197,6 +224,38 @@ class _GroupService implements GroupService {
   }
 
   @override
+  Future<InviteUsers> inviteUsersToGroups({
+    required String userId,
+    required String groupId,
+    required Map<String, dynamic> body,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<InviteUsers>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users/${userId}/groups/${groupId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = InviteUsers.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<AddUser> deleteEventFromGroup({
     required String userId,
     required String groupId,
@@ -204,7 +263,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
       method: 'DELETE',
@@ -231,7 +290,7 @@ class _GroupService implements GroupService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<EventFull>>(Options(
       method: 'GET',

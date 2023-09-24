@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
+import 'package:hurricane_events/component/widgets/click_button.dart';
 
 @immutable
 class CustomTextField extends StatefulWidget {
@@ -109,6 +110,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   width: 0.0,
                 ),
               ),
+              suffixIcon: widget.suffixIcon,
               focusedBorder: widget.errorText != null
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -176,7 +178,7 @@ class CustomTextField2 extends StatefulWidget {
   final TextInputType? textInputType;
   final String? errorText;
   final Function(String)? onChanged;
-  Function(bool)? external;
+  Function()? onTap;
 
   CustomTextField2({
     super.key,
@@ -191,7 +193,7 @@ class CustomTextField2 extends StatefulWidget {
     this.suffix,
     this.errorText,
     this.onChanged,
-    this.external,
+    this.onTap,
     this.suffixIcon,
     this.maxLines,
     this.fillColor,
@@ -277,10 +279,13 @@ class _CustomTextField2State extends State<CustomTextField2> {
               ),
             ),
             suffixIcon: widget.suffixIcon,
-            prefixIcon: const Icon(
-              Icons.camera_alt_outlined,
-              size: 16,
-              color: AppColors.darkBlue1,
+            prefixIcon: ClickWidget(
+              onTap: widget.onTap,
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                size: 16,
+                color: AppColors.darkBlue1,
+              ),
             ),
           ),
         ),

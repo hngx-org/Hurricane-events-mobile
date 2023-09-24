@@ -5,24 +5,24 @@ import 'package:hurricane_events/data/models/events/add_events_modal.dart';
 import 'package:hurricane_events/data/models/events/event_interest.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
+import 'package:hurricane_events/data/models/groups/events_create.dart';
 import 'package:hurricane_events/data/models/message_response.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository_interface.dart';
 import 'package:tuple/tuple.dart';
 
-class EventRepository extends ApiImplementation
-    implements EventRepositoryInterface {
+class EventRepository extends ApiImplementation implements EventRepositoryInterface {
   EventRepository._();
   static final EventRepository instance = EventRepository._();
 
   @override
-  Future<Tuple2<bool?, String?>> createEvent({
+  Future<Tuple2<CreateEvent?, String?>> createEvent({
     required AddEventsRequest body,
   }) async {
     try {
       final result = await eventService().createEvents(body.toJson());
       if (result.message != null) {
         if (result.message?.toLowerCase() == "success") {
-          return const Tuple2(true, null);
+          return Tuple2(result, null);
         }
 
         return const Tuple2(null, defaultError);
@@ -108,8 +108,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<MessageResponse?, String?>> expressInterest(
-      String id, String eventId) async {
+  Future<Tuple2<MessageResponse?, String?>> expressInterest(String id, String eventId) async {
     try {
       final result = await eventService().expressInterestInEvent(id, eventId);
       //if (result != null) {
@@ -138,8 +137,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<EventInterestResponse?, String?>> getUserEvents(
-      String userId) async {
+  Future<Tuple2<EventInterestResponse?, String?>> getUserEvents(String userId) async {
     try {
       final result = await eventService().getUserEvents(userId);
       if (result != null) {
@@ -168,8 +166,7 @@ class EventRepository extends ApiImplementation
   }
 
   @override
-  Future<Tuple2<MessageResponse?, String?>> deleteInterest(
-      String id, String eventId) async {
+  Future<Tuple2<MessageResponse?, String?>> deleteInterest(String id, String eventId) async {
     try {
       final result = await eventService().deleteInterestInEvent(id, eventId);
       //if (result != null) {
@@ -201,10 +198,42 @@ class EventRepository extends ApiImplementation
   Future<Tuple2<bool?, String?>> deleteEvent(String id) async {
     try {
       final result = await eventService().deleteEventsDetails(id);
-      if (result != null) {
+      if (result.message != null) {
         if (result.message?.toLowerCase() == "success") {
           return const Tuple2(true, null);
         }
+      }
+
+      return const Tuple2(null, defaultError);
+    } on DioException catch (dio) {
+      switch (dio.type) {
+        case DioExceptionType.connectionTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.sendTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.receiveTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.connectionError:
+          return const Tuple2(null, socketError);
+        case DioExceptionType.cancel:
+          return const Tuple2(null, null);
+        default:
+          return const Tuple2(null, defaultError);
+      }
+    } catch (e) {
+      return const Tuple2(null, defaultError);
+    }
+  }
+
+  @override
+  Future<Tuple2<bool?, String?>> addEventToGroup({
+    required String groupId,
+    required String eventId,
+  }) async {
+    try {
+      final result = await eventService().addEventsToGroup(groupId, eventId);
+      if (result.message != null && result.message?.toLowerCase() == "success") {
+        return const Tuple2(true, null);
       }
 
       return const Tuple2(null, defaultError);

@@ -7,10 +7,12 @@ import 'package:hurricane_events/component/constants/color.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/shimmer/timeline_shimmer.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class GroupScreen extends StatefulWidget {
   static const String routeName = "my_group";
+
   const GroupScreen({super.key});
 
   @override
@@ -55,21 +57,56 @@ class _GroupScreenState extends State<GroupScreen> {
                             onRefresh: () async {
                               return provider.getGroups();
                             },
-                            child: ListView.separated(
-                              itemBuilder: (context, index) {
-                                final group = provider.allGroups[index]!;
-                                return MyGroupCard(
-                                  title: group.title!,
-                                  numberOfEvent: 3,
-                                  numberOfPeople: 20,
-                                  groupDetail: group,
+                            child: Builder(builder: (context) {
+                              if (provider.allGroups.isEmpty) {
+                                return Column(
+                                  children: [
+                                    Expanded(
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.group_off,
+                                              size: 80,
+                                              color: AppColors.designBlack1,
+                                            ),
+                                            const SizedBox(height: 24),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                                              child: Text(
+                                                "You have no groups to view.",
+                                                textAlign: TextAlign.center,
+                                                style: context.body1.copyWith(
+                                                  color: AppColors.designBlack1,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
-                              },
-                              separatorBuilder: (context, index) {
-                                return 16.height;
-                              },
-                              itemCount: provider.allGroups.length,
-                            ),
+                              }
+                              return ListView.separated(
+                                itemBuilder: (context, index) {
+                                  final group = provider.allGroups[index]!;
+                                  return MyGroupCard(
+                                    title: group.title!,
+                                    numberOfEvent: 3,
+                                    numberOfPeople: 20,
+                                    groupDetail: group,
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return 16.height;
+                                },
+                                itemCount: provider.allGroups.length,
+                              );
+                            }),
                           ),
                         ),
                 ],
@@ -77,10 +114,16 @@ class _GroupScreenState extends State<GroupScreen> {
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              BaseNavigator.pushNamed(
+            onPressed: () async {
+              await BaseNavigator.pushNamed(
                 AddGroupScreen.routeName,
               );
+
+              if (!mounted) return;
+
+              context.read<MyGroupProvider>().refreshUserGroups(
+                    context.read<UserProvider>().user!.id!,
+                  );
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32),

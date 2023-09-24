@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppKeys {
   static const String profile = "profile";
   static const String token = "token";
+  static const String jwt = "jwt_token";
 }
 
 class AppStorage {
@@ -31,12 +32,24 @@ class AppStorage {
     await _sharedPreferences.remove(AppKeys.token);
   }
 
+  void clearToken() async {
+    await _sharedPreferences.remove(AppKeys.jwt);
+  }
+
   saveId(String token) async {
     await _sharedPreferences.setString(AppKeys.token, token);
   }
 
+  saveJwtToken(String token) async {
+    await _sharedPreferences.setString(AppKeys.jwt, token);
+  }
+
   String? getId() {
     return _sharedPreferences.getString(AppKeys.token);
+  }
+
+  String? getToken() {
+    return _sharedPreferences.getString(AppKeys.jwt);
   }
 
   saveUser(Map<String, dynamic> data) async {

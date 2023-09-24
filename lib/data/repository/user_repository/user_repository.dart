@@ -50,6 +50,7 @@ class UserRepository extends ApiImplementation implements UserRepositoryInterfac
     required String email,
     required String name,
     required String avatar,
+    required String token,
   }) async {
     try {
       final result = await userService().createUser(
@@ -57,6 +58,7 @@ class UserRepository extends ApiImplementation implements UserRepositoryInterfac
           "email": email,
           "name": name,
           "avatar": avatar,
+          "access_token": token,
         },
       );
 
