@@ -27,10 +27,9 @@ class AuthProvider extends ChangeNotifier {
       final result = await _auth.googleAuth();
       if (result.item1 != null) {
         final data = result.item1;
+        print(data);
         assert(data!.email != null);
         assert(data!.displayName != null);
-        assert(data!.photoURL != null);
-        assert(data!.refreshToken != null);
 
         final s = await _userRepo.createUser(
           email: data!.email!,

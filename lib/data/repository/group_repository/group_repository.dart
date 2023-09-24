@@ -250,6 +250,10 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
         return Tuple2(result, null);
       }
 
+      if (result.invalidUsers != null && result.invalidUsers!.isNotEmpty) {
+        return Tuple2(result, null);
+      }
+
       return const Tuple2(null, defaultError);
     } on DioException catch (dio) {
       switch (dio.type) {
