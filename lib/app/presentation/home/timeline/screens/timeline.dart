@@ -266,6 +266,7 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
             if (!mounted) return;
 
             context.read<EventProvider>().refreshEvents();
+            context.read<EventProvider>().refreshUserAndFriendsEvents();
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),

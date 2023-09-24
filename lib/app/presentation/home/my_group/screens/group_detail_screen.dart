@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -167,8 +168,31 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                     }
                     return ListView.separated(
                       itemBuilder: (context, index) {
-                        return EventCard(
-                          eventFull: myGroupProvider.allEvents[index],
+                        return ClickWidget(
+                          onTap: () async {
+                            await BaseNavigator.pushNamed(
+                              PreCommentEventDetails.routeName,
+                              args: myGroupProvider.allEvents[index]!.id,
+                            );
+
+                            if (!mounted) return;
+
+                            context.read<MyGroupProvider>().refreshGrouEvents(
+                                  widget.groupDetail.id!,
+                                );
+                          },
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  EventCard(
+                                    eventFull: myGroupProvider.allEvents[index],
+                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         );
                       },
                       separatorBuilder: (context, index) {
