@@ -17,11 +17,13 @@ import 'package:provider/provider.dart';
 class EventCard extends StatefulWidget {
   final EventFull? eventFull;
   final List<Comment>? comments;
+  final Function()? onTap;
 
   const EventCard({
     super.key,
     this.eventFull,
     this.comments,
+    this.onTap,
   });
 
   @override
@@ -167,7 +169,7 @@ class _EventCardState extends State<EventCard> {
                   ),
                 ),
                 ClickWidget(
-                  onTap: () {},
+                  onTap: widget.onTap,
                   child: const Icon(
                     Icons.more_vert,
                     size: 20,

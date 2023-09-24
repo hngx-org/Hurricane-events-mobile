@@ -76,15 +76,21 @@ class EventProvider extends ChangeNotifier {
 
       final s = await _event.createEvent(body: body);
       if (s.item1 != null) {
-        if (s.item1 == true) {
-          await Future.delayed(const Duration(milliseconds: 200));
-          _state = AppState.success;
-          notifyListeners();
-          BaseNavigator.pop([
-            body.title,
-            body.location,
-            group.id,
-          ]);
+        if (s.item1?.message?.toLowerCase() == "success") {
+          final req = await _event.addEventToGroup(
+            groupId: group.id!,
+            eventId: s.item1!.eventId!,
+          );
+
+          if (req.item1 == true) {
+            await Future.delayed(const Duration(milliseconds: 200));
+            _state = AppState.success;
+            notifyListeners();
+            BaseNavigator.pop();
+          } else {
+            _state = AppState.error;
+            notifyListeners();
+          }
         }
       }
 

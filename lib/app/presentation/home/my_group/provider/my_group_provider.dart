@@ -13,7 +13,7 @@ class MyGroupProvider extends ChangeNotifier {
 
   final _group = GroupRepository.instance;
 
-  List<GroupDetails?> allGroups = [];
+  List<GroupDetails?> _allGroups = [];
   final List<EventFull?> _allEventsOnGroup = [];
 
   getUserGroups(String id) async {
@@ -24,7 +24,7 @@ class MyGroupProvider extends ChangeNotifier {
       // BaseNavigator.currentContext.read<UserProvider>().user!.id!
       final res = await _group.getUserGroups(id);
       if (res.item1 != null) {
-        allGroups = res.item1!;
+        _allGroups = res.item1!;
         _state = AppState.success;
         notifyListeners();
       }
@@ -41,8 +41,8 @@ class MyGroupProvider extends ChangeNotifier {
     try {
       final res = await _group.getUserGroups(id);
       if (res.item1 != null) {
-        allGroups.clear();
-        allGroups = res.item1!;
+        _allGroups.clear();
+        _allGroups = res.item1!;
         notifyListeners();
       }
     } catch (_) {}
@@ -56,7 +56,7 @@ class MyGroupProvider extends ChangeNotifier {
       // BaseNavigator.currentContext.read<UserProvider>().user!.id!
       final res = await _group.getAllGroups();
       if (res.item1 != null) {
-        allGroups = res.item1!;
+        _allGroups = res.item1!;
         _state = AppState.success;
         notifyListeners();
       }
@@ -91,6 +91,20 @@ class MyGroupProvider extends ChangeNotifier {
     }
   }
 
+  refreshGrouEvents(String id) async {
+    try {
+      final res = await _group.getAllGroupEvents(id);
+      if (res.item1 != null) {
+        _allEventsOnGroup.clear();
+        _allEventsOnGroup.addAll(res.item1 ?? []);
+        notifyListeners();
+      }
+    } catch (e) {
+      _groupState = AppState.error;
+      notifyListeners();
+    }
+  }
+
   AppState get state => _state;
   AppState get groupEventState => _groupState;
 
@@ -100,4 +114,5 @@ class MyGroupProvider extends ChangeNotifier {
   }
 
   List<EventFull?> get allEvents => _allEventsOnGroup;
+  List<GroupDetails?> get allGroups => _allGroups;
 }

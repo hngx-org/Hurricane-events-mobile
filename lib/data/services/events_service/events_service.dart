@@ -3,6 +3,7 @@ import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/events/event_interest.dart';
 import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
+import 'package:hurricane_events/data/models/groups/events_create.dart';
 import 'package:hurricane_events/data/models/message_response.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -13,7 +14,7 @@ abstract class EventsService {
   factory EventsService(Dio dio, {String baseUrl}) = _EventsService;
 
   @POST("/events")
-  Future<MessageResponse> createEvents(
+  Future<CreateEvent> createEvents(
     @Body() Map<String, dynamic> body,
   );
 
@@ -42,6 +43,12 @@ abstract class EventsService {
   Future addImagesToComment(
     @Path("id") String id,
     @Body() Map<String, dynamic> body,
+  );
+
+  @POST("/groups/{group_id}/events/{event_id}")
+  Future<MessageResponse> addEventsToGroup(
+    @Path("group_id") String groupId,
+    @Path("event_id") String eventId,
   );
 
   @GET("/comments/{id}/images")

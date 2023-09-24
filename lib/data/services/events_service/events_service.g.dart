@@ -19,14 +19,14 @@ class _EventsService implements EventsService {
   String? baseUrl;
 
   @override
-  Future<MessageResponse> createEvents(Map<String, dynamic> body) async {
+  Future<CreateEvent> createEvents(Map<String, dynamic> body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<CreateEvent>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -42,7 +42,7 @@ class _EventsService implements EventsService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = MessageResponse.fromJson(_result.data!);
+    final value = CreateEvent.fromJson(_result.data!);
     return value;
   }
 
@@ -243,6 +243,36 @@ class _EventsService implements EventsService {
           baseUrl,
         ))));
     final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<MessageResponse> addEventsToGroup(
+    String groupId,
+    String eventId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<MessageResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/groups/${groupId}/events/${eventId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = MessageResponse.fromJson(_result.data!);
     return value;
   }
 
