@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
+import 'package:hurricane_events/app/presentation/add_group/screens/add_group.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
@@ -188,17 +189,31 @@ class _AddEventState extends State<AddEvent> {
                         height: 40.0,
                         child: Row(
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppColors.darkBlue1,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                "Add Group",
-                                style: context.body2.copyWith(
-                                  fontSize: 12,
-                                  color: Colors.white,
+                            InkWell(
+                              onTap: () async {
+                                BaseNavigator.pop();
+                                await BaseNavigator.pushNamed(
+                                  AddGroupScreen.routeName,
+                                );
+
+                                if (!mounted) return;
+
+                                context.read<MyGroupProvider>().refreshUserGroups(
+                                      context.read<UserProvider>().user!.id!,
+                                    );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: AppColors.darkBlue1,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  "Add Group",
+                                  style: context.body2.copyWith(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
