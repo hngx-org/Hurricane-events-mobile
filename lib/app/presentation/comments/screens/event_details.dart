@@ -14,6 +14,7 @@ import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
+import 'package:hurricane_events/component/widgets/overlays/delete_event.dart';
 import 'package:hurricane_events/component/widgets/shimmer/event_shimmer.dart';
 import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
@@ -87,32 +88,36 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
     sending = true;
     setState(() {});
 
-    CreateComment comment = CreateComment(
-      body: commentController.text,
-      userId: context.read<UserProvider>().user?.id,
-      image: "",
-    );
+    CreateComment comment;
 
-    // TaskSnapshot taskSnapshot = await FirebaseStorage.instance
-    //     .ref()
-    //     .child('thumbnails')
-    //     .child("hng")
-    //     .child(context.read<UserProvider>().user?.id ?? "")
-    //     .putFile(File(image?.path ?? ""));
-    // String url = await taskSnapshot.ref.getDownloadURL();
-    // if (url.isEmpty) {
-    //   comment = CreateComment(
-    //     body: commentController.text,
-    //     userId: context.read<UserProvider>().user?.id,
-    //     image: "",
-    //   );
-    // } else {
-    //   comment = CreateComment(
-    //     body: commentController.text,
-    //     userId: context.read<UserProvider>().user?.id,
-    //     image: url,
-    //   );
-    // }
+    if (image != null) {
+      TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+          .ref()
+          .child('thumbnails')
+          .child("hng/${image?.name}/${DateTime.now().toIso8601String()}")
+          .child(context.read<UserProvider>().user?.id ?? "")
+          .putFile(File(image?.path ?? ""));
+      String url = await taskSnapshot.ref.getDownloadURL();
+      if (url.isEmpty) {
+        comment = CreateComment(
+          body: commentController.text,
+          userId: context.read<UserProvider>().user?.id,
+          image: "",
+        );
+      } else {
+        comment = CreateComment(
+          body: commentController.text,
+          userId: context.read<UserProvider>().user?.id,
+          image: url,
+        );
+      }
+    } else {
+      comment = CreateComment(
+        body: commentController.text,
+        userId: context.read<UserProvider>().user?.id,
+        image: "",
+      );
+    }
 
     final s = await context.read<EventProvider>().createComment(
           widget.id,
@@ -121,6 +126,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
     if (s == true) {
       commentController.clear();
+      image = null;
       context.read<EventProvider>().refreshComments(widget.id);
       setState(() {});
     } else {}
@@ -190,6 +196,21 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                       12.height,
                       EventCard(
                         eventFull: eventProvider.event,
+                        onTap: () async {
+                          final s = await AppOverlays.showDeleteDialog(
+                            context,
+                            eventProvider.event?.id ?? "",
+                            eventProvider.event?.title ?? "",
+                          );
+
+                          if (!mounted) return;
+
+                          if (s != null && s == true) {
+                            BaseNavigator.pop();
+                            context.read<EventProvider>().refreshEvents();
+                            context.read<EventProvider>().refreshUserAndFriendsEvents();
+                          }
+                        },
                       ),
                       // 30.height,
                       // ClickWidget(
@@ -414,24 +435,31 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        Icons.comments_disabled_outlined,
-                                        size: 80,
-                                        color: AppColors.designBlack1,
-                                      ),
-                                      const SizedBox(height: 24),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                                        child: Text(
-                                          "There are no comments to view for this event timeline.",
-                                          textAlign: TextAlign.center,
-                                          style: context.body1.copyWith(
-                                            color: AppColors.designBlack1,
-                                            fontSize: 16,
-                                          ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.comments_disabled_outlined,
+                                              size: 80,
+                                              color: AppColors.designBlack1,
+                                            ),
+                                            const SizedBox(height: 24),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                                              child: Text(
+                                                "There are no comments to view for this event timeline.",
+                                                textAlign: TextAlign.center,
+                                                style: context.body1.copyWith(
+                                                  color: AppColors.designBlack1,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(height: 48),
                                     ],
                                   );
                                 }
@@ -524,27 +552,38 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
                               return const SizedBox.shrink();
                             }),
-                            ClickWidget(
-                              onTap: () async {
-                                if (sending) {
-                                  return;
-                                }
-                                await postComment();
-                              },
-                              child: Container(
-                                height: 28,
-                                width: 28,
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: AppColors.darkBlue1,
+                            Builder(builder: (context) {
+                              if (sending == true) {
+                                return const SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.darkBlue1,
+                                  ),
+                                );
+                              }
+                              return ClickWidget(
+                                onTap: () async {
+                                  if (sending) {
+                                    return;
+                                  }
+                                  await postComment();
+                                },
+                                child: Container(
+                                  height: 28,
+                                  width: 28,
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.darkBlue1,
+                                  ),
+                                  padding: const EdgeInsets.all(5),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/icon_send.svg',
+                                  ),
                                 ),
-                                padding: const EdgeInsets.all(5),
-                                child: SvgPicture.asset(
-                                  'assets/icons/icon_send.svg',
-                                ),
-                              ),
-                            ),
+                              );
+                            }),
                           ],
                         ),
                       )

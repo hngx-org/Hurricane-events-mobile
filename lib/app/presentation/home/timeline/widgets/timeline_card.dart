@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/component/constants/images.dart';
@@ -58,10 +59,31 @@ class _TimelineCardState extends State<TimelineCard> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       padding: const EdgeInsets.all(4),
-                      child: SvgPicture.asset(
-                        AppImages.hangoutIcon,
-                        height: 56,
-                        color: AppColors.darkBlue2,
+                      child: Builder(
+                        builder: (context) {
+                          if (widget.event.eventIcon != null) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.event.eventIcon ?? "",
+                                height: 56,
+                                width: 56,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return SvgPicture.asset(
+                                    AppImages.techiesIcon,
+                                    height: 56,
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          return SvgPicture.asset(
+                            AppImages.hangoutIcon,
+                            height: 56,
+                            color: AppColors.darkBlue2,
+                          );
+                        },
                       ),
                     ),
                     16.width,
@@ -207,7 +229,8 @@ class _TimelineCardState extends State<TimelineCard> {
                                                 showOptions.value = !showOptions.value;
                                                 final s = await AppOverlays.showDeleteDialog(
                                                   context,
-                                                  widget.event,
+                                                  widget.event.id ?? "",
+                                                  widget.event.title ?? "",
                                                 );
 
                                                 if (!mounted) return;

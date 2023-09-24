@@ -21,6 +21,15 @@ extension TextTheming on BuildContext {
   TextStyle get button2 => Theme.of(this).extension<EventsTextTheme>()!.button2!;
 }
 
+extension LocalTime on DateTime {
+  static final now = DateTime.now();
+  static Duration offset = now.timeZoneOffset;
+  static DateTime parse(String isoString) {
+    DateTime time = DateTime.parse(isoString).add(offset);
+    return time;
+  }
+}
+
 extension Sizing on BuildContext {
   double get fullWidth => MediaQuery.of(this).size.width;
   double get fullHeight => MediaQuery.of(this).size.height;

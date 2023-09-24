@@ -11,9 +11,11 @@ import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
+import 'package:hurricane_events/component/widgets/overlays/delete_event.dart';
 import 'package:hurricane_events/component/widgets/shimmer/event_shimmer.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +38,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
   ValueNotifier addPeoplePressed = ValueNotifier(false);
 
   String? emailError;
+
+  bool isDeleting = false;
 
   final emailFocus = FocusNode();
 
@@ -147,6 +151,30 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                         icon: const Icon(
                           Icons.group_add_rounded,
                           color: AppColors.darkBlue1,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final s = await AppOverlays.showDeleteGroupDialog(
+                            context,
+                            widget.groupDetail.id ?? "",
+                            widget.groupDetail.title ?? "",
+                          );
+
+                          if (!mounted) return;
+
+                          if (s != null && s == true) {
+                            BaseNavigator.pop();
+                            BaseNavigator.currentContext.read<MyGroupProvider>().refreshUserGroups(
+                                  context.read<UserProvider>().user?.id ?? "",
+                                );
+                            context.read<EventProvider>().refreshEvents();
+                            context.read<EventProvider>().refreshUserAndFriendsEvents();
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.designRed,
                         ),
                       ),
                     ],
@@ -320,7 +348,21 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                                 children: [
                                   EventCard(
                                     eventFull: myGroupProvider.allEvents[index],
-                                    onTap: () {},
+                                    onTap: () async {
+                                      final s = await AppOverlays.showDeleteDialog(
+                                        context,
+                                        myGroupProvider.allEvents[index]?.id ?? "",
+                                        myGroupProvider.allEvents[index]?.title ?? "",
+                                      );
+
+                                      if (!mounted) return;
+
+                                      if (s != null && s == true) {
+                                        context.read<MyGroupProvider>().refreshGrouEvents(
+                                              widget.groupDetail.id ?? "",
+                                            );
+                                      }
+                                    },
                                   ),
                                 ],
                               ),

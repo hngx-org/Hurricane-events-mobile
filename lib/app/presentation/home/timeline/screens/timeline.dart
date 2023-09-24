@@ -10,13 +10,12 @@ import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
+import 'package:hurricane_events/component/widgets/overlays/delete_event.dart';
 import 'package:hurricane_events/component/widgets/shimmer/timeline_shimmer.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/timeline_card.dart';
 
 class TimelineScreen extends StatefulWidget {
   static const String routeName = "my_group";
@@ -34,6 +33,10 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      BaseNavigator.currentContext.read<EventProvider>().refreshEvents();
+      BaseNavigator.currentContext.read<EventProvider>().refreshUserAndFriendsEvents();
+    });
 
     controller = TabController(
       length: 2,
@@ -169,6 +172,20 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
                                 },
                                 child: EventCard(
                                   eventFull: element,
+                                  onTap: () async {
+                                    final s = await AppOverlays.showDeleteDialog(
+                                      context,
+                                      element.id ?? "",
+                                      element.title ?? "",
+                                    );
+
+                                    if (!mounted) return;
+
+                                    if (s != null && s == true) {
+                                      context.read<EventProvider>().refreshEvents();
+                                      context.read<EventProvider>().refreshUserAndFriendsEvents();
+                                    }
+                                  },
                                 ),
                               );
                               // return TimelineCard(
@@ -224,7 +241,7 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
                             );
                           }
 
-                          return GroupedListView<EventNorm, String>(
+                          return GroupedListView<EventFull, String>(
                             physics: const ClampingScrollPhysics(),
                             padding: EdgeInsets.zero,
                             elements: events.events,
@@ -234,18 +251,33 @@ class _TimelineScreenState extends State<TimelineScreen> with TickerProviderStat
                             order: GroupedListOrder.DESC,
                             useStickyGroupSeparators: false,
                             groupSeparatorBuilder: (value) {
-                              return 16.height;
+                              return const SizedBox.shrink();
                             },
-                            itemBuilder: (context, EventNorm element) {
-                              return TimelineCard(
+                            itemBuilder: (context, EventFull element) {
+                              return ClickWidget(
                                 onTap: () {
                                   BaseNavigator.pushNamed(
                                     PreCommentEventDetails.routeName,
                                     args: element.id,
                                   );
                                 },
-                                moreButtonFunction: () {},
-                                event: element,
+                                child: EventCard(
+                                  eventFull: element,
+                                  onTap: () async {
+                                    final s = await AppOverlays.showDeleteDialog(
+                                      context,
+                                      element.id ?? "",
+                                      element.title ?? "",
+                                    );
+
+                                    if (!mounted) return;
+
+                                    if (s != null && s == true) {
+                                      context.read<EventProvider>().refreshEvents();
+                                      context.read<EventProvider>().refreshUserAndFriendsEvents();
+                                    }
+                                  },
+                                ),
                               );
                             },
                           );

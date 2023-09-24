@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentTile extends StatelessWidget {
   final Comment? comment;
@@ -93,12 +95,23 @@ class CommentTile extends StatelessWidget {
               ],
             ),
           ),
-          // Text(
-          //   timeago.format(comment?.createdAt ?? DateTime.now()),
-          //   style: context.body2.copyWith(
-          //     fontSize: 12,
-          //   ),
-          // ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                timeago.format(comment?.createdAt?.toLocal() ?? DateTime.now()),
+                style: context.body2.copyWith(
+                  fontSize: 11,
+                ),
+              ),
+              Text(
+                DateFormat.jm().format(comment?.createdAt?.toLocal() ?? DateTime.now()),
+                style: context.body2.copyWith(
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

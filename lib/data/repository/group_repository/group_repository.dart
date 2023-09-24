@@ -17,12 +17,14 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
   Future<Tuple2<CreateGroup?, String?>> createGroup({
     required String title,
     required String id,
+    String? avatar,
   }) async {
     try {
       final result = await groupService().createGroup(
         body: {
           "title": title,
           "user_id": id,
+          "image": avatar,
         },
       );
 
@@ -281,6 +283,40 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
       final result = await groupService().getuserGroups(id);
 
       if (result.isNotEmpty) {
+        return Tuple2(result, null);
+      }
+
+      return const Tuple2(null, defaultError);
+    } on DioException catch (dio) {
+      switch (dio.type) {
+        case DioExceptionType.connectionTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.sendTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.receiveTimeout:
+          return const Tuple2(null, timeoutError);
+        case DioExceptionType.connectionError:
+          return const Tuple2(null, socketError);
+        case DioExceptionType.cancel:
+          return const Tuple2(null, null);
+        default:
+          return const Tuple2(null, defaultError);
+      }
+    } catch (e) {
+      return const Tuple2(null, defaultError);
+    }
+  }
+
+  @override
+  Future<Tuple2<AddUser?, String?>> deleteGroup({
+    required String groupId,
+  }) async {
+    try {
+      final result = await groupService().deleteGroup(
+        groupId: groupId,
+      );
+
+      if (result.message != null) {
         return Tuple2(result, null);
       }
 

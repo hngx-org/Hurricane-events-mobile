@@ -1,8 +1,27 @@
 import 'package:dio/dio.dart';
+import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
 
 class Dummy extends Interceptor {}
 
 class ApiInterceptor extends Interceptor {
+  @override
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) {
+    if (options.path.toLowerCase().contains("auth")) {
+      return handler.next(options);
+    }
+
+    if (!options.path.toLowerCase().contains("auth")) {
+      var token = AppStorage.instance.getToken();
+      options.headers['Authorization'] = token.toString();
+      return handler.next(options);
+    } else {
+      super.onRequest(options, handler);
+    }
+  }
+
   @override
   void onError(
     DioException err,

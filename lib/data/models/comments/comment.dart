@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:hurricane_events/component/utils/extensions.dart';
+
 Comment commentFromJson(String str) => Comment.fromJson(json.decode(str));
 
 String commentToJson(Comment data) => json.encode(data.toJson());
@@ -31,11 +33,11 @@ class Comment {
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         body: json["body"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] == null ? null : LocalTime.parse(json["created_at"]),
         eventId: json["event_id"],
         id: json["id"],
         image: json["image"],
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        updatedAt: json["updated_at"] == null ? null : LocalTime.parse(json["updated_at"]),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         userId: json["user_id"],
       );

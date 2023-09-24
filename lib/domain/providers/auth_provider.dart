@@ -27,7 +27,6 @@ class AuthProvider extends ChangeNotifier {
       final result = await _auth.googleAuth();
       if (result.item1 != null) {
         final data = result.item1;
-        print(data);
         assert(data!.email != null);
         assert(data!.displayName != null);
 

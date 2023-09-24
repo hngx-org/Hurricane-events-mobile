@@ -50,7 +50,7 @@ class EventRepository extends ApiImplementation implements EventRepositoryInterf
   }
 
   @override
-  Future<Tuple2<List<EventNorm>?, String?>> getEvents() async {
+  Future<Tuple2<List<EventFull>?, String?>> getEvents() async {
     try {
       final result = await eventService().listEvents();
       if (result != null) {

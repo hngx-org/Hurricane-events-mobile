@@ -15,6 +15,7 @@ class AddGroupProvider extends ChangeNotifier {
 
   createGroup({
     required String groupTitle,
+    String? avatar,
     required List<String> listOfFriends,
   }) async {
     try {
@@ -23,6 +24,7 @@ class AddGroupProvider extends ChangeNotifier {
       final res = await _group.createGroup(
         title: groupTitle,
         id: _user.user!.id!,
+        avatar: avatar,
       );
 
       if (res.item1 != null) {

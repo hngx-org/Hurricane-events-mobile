@@ -1,19 +1,27 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hurricane_events/app/presentation/add_event/widgets/user_groups_tiles.dart';
 import 'package:hurricane_events/app/presentation/add_group/screens/add_group.dart';
 import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
 import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/component/constants/color.dart';
+import 'package:hurricane_events/component/constants/images.dart';
 import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/component/utils/extensions.dart';
 import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/custom_button.dart';
 import 'package:hurricane_events/component/widgets/custom_textfield.dart';
 import 'package:hurricane_events/component/widgets/shimmer/add_ebent_group_shimmer.dart';
+import 'package:hurricane_events/component/widgets/svg_picture.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddEvent extends StatefulWidget {
@@ -34,6 +42,10 @@ class _AddEventState extends State<AddEvent> {
 
   String? nameError;
   String? locationError;
+
+  XFile? image;
+  late ImagePicker _picker;
+  bool isUploading = false;
 
   DateTime? _startDateController;
   DateTime? _endDateController;
@@ -61,18 +73,13 @@ class _AddEventState extends State<AddEvent> {
   @override
   void initState() {
     super.initState();
+    _picker = ImagePicker();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<MyGroupProvider>(context, listen: false).getUserGroups(
         context.read<UserProvider>().user!.id!,
       );
     });
   }
-
-  List<String> onlineIcons = [
-    'https://img.icons8.com/?size=160&id=j2lPVrxHLuGq&format=png',
-    'https://img.icons8.com/?size=160&id=uOgV6ugNgk6m&format=png',
-    'https://img.icons8.com/?size=96&id=l3jcLOr5VOxm&format=png'
-  ];
 
   int selectedIconIndex = -1;
   String selectedIconUrl = '';
@@ -830,129 +837,71 @@ class _AddEventState extends State<AddEvent> {
                   ),
                   8.height,
 
-                  // ///Event Icon Row
-                  // ///having issues inserting the required images
+                  ///Event Icon Row
+                  ///having issues inserting the required images
                   Row(
-                    children: List.generate(
-                      onlineIcons.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            // Check if the tapped icon is already selected
-                            if (selectedIconIndex == index) {
-                              // If it's the same icon, deselect it
-                              selectedIconUrl = '';
-                              selectedIconIndex = -1;
-                            } else {
-                              // If a different icon is tapped, select it
-                              selectedIconUrl = onlineIcons[index];
-                              selectedIconIndex = index;
-                            }
-                          });
-                        },
-                        child: Container(
+                    children: [
+                      Builder(builder: (context) {
+                        if (image != null) {
+                          return Container(
+                            height: 76.0,
+                            width: 76.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24.0),
+                              color: AppColors.darkGrey2,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24.0),
+                              child: Image.file(
+                                File(image?.path ?? ""),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }
+                        return Container(
                           height: 76.0,
                           width: 76.0,
-                          margin: const EdgeInsets.only(right: 14),
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24.0),
-                            color: selectedIconIndex == index ? AppColors.darkBlue1 : AppColors.darkGrey2,
-                            border: Border.all(
-                              color: selectedIconIndex == index ? AppColors.darkBlue1 : Colors.transparent,
-                              width: 2.0, // Adjust the border width as needed
-                            ),
+                            color: AppColors.darkGrey2,
                           ),
-                          // decoration: BoxDecoration(
-                          //   borderRadius: BorderRadius.circular(24.0),
-                          //   color: AppColors.darkGrey2,
-                          // ),
-                          child: Image.network(onlineIcons[index]),
+                          child: const Svg(
+                            image: AppImages.techiesIcon,
+                          ),
+                        );
+                      }),
+                      12.width,
+                      ClickWidget(
+                        onTap: () async {
+                          await _picker.pickImage(source: ImageSource.gallery).then(
+                            (value) async {
+                              if (value != null) {
+                                image = value;
+                                setState(() {});
+                              }
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.add,
+                              color: AppColors.designOrange,
+                            ),
+                            7.width,
+                            Text(
+                              "Add from\nGallery",
+                              style: context.body1.copyWith(
+                                fontSize: 12,
+                                color: AppColors.designOrange,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    // children: [
-                    // Container(
-                    //   height: 76.0,
-                    //   width: 76.0,
-                    //   padding: const EdgeInsets.all(14),
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(24.0),
-                    //     color: AppColors.darkGrey2,
-                    //   ),
-                    //   child: const Svg(
-                    //     image: AppImages.techiesIcon,
-                    //   ),
-                    // ),
-                    // const SizedBox(width: 12.0),
-                    // Container(
-                    //   height: 76.0,
-                    //   width: 76.0,
-                    //   padding: const EdgeInsets.all(14),
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(24.0),
-                    //     color: AppColors.darkGrey2,
-                    //   ),
-                    //   child: const Svg(
-                    //     image: AppImages.techiesIcon,
-                    //   ),
-                    // ),
-                    // 12.width,
-                    // Visibility(
-                    //   visible: _customEventIcon != null,
-                    //   child: Container(
-                    //     height: 76.0,
-                    //     width: 76.0,
-                    //     padding: const EdgeInsets.all(14),
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(24.0),
-                    //       color: AppColors.darkGrey2,
-                    //     ),
-                    //     child: _customEventIcon != null
-                    //         ? ClipRRect(
-                    //             child: Image.file(
-                    //               _customEventIcon!,
-                    //               fit: BoxFit.cover,
-                    //             ),
-                    //           )
-                    //         : const Placeholder(),
-                    //   ),
-                    // ),
-                    // 12.width,
-                    // Visibility(
-                    //   visible: _customEventIcon == null,
-                    //   child: ClickWidget(
-                    //     onTap: _getImageFromGallery,
-                    //     child: Row(
-                    //       children: [
-                    //         const Icon(
-                    //           Icons.add,
-                    //           color: AppColors.designOrange,
-                    //         ),
-                    //         7.width,
-                    //         Text(
-                    //           "Add from\nGallery",
-                    //           style: context.body1.copyWith(
-                    //             fontSize: 12,
-                    //             color: AppColors.designOrange,
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    // 12.width,
-                    // Visibility(
-                    //   visible: _customEventIcon != null,
-                    //   child: ClickWidget(
-                    //     onTap: removeImage,
-                    //     child: const Icon(
-                    //       Icons.close,
-                    //       color: AppColors.designOrange,
-                    //     ),
-                    //   ),
-                    // ),
-                    // ]
+                    ],
                   ),
                   20.height,
                   Builder(builder: (context) {
@@ -972,6 +921,10 @@ class _AddEventState extends State<AddEvent> {
                       radius: 32,
                       backgroundColor: AppColors.darkBlue1,
                       onPressed: () async {
+                        if (isUploading) {
+                          return;
+                        }
+
                         if (_formKey.currentState!.validate()) {
                           if (selectedGroup == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -1006,42 +959,138 @@ class _AddEventState extends State<AddEvent> {
                           }
 
                           if (_startDateController != null) {
-                            AddEventsRequest request = AddEventsRequest(
-                              title: _name.text,
-                              description: selectedGroup?.title,
-                              location: _location.text,
-                              startDate: _startDateController,
-                              endDate: _endDateController ?? _startDateController,
-                              creatorId: context.read<UserProvider>().user?.id,
-                              thumbnail: selectedIconUrl,
-                              startTime: DateTime(
-                                _startDateController!.year,
-                                _startDateController!.month,
-                                _startDateController!.day,
-                                _startDateStartTimeController!.hour,
-                                _startDateStartTimeController!.minute,
-                              ),
-                              endTime: _endDateController == null
-                                  ? DateTime(
-                                      _startDateController!.year,
-                                      _startDateController!.month,
-                                      _startDateController!.day,
-                                      _startDateEndTimeController!.hour,
-                                      _startDateEndTimeController!.minute,
-                                    )
-                                  : DateTime(
-                                      _endDateController!.year,
-                                      _endDateController!.month,
-                                      _endDateController!.day,
-                                      _endDateEndTimeController!.hour,
-                                      _endDateEndTimeController!.minute,
-                                    ),
-                            );
+                            isUploading = true;
+                            setState(() {});
 
-                            await eventsProvider.createEvent(
-                              body: request,
-                              group: selectedGroup!,
-                            );
+                            AddEventsRequest request;
+
+                            if (image != null) {
+                              isUploading = true;
+                              setState(() {});
+
+                              TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+                                  .ref()
+                                  .child('thumbnails')
+                                  .child("hng/${image?.name}/${DateTime.now().toIso8601String()}")
+                                  .child(context.read<UserProvider>().user?.id ?? "")
+                                  .putFile(File(image?.path ?? ""));
+                              String url = await taskSnapshot.ref.getDownloadURL();
+                              isUploading = false;
+                              setState(() {});
+
+                              if (url.isNotEmpty) {
+                                request = AddEventsRequest(
+                                  title: _name.text,
+                                  description: selectedGroup?.title,
+                                  location: _location.text,
+                                  startDate: _startDateController,
+                                  endDate: _endDateController ?? _startDateController,
+                                  creatorId: context.read<UserProvider>().user?.id,
+                                  thumbnail: url,
+                                  startTime: DateTime(
+                                    _startDateController!.year,
+                                    _startDateController!.month,
+                                    _startDateController!.day,
+                                    _startDateStartTimeController!.hour,
+                                    _startDateStartTimeController!.minute,
+                                  ),
+                                  endTime: _endDateController == null
+                                      ? DateTime(
+                                          _startDateController!.year,
+                                          _startDateController!.month,
+                                          _startDateController!.day,
+                                          _startDateEndTimeController!.hour,
+                                          _startDateEndTimeController!.minute,
+                                        )
+                                      : DateTime(
+                                          _endDateController!.year,
+                                          _endDateController!.month,
+                                          _endDateController!.day,
+                                          _endDateEndTimeController!.hour,
+                                          _endDateEndTimeController!.minute,
+                                        ),
+                                );
+
+                                await eventsProvider.createEvent(
+                                  body: request,
+                                  group: selectedGroup!,
+                                );
+                              } else {
+                                request = AddEventsRequest(
+                                  title: _name.text,
+                                  description: selectedGroup?.title,
+                                  location: _location.text,
+                                  startDate: _startDateController,
+                                  endDate: _endDateController ?? _startDateController,
+                                  creatorId: context.read<UserProvider>().user?.id,
+                                  thumbnail: "",
+                                  startTime: DateTime(
+                                    _startDateController!.year,
+                                    _startDateController!.month,
+                                    _startDateController!.day,
+                                    _startDateStartTimeController!.hour,
+                                    _startDateStartTimeController!.minute,
+                                  ),
+                                  endTime: _endDateController == null
+                                      ? DateTime(
+                                          _startDateController!.year,
+                                          _startDateController!.month,
+                                          _startDateController!.day,
+                                          _startDateEndTimeController!.hour,
+                                          _startDateEndTimeController!.minute,
+                                        )
+                                      : DateTime(
+                                          _endDateController!.year,
+                                          _endDateController!.month,
+                                          _endDateController!.day,
+                                          _endDateEndTimeController!.hour,
+                                          _endDateEndTimeController!.minute,
+                                        ),
+                                );
+
+                                await eventsProvider.createEvent(
+                                  body: request,
+                                  group: selectedGroup!,
+                                );
+                              }
+                            } else {
+                              request = AddEventsRequest(
+                                title: _name.text,
+                                description: selectedGroup?.title,
+                                location: _location.text,
+                                startDate: _startDateController,
+                                endDate: _endDateController ?? _startDateController,
+                                creatorId: context.read<UserProvider>().user?.id,
+                                thumbnail: "",
+                                startTime: DateTime(
+                                  _startDateController!.year,
+                                  _startDateController!.month,
+                                  _startDateController!.day,
+                                  _startDateStartTimeController!.hour,
+                                  _startDateStartTimeController!.minute,
+                                ),
+                                endTime: _endDateController == null
+                                    ? DateTime(
+                                        _startDateController!.year,
+                                        _startDateController!.month,
+                                        _startDateController!.day,
+                                        _startDateEndTimeController!.hour,
+                                        _startDateEndTimeController!.minute,
+                                      )
+                                    : DateTime(
+                                        _endDateController!.year,
+                                        _endDateController!.month,
+                                        _endDateController!.day,
+                                        _endDateEndTimeController!.hour,
+                                        _endDateEndTimeController!.minute,
+                                      ),
+                              );
+
+                              await eventsProvider.createEvent(
+                                body: request,
+                                group: selectedGroup!,
+                              );
+                            }
                           }
                         }
                       },
