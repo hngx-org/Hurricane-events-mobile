@@ -29,10 +29,10 @@ class CommentTile extends StatelessWidget {
         children: [
           Builder(
             builder: (context) {
-              if (comment?.image != null) {
+              if (comment!.user?.avatar != null) {
                 return CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(
-                    comment?.image ?? '',
+                    comment!.user?.avatar ?? '',
                   ),
                   radius: 15,
                 );
@@ -57,7 +57,7 @@ class CommentTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'No name from Backend',
+                  comment!.user?.name ?? "",
                   style: context.body2.copyWith(
                     fontSize: 12,
                   ),
@@ -71,7 +71,7 @@ class CommentTile extends StatelessWidget {
                 ),
                 Builder(
                   builder: (_) {
-                    if (comment?.image == null) {
+                    if (comment?.image == null || comment!.image!.isEmpty) {
                       return const SizedBox.shrink();
                     }
 

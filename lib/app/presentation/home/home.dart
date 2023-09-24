@@ -52,6 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
+          BaseNavigator.currentContext.read<EventProvider>().refreshEvents();
+          BaseNavigator.currentContext.read<EventProvider>().refreshUserAndFriendsEvents();
           setState(() {
             currentIndex = index;
           });

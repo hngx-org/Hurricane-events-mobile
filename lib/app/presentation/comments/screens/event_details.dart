@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
@@ -15,6 +18,7 @@ import 'package:hurricane_events/component/widgets/shimmer/event_shimmer.dart';
 import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/domain/providers/events_provider.dart';
 import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class PreCommentEventDetails extends StatefulWidget {
@@ -36,8 +40,11 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
 
   TextEditingController commentController = TextEditingController();
 
-  // List<Comment> preEventComment = [];
-  // List<Comment> postEventComment = [];
+  late ImagePicker _picker;
+
+  bool sending = false;
+
+  XFile? image;
 
   ValueNotifier preSelected = ValueNotifier(false);
   ValueNotifier postSelected = ValueNotifier(false);
@@ -57,6 +64,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
   @override
   void initState() {
     super.initState();
+    _picker = ImagePicker();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await getEventsDetails();
@@ -76,11 +84,35 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
       return;
     }
 
+    sending = true;
+    setState(() {});
+
     CreateComment comment = CreateComment(
       body: commentController.text,
       userId: context.read<UserProvider>().user?.id,
       image: "",
     );
+
+    // TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+    //     .ref()
+    //     .child('thumbnails')
+    //     .child("hng")
+    //     .child(context.read<UserProvider>().user?.id ?? "")
+    //     .putFile(File(image?.path ?? ""));
+    // String url = await taskSnapshot.ref.getDownloadURL();
+    // if (url.isEmpty) {
+    //   comment = CreateComment(
+    //     body: commentController.text,
+    //     userId: context.read<UserProvider>().user?.id,
+    //     image: "",
+    //   );
+    // } else {
+    //   comment = CreateComment(
+    //     body: commentController.text,
+    //     userId: context.read<UserProvider>().user?.id,
+    //     image: url,
+    //   );
+    // }
 
     final s = await context.read<EventProvider>().createComment(
           widget.id,
@@ -92,6 +124,9 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
       context.read<EventProvider>().refreshComments(widget.id);
       setState(() {});
     } else {}
+
+    sending = false;
+    setState(() {});
   }
 
   @override
@@ -267,171 +302,175 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                       // ),
                       16.height,
                       Expanded(
-                        child: Builder(builder: (context) {
-                          // if (preSelected.value) {
-                          //   return Builder(builder: (context) {
-                          //     if (preEventComment.isEmpty) {
-                          //       return Column(
-                          //         mainAxisAlignment: MainAxisAlignment.center,
-                          //         crossAxisAlignment: CrossAxisAlignment.center,
-                          //         children: [
-                          //           const Icon(
-                          //             Icons.comments_disabled_outlined,
-                          //             size: 80,
-                          //             color: AppColors.designBlack1,
-                          //           ),
-                          //           const SizedBox(height: 24),
-                          //           Padding(
-                          //             padding: const EdgeInsets.symmetric(horizontal: 24),
-                          //             child: Text(
-                          //               "There are no comments to view for this event timeline.",
-                          //               textAlign: TextAlign.center,
-                          //               style: context.body1.copyWith(
-                          //                 color: AppColors.designBlack1,
-                          //                 fontSize: 16,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //           const SizedBox(height: 48),
-                          //         ],
-                          //       );
-                          //     }
-                          //     return FadeInDown(
-                          //       duration: const Duration(milliseconds: 200),
-                          //       child: GroupedListView<Comment, String>(
-                          //         padding: EdgeInsets.zero,
-                          //         elements: preEventComment,
-                          //         groupBy: (element) => element.createdAt!.toIso8601String(),
-                          //         itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
-                          //         groupComparator: (value1, value2) => value2.compareTo(value1),
-                          //         order: GroupedListOrder.ASC,
-                          //         useStickyGroupSeparators: false,
-                          //         groupSeparatorBuilder: (value) {
-                          //           return 16.height;
-                          //         },
-                          //         itemBuilder: (context, Comment element) {
-                          //           return CommentTile(
-                          //             comment: element,
-                          //           );
-                          //         },
-                          //       ),
-                          //     );
-                          //   });
-                          // }
+                        child: Builder(
+                          builder: (context) {
+                            // if (preSelected.value) {
+                            //   return Builder(builder: (context) {
+                            //     if (preEventComment.isEmpty) {
+                            //       return Column(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.center,
+                            //         children: [
+                            //           const Icon(
+                            //             Icons.comments_disabled_outlined,
+                            //             size: 80,
+                            //             color: AppColors.designBlack1,
+                            //           ),
+                            //           const SizedBox(height: 24),
+                            //           Padding(
+                            //             padding: const EdgeInsets.symmetric(horizontal: 24),
+                            //             child: Text(
+                            //               "There are no comments to view for this event timeline.",
+                            //               textAlign: TextAlign.center,
+                            //               style: context.body1.copyWith(
+                            //                 color: AppColors.designBlack1,
+                            //                 fontSize: 16,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           const SizedBox(height: 48),
+                            //         ],
+                            //       );
+                            //     }
+                            //     return FadeInDown(
+                            //       duration: const Duration(milliseconds: 200),
+                            //       child: GroupedListView<Comment, String>(
+                            //         padding: EdgeInsets.zero,
+                            //         elements: preEventComment,
+                            //         groupBy: (element) => element.createdAt!.toIso8601String(),
+                            //         itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
+                            //         groupComparator: (value1, value2) => value2.compareTo(value1),
+                            //         order: GroupedListOrder.ASC,
+                            //         useStickyGroupSeparators: false,
+                            //         groupSeparatorBuilder: (value) {
+                            //           return 16.height;
+                            //         },
+                            //         itemBuilder: (context, Comment element) {
+                            //           return CommentTile(
+                            //             comment: element,
+                            //           );
+                            //         },
+                            //       ),
+                            //     );
+                            //   });
+                            // }
 
-                          // if (postSelected.value) {
-                          //   return Builder(builder: (context) {
-                          //     if (postEventComment.isEmpty) {
-                          //       return Column(
-                          //         mainAxisAlignment: MainAxisAlignment.center,
-                          //         crossAxisAlignment: CrossAxisAlignment.center,
-                          //         children: [
-                          //           const Icon(
-                          //             Icons.comments_disabled_outlined,
-                          //             size: 80,
-                          //             color: AppColors.designBlack1,
-                          //           ),
-                          //           const SizedBox(height: 24),
-                          //           Padding(
-                          //             padding: const EdgeInsets.symmetric(horizontal: 24),
-                          //             child: Text(
-                          //               "There are no comments to view for this event timeline.",
-                          //               textAlign: TextAlign.center,
-                          //               style: context.body1.copyWith(
-                          //                 color: AppColors.designBlack1,
-                          //                 fontSize: 16,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //           const SizedBox(height: 48),
-                          //         ],
-                          //       );
-                          //     }
-                          //     return FadeInDown(
-                          //       duration: const Duration(milliseconds: 200),
-                          //       child: GroupedListView<Comment, String>(
-                          //         padding: EdgeInsets.zero,
-                          //         elements: postEventComment,
-                          //         groupBy: (element) => element.createdAt!.toIso8601String(),
-                          //         itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
-                          //         groupComparator: (value1, value2) => value2.compareTo(value1),
-                          //         order: GroupedListOrder.ASC,
-                          //         useStickyGroupSeparators: false,
-                          //         groupSeparatorBuilder: (value) {
-                          //           return 16.height;
-                          //         },
-                          //         itemBuilder: (context, Comment element) {
-                          //           return CommentTile(
-                          //             comment: element,
-                          //           );
-                          //         },
-                          //       ),
-                          //     );
-                          //   });
-                          // }
-                          // return const SizedBox.shrink();
+                            // if (postSelected.value) {
+                            //   return Builder(builder: (context) {
+                            //     if (postEventComment.isEmpty) {
+                            //       return Column(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.center,
+                            //         children: [
+                            //           const Icon(
+                            //             Icons.comments_disabled_outlined,
+                            //             size: 80,
+                            //             color: AppColors.designBlack1,
+                            //           ),
+                            //           const SizedBox(height: 24),
+                            //           Padding(
+                            //             padding: const EdgeInsets.symmetric(horizontal: 24),
+                            //             child: Text(
+                            //               "There are no comments to view for this event timeline.",
+                            //               textAlign: TextAlign.center,
+                            //               style: context.body1.copyWith(
+                            //                 color: AppColors.designBlack1,
+                            //                 fontSize: 16,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           const SizedBox(height: 48),
+                            //         ],
+                            //       );
+                            //     }
+                            //     return FadeInDown(
+                            //       duration: const Duration(milliseconds: 200),
+                            //       child: GroupedListView<Comment, String>(
+                            //         padding: EdgeInsets.zero,
+                            //         elements: postEventComment,
+                            //         groupBy: (element) => element.createdAt!.toIso8601String(),
+                            //         itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
+                            //         groupComparator: (value1, value2) => value2.compareTo(value1),
+                            //         order: GroupedListOrder.ASC,
+                            //         useStickyGroupSeparators: false,
+                            //         groupSeparatorBuilder: (value) {
+                            //           return 16.height;
+                            //         },
+                            //         itemBuilder: (context, Comment element) {
+                            //           return CommentTile(
+                            //             comment: element,
+                            //           );
+                            //         },
+                            //       ),
+                            //     );
+                            //   });
+                            // }
+                            // return const SizedBox.shrink();
 
-                          return Builder(builder: (context) {
-                            if (eventProvider.comments.isEmpty) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.comments_disabled_outlined,
-                                    size: 80,
-                                    color: AppColors.designBlack1,
-                                  ),
-                                  const SizedBox(height: 24),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                                    child: Text(
-                                      "There are no comments to view for this event timeline.",
-                                      textAlign: TextAlign.center,
-                                      style: context.body1.copyWith(
+                            return Builder(
+                              builder: (context) {
+                                if (eventProvider.comments.isEmpty) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.comments_disabled_outlined,
+                                        size: 80,
                                         color: AppColors.designBlack1,
-                                        fontSize: 16,
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 48),
-                                ],
-                              );
-                            }
-                            return FadeInDown(
-                              duration: const Duration(milliseconds: 200),
-                              child: ListView.separated(
-                                itemBuilder: (context, index) {
-                                  final comment = eventProvider.comments[index];
-                                  return CommentTile(
-                                    comment: comment,
+                                      const SizedBox(height: 24),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                                        child: Text(
+                                          "There are no comments to view for this event timeline.",
+                                          textAlign: TextAlign.center,
+                                          style: context.body1.copyWith(
+                                            color: AppColors.designBlack1,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 48),
+                                    ],
                                   );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return 16.height;
-                                },
-                                itemCount: eventProvider.comments.length,
-                              ),
-                              // GroupedListView<Comment, String>(
-                              //   padding: EdgeInsets.zero,
-                              //   elements: eventProvider.comments,
-                              //   groupBy: (element) => element.createdAt!.toIso8601String(),
-                              //   itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
-                              //   groupComparator: (value1, value2) => value2.compareTo(value1),
-                              //   order: GroupedListOrder.ASC,
-                              //   useStickyGroupSeparators: false,
-                              //   groupSeparatorBuilder: (value) {
-                              //     return 16.height;
-                              //   },
-                              //   itemBuilder: (context, Comment element) {
-                              //     return CommentTile(
-                              //       comment: element,
-                              //     );
-                              //   },
-                              // ),
+                                }
+                                return FadeInDown(
+                                  duration: const Duration(milliseconds: 200),
+                                  child: ListView.separated(
+                                    itemBuilder: (context, index) {
+                                      final comment = eventProvider.comments[index];
+                                      return CommentTile(
+                                        comment: comment,
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return 16.height;
+                                    },
+                                    itemCount: eventProvider.comments.length,
+                                  ),
+                                  // GroupedListView<Comment, String>(
+                                  //   padding: EdgeInsets.zero,
+                                  //   elements: eventProvider.comments,
+                                  //   groupBy: (element) => element.createdAt!.toIso8601String(),
+                                  //   itemComparator: (item1, item2) => item2.createdAt!.compareTo(item1.createdAt!),
+                                  //   groupComparator: (value1, value2) => value2.compareTo(value1),
+                                  //   order: GroupedListOrder.ASC,
+                                  //   useStickyGroupSeparators: false,
+                                  //   groupSeparatorBuilder: (value) {
+                                  //     return 16.height;
+                                  //   },
+                                  //   itemBuilder: (context, Comment element) {
+                                  //     return CommentTile(
+                                  //       comment: element,
+                                  //     );
+                                  //   },
+                                  // ),
+                                );
+                              },
                             );
-                          });
-                        }),
+                          },
+                        ),
                       ),
                       12.height,
                       CustomTextField2(
@@ -442,23 +481,71 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                         hintText: 'Type your comment',
                         textInputType: TextInputType.multiline,
                         maxLines: null,
-                        suffixIcon: ClickWidget(
-                          onTap: () async {
-                            await postComment();
-                          },
-                          child: Container(
-                            height: 28,
-                            width: 28,
-                            margin: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.darkBlue1,
+                        onTap: () async {
+                          await _picker.pickImage(source: ImageSource.gallery).then(
+                            (value) async {
+                              if (value != null) {
+                                image = value;
+                                setState(() {});
+                              }
+                            },
+                          );
+                        },
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Builder(builder: (_) {
+                              if (image != null) {
+                                return InkWell(
+                                  onTap: () {
+                                    image = null;
+                                    setState(() {});
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Image.file(
+                                        File(image!.path),
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                      const Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          Icons.cancel,
+                                          color: Colors.red,
+                                          size: 15,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
+
+                              return const SizedBox.shrink();
+                            }),
+                            ClickWidget(
+                              onTap: () async {
+                                if (sending) {
+                                  return;
+                                }
+                                await postComment();
+                              },
+                              child: Container(
+                                height: 28,
+                                width: 28,
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.darkBlue1,
+                                ),
+                                padding: const EdgeInsets.all(5),
+                                child: SvgPicture.asset(
+                                  'assets/icons/icon_send.svg',
+                                ),
+                              ),
                             ),
-                            padding: const EdgeInsets.all(5),
-                            child: SvgPicture.asset(
-                              'assets/icons/icon_send.svg',
-                            ),
-                          ),
+                          ],
                         ),
                       )
                     ],

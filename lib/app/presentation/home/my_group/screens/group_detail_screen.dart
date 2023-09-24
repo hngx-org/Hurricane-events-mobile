@@ -1,3 +1,5 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/app/presentation/comments/screens/event_details.dart';
@@ -11,7 +13,11 @@ import 'package:hurricane_events/component/widgets/click_button.dart';
 import 'package:hurricane_events/component/widgets/event_card.dart';
 import 'package:hurricane_events/component/widgets/shimmer/event_shimmer.dart';
 import 'package:hurricane_events/data/models/groups/group_details.dart';
+import 'package:hurricane_events/data/repository/group_repository/group_repository.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../component/widgets/custom_textfield.dart';
 
 class GroupDetailsScreen extends StatefulWidget {
   static const String routeName = "group_details";
@@ -27,9 +33,21 @@ class GroupDetailsScreen extends StatefulWidget {
 }
 
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
+  ValueNotifier addPeoplePressed = ValueNotifier(false);
+
+  String? emailError;
+
+  final emailFocus = FocusNode();
+
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _email = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    emailFocus.addListener(() {
+      setState(() {});
+    });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<MyGroupProvider>(context, listen: false).getGrouEvents(widget.groupDetail.id!);
     });
@@ -96,32 +114,147 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                         ),
                       ),
                       16.width,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.groupDetail.title!,
-                            style: context.body1.copyWith(fontSize: 16),
-                          ),
-                          // 12.height,
-                          // Row(
-                          //   children: [
-                          //     //Number of people
-                          //     const MyGroupChip(
-                          //       title: "33 people",
-                          //     ),
-                          //     12.width,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.groupDetail.title!,
+                              style: context.body1.copyWith(fontSize: 16),
+                            ),
+                            // 12.height,
+                            // Row(
+                            //   children: [
+                            //     //Number of people
+                            //     const MyGroupChip(
+                            //       title: "33 people",
+                            //     ),
+                            //     12.width,
 
-                          //     //Number of events
-                          //     const MyGroupChip(
-                          //       title: "3 Upcoming events",
-                          //     ),
-                          //   ],
-                          // )
-                        ],
-                      )
+                            //     //Number of events
+                            //     const MyGroupChip(
+                            //       title: "3 Upcoming events",
+                            //     ),
+                            //   ],
+                            // )
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          addPeoplePressed.value = !addPeoplePressed.value;
+                        },
+                        icon: const Icon(
+                          Icons.group_add_rounded,
+                          color: AppColors.darkBlue1,
+                        ),
+                      ),
                     ],
                   ),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: addPeoplePressed,
+                  builder: (context, value, _) {
+                    if (!value) {
+                      return const SizedBox.shrink();
+                    }
+                    return Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          12.height,
+                          FadeInDown(
+                            duration: const Duration(milliseconds: 100),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                10.height,
+                                CustomTextField(
+                                  focus: emailFocus,
+                                  filled: true,
+                                  controller: _email,
+                                  errorText: emailError,
+                                  hintText: "Enter email of user",
+                                  suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      if (_email.text.trim().isEmpty) {
+                                        return;
+                                      }
+
+                                      if (_formKey.currentState!.validate()) {
+                                        final r = await GroupRepository.instance.inviteUsersToGroup(
+                                          context.read<UserProvider>().user!.id!,
+                                          widget.groupDetail.id!,
+                                          [_email.text],
+                                        );
+
+                                        if (r.item1 != null) {
+                                          if (r.item1!.invalidUsers!.isEmpty) {
+                                            _email.clear();
+                                            setState(() {});
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: AppColors.lightBlue1,
+                                                  content: Text(
+                                                    "Email added successfully",
+                                                    style: context.body1.copyWith(
+                                                      fontSize: 12,
+                                                      color: AppColors.designBlack1,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          } else {
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  backgroundColor: AppColors.lightBlue1,
+                                                  content: Text(
+                                                    "User does not exist on the platform",
+                                                    style: context.body1.copyWith(
+                                                      fontSize: 12,
+                                                      color: AppColors.designBlack1,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: AppColors.darkBlue1,
+                                    ),
+                                  ),
+                                  validator: (p0) {
+                                    if (p0 == null || p0.trim().isEmpty) {
+                                      emailError = "Please enter a valid email";
+                                      setState(() {});
+                                      return emailError;
+                                    }
+
+                                    if (!EmailValidator.validate(p0)) {
+                                      emailError = "This email is not valid";
+                                      setState(() {});
+                                      return emailError;
+                                    }
+
+                                    emailError = null;
+                                    setState(() {});
+                                    return emailError;
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
                 40.height,
                 Text(

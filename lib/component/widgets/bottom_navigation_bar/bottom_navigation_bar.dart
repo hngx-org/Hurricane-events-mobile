@@ -3,7 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hurricane_events/component/constants/images.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({Key? key, required this.onTap, required this.currentIndex}) : super(key: key);
+  const CustomBottomNavigationBar({
+    Key? key,
+    required this.onTap,
+    required this.currentIndex,
+  }) : super(key: key);
   final Function(int) onTap;
   final int currentIndex;
 
@@ -15,10 +19,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
       items: [
         BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              currentIndex == 0 ? AppImages.timelineIconColored : AppImages.timelineIcon,
-            ),
-            label: 'Timeline'),
+          icon: SvgPicture.asset(
+            currentIndex == 0 ? AppImages.timelineIconColored : AppImages.timelineIcon,
+          ),
+          label: 'Timeline',
+        ),
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
               currentIndex == 1 ? AppImages.groupIconColored : AppImages.groupIcon,
