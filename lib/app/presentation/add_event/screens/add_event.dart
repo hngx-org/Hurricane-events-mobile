@@ -69,6 +69,7 @@ class _AddEventState extends State<AddEvent> {
   }
 
   List<String> onlineIcons = [
+    // Add new Icons here...
     'https://img.icons8.com/?size=160&id=j2lPVrxHLuGq&format=png',
     'https://img.icons8.com/?size=160&id=uOgV6ugNgk6m&format=png',
     'https://img.icons8.com/?size=96&id=l3jcLOr5VOxm&format=png',
