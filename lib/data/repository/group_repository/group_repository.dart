@@ -281,8 +281,7 @@ class GroupRepository extends ApiImplementation implements GroupRepositoryInterf
   Future<Tuple2<List<GroupDetails?>?, String?>> getUserGroups(String id) async {
     try {
       final result = await groupService().getuserGroups(id);
-
-      if (result.isNotEmpty) {
+      if (result != null) {
         return Tuple2(result, null);
       }
 

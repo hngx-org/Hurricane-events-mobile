@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hurricane_events/app/presentation/home/calendar/widgets/comment_tile.dart';
@@ -195,6 +196,7 @@ class _PreCommentEventDetailsState extends State<PreCommentEventDetails> {
                       12.height,
                       EventCard(
                         eventFull: eventProvider.event,
+                        comments: eventProvider.comments,
                         onTap: () async {
                           final s = await AppOverlays.showDeleteDialog(
                             context,

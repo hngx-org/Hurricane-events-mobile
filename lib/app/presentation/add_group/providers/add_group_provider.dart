@@ -36,7 +36,7 @@ class AddGroupProvider extends ChangeNotifier {
           );
 
           if (r.item1 != null) {
-            if (r.item1!.addedUsers!.isNotEmpty) {
+            if (r.item1!.addedUsers!.isNotEmpty || r.item1!.invalidUsers!.isNotEmpty) {
               _state = AppState.success;
               notifyListeners();
               await Future.delayed(const Duration(milliseconds: 200));

@@ -1,5 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:hurricane_events/app/presentation/home/my_group/provider/my_group_provider.dart';
+import 'package:hurricane_events/app/router/base_navigator.dart';
 import 'package:hurricane_events/data/services/local_storage/local_storage.dart';
+import 'package:hurricane_events/domain/providers/events_provider.dart';
+import 'package:hurricane_events/domain/providers/global_provider.dart';
+import 'package:hurricane_events/domain/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class Dummy extends Interceptor {}
 
@@ -48,6 +54,11 @@ class ApiInterceptor extends Interceptor {
         ),
       );
     } else if (err.response?.statusCode == 401) {
+      BaseNavigator.currentContext.read<GlobalProvider>().logOut();
+      BaseNavigator.currentContext.read<EventProvider>().logOut();
+      BaseNavigator.currentContext.read<MyGroupProvider>().logOut();
+      BaseNavigator.currentContext.read<UserProvider>().logOut();
+
       // Expired Token
     } else if (err.response?.statusCode == 406) {
       // 406 error

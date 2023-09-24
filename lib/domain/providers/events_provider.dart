@@ -6,7 +6,6 @@ import 'package:hurricane_events/component/enums/enums.dart';
 import 'package:hurricane_events/data/models/comments/comment.dart';
 import 'package:hurricane_events/data/models/comments/create_comments.dart';
 import 'package:hurricane_events/data/models/events/add_events_modal.dart';
-import 'package:hurricane_events/data/models/events/event_normal.dart';
 import 'package:hurricane_events/data/models/events/events_full_model.dart';
 import 'package:hurricane_events/data/repository/comment_repositpory/comments_repository.dart';
 import 'package:hurricane_events/data/repository/event_repository/event_repository.dart';

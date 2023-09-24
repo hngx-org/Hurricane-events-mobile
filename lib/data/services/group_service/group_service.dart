@@ -43,7 +43,7 @@ abstract class GroupService {
   Future<List<GroupDetails>> getAllGroups();
 
   @GET("/groups/users/{id}")
-  Future<List<GroupDetails>> getuserGroups(
+  Future<List<GroupDetails?>?> getuserGroups(
     @Path("id") String id,
   );
 
