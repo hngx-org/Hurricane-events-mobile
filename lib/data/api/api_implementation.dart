@@ -18,8 +18,7 @@ abstract class ApiImplementation {
   Dio _instance() {
     final dio = Dio(_options)
       ..interceptors.add(
-        kDebugMode
-            ? TalkerDioLogger(
+       TalkerDioLogger(
                 settings: const TalkerDioLoggerSettings(
                   printResponseData: true,
                   printRequestData: true,
@@ -28,7 +27,7 @@ abstract class ApiImplementation {
                   printResponseHeaders: false,
                 ),
               )
-            : Dummy(),
+          
       );
     return dio;
   }
